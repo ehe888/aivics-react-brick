@@ -20,7 +20,7 @@
 
 import React from "react"
 
-require("./css/brick.css")
+require("./style.css");
 
 /**
  * ES6 Class Delcaration - equals to React.createClass
@@ -32,7 +32,7 @@ class Brick extends React.Component {
 
   componentDidMount(){
     var self = this;
-     $( ".brick" ).draggable({
+     $( ".aivics-brick" ).draggable({
        containment: "parent",
        refreshPositions: true,
        start: function(e, ui) {
@@ -43,6 +43,8 @@ class Brick extends React.Component {
          console.log(ui.position);
          $(this).css("z-index", self.props.data["zIndex"]);
        }
+     }).resizable({
+       helper: "ui-resizable-helper"
      });
   }
 

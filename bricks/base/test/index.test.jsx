@@ -11,7 +11,8 @@ var should  = require('chai').should;
 var expect  = require('chai').expect;
 var TestUtils = require('react-addons-test-utils');
 
-var Brick = require("../lib/basic/Brick");
+var Brick = require("../src");
+
 
 var data = {
     id: 1,

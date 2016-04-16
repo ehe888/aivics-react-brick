@@ -9,6 +9,9 @@
   left: 25%;
   height: 48px;
   width: 48px;
-  background-color: white;
-  border: solid 1px gray;
+  background-color: #D2B48C;
 }
+
+ .ui-resizable-helper {
+   border: 1px dotted #00F;
+ }

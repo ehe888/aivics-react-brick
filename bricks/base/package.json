@@ -1,6 +1,6 @@
 {
-  "name": "aivics-react-brick",
-  "version": "0.1.1",
+  "name": "aivics-react-brick-base",
+  "version": "0.0.2",
   "description": "building bricks, reactjs",
   "main": "./lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ehe888/aivics-react-brick.git"
+    "url": "git+https://github.com/ehe888/aivics-react-brick.git/base"
   },
   "keywords": [
     "bricks"
