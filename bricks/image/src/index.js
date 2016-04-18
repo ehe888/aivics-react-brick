@@ -20,6 +20,7 @@
  */
 
 import React from "react"
+import ReactDOM from "react-dom"
 import Brick from "../../base/src/index.js"
 
 require("./style.css");
@@ -34,8 +35,9 @@ class ImageBrick extends Brick {
 
   componentDidMount(){
     // super.componentDidMount();
-    var self = this;
-     $( ".aivics-brick" ).draggable({
+    var self = this,
+        imageBrick = ReactDOM.findDOMNode(self);
+     $(imageBrick).draggable({
        containment: "parent",
        refreshPositions: true,
        start: function(e, ui) {
