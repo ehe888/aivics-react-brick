@@ -1,6 +1,7 @@
 "use strict"
 
 var BaseBrick = require("../bricks/base/src");
+var ImageBrick = require("../bricks/image/src");
 
 var Brick = function(){
   if( !(this instanceof Brick) ){
@@ -8,6 +9,7 @@ var Brick = function(){
   }
 
   this.Base = BaseBrick;
+  this.Image = ImageBrick;
 
   return this;
 }
