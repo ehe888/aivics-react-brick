@@ -18,6 +18,7 @@ var config = {
     "react": "React",
     "react-dom": "ReactDOM",
     "jquery": "jQuery",
+    "jquery-ui": "jQuery",
     "webpack": "Webpack"
   },
 
@@ -31,7 +32,8 @@ var config = {
     path: buildPath,
     filename: '[name].js',
     libraryTarget: "commonjs2",
-    library: "BrickFactory"
+    library: "BrickFactory",
+    publicPath: "/assets/"
   },
   module: {
 

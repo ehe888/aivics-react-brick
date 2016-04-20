@@ -24,3 +24,24 @@ describe("Brick Factory", function(){
     expect(Base).to.exist;
   });
 });
+
+
+describe("Brick Setting Factory", function(){
+  it("should has BaseBrickSettingPanel classe as property", function(){
+    var Base = Brick.settings.Base;
+    console.log(Base.prototype)
+    expect(Base).to.exist;
+  });
+
+  it("should has setting method to get BaseBrickSettingPanel", function(){
+    var Base = Brick.setting("Base");
+    console.log(Base.prototype)
+    expect(Base).to.exist;
+  });
+
+  it("should has handleWidthChange method", function(){
+    var Base = Brick.settings.Base;
+    expect(Base.prototype.handleWidthChange).to.exist;
+
+  });
+});

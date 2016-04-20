@@ -1,13 +1,20 @@
 "use strict"
 
 var BaseBrick = require("../bricks/base/src");
+var BaseBrickSettingPanel = require("../settings/base/src");
 
 var Brick = function(){
   if( !(this instanceof Brick) ){
     return new Brick();
   }
+  this.settings = {};
 
+  /**
+   * Base Brick and Setting Panel
+   */
   this.Base = BaseBrick;
+  this.settings.Base = BaseBrickSettingPanel;
+
 
   return this;
 }
@@ -20,5 +27,9 @@ var Brick = function(){
 Brick.prototype.produce = function(name) {
   return this[name] || BaseBrick;
 };
+
+Brick.prototype.setting = function(name) {
+  return this.settings[name] || BaseBrickSettingPanel;
+}
 
 module.exports = new Brick();
