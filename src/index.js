@@ -1,5 +1,6 @@
 "use strict"
 
+var MaskBox = require("../bricks/mask/src");
 var BaseBrick = require("../bricks/base/src");
 var BaseBrickSettingPanel = require("../settings/base/src");
 
@@ -9,6 +10,7 @@ var Brick = function(){
   }
   this.settings = {};
 
+  this.Mask = MaskBox;
   /**
    * Base Brick and Setting Panel
    */

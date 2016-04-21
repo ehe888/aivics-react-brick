@@ -5,13 +5,90 @@
 
 .aivics-brick {
   position: absolute;
-  top: 25%;
-  left: 25%;
-  height: 48px;
-  width: 48px;
+  top: 5px;
+  left: 5px;
+  height: 150px;
+  width: 150px;
   background-color: #D2B48C;
+  overflow: visible;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: dotted 1px black;
 }
 
- .ui-resizable-helper {
-   border: 1px dotted #00F;
- }
+/*.aivics-brick:hover {
+  cursor: all-scroll;
+}*/
+
+/*.aivics-brick-handy {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  overflow: hidden;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.aivics-brick-mask {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(121, 121, 121, 0.3);
+}
+
+.aivics-brick-mask:hover {
+  cursor: all-scroll;
+}*/
+/*
+.aivics-brick-resizer {
+  display: none;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+}
+
+.aivics-brick-resizer #brickHandy1 {
+  top: 0;
+  left:0;
+  cursor:nwse-resize;
+}
+
+.aivics-brick-resizer #brickHandy2 {
+  top: 0px;
+  cursor:row-resize;
+}
+
+.aivics-brick-resizer #brickHandy3 {
+  top: 0;
+  right: 0;
+  cursor:nesw-resize;
+}
+.aivics-brick-resizer #brickHandy4 {
+  right: 0;
+  cursor: col-resize;
+}
+
+
+.aivics-brick-resizer #brickHandy5 {
+  right: 0;
+  bottom: 0;
+  cursor:nwse-resize;
+}
+.aivics-brick-resizer #brickHandy6 {
+  bottom: 0;
+  cursor:row-resize;
+}
+.aivics-brick-resizer #brickHandy7 {
+  bottom: 0;
+  cursor:nesw-resize;
+}
+.aivics-brick-resizer #brickHandy8 {
+  left: 0;
+  cursor: col-resize;
+}*/

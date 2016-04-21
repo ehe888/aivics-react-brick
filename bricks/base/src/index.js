@@ -28,35 +28,48 @@ require("./style.css");
 class Brick extends React.Component {
   constructor(props){   //Equals to getInitialState
       super(props);
+      this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   componentDidMount(){
     var self = this;
-     $( ".aivics-brick" ).draggable({
-       containment: "parent",
-       refreshPositions: true,
-       start: function(e, ui) {
-         console.log(ui.position);
-         $(this).css("z-index", 9999);
-       },
-       stop: function(e, ui){
-         console.log(ui.position);
-         $(this).css("z-index", self.props.data["zIndex"]);
-       }
-     }).resizable({
-       helper: "ui-resizable-helper"
-     });
+  }
+
+  handleDoubleClick(e) {
+    e.preventDefault();
+
+    if(e.target.className !== e.currentTarget.className){
+      return;
+    }
+
+    //set mask over current brick;
+    var left = e.currentTarget.offsetLeft;
+    var top = e.currentTarget.offsetTop;
+    var width = e.currentTarget.offsetWidth;
+    var height = e.currentTarget.offsetHeight;
+
+    var position = {
+      left: left,
+      top: top,
+      width: width,
+      height: height
+    };
+
+    this.props.onBrickClick(e, position);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    var moveToBrickPosition = nextProps.moveToBrickPosition;
+    if(moveToBrickPosition){
+      $(this.refs.aivicsBrick).css(moveToBrickPosition);
+    }
   }
 
   render() {
-    var data = this.props.data;
-    var styles = data.styles;
-
-    styles["zIndex"] = data["zIndex"];
-
     return (
-      <div style={styles} className="aivics-brick">
-        This is a basic brick!
+      <div ref="aivicsBrick"
+          className="aivics-brick"
+          onDoubleClick={this.handleDoubleClick} >
       </div>
     )
   }
