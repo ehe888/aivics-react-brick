@@ -23,16 +23,42 @@
   cursor: all-scroll;
   background: rgba(121, 121, 121, 0.1);
 }
-/*
-.aivics-brick-mask #brickMover {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
-  background-color: red;
-}*/
 
+.aivics-brick-mask .aivics-brick-ref-line {
+  position: absolute;
+  background-color: red;
+  border: 0;
+  mergin: 0;
+  padding: 0;
+}
+
+#brickRefTop {
+  top: 5px;
+  left: -4000px;
+  width: 8000px;
+  height: 1px;
+}
+
+#brickRefBottom {
+  bottom: 5px;
+  left: -4000px;
+  width: 8000px;
+  height: 1px;
+}
+
+#brickRefLeft {
+  left: 5px;
+  top: -4000px;
+  height: 8000px;
+  width: 1px;
+}
+
+#brickRefRight {
+  right: 5px;
+  top: -4000px;
+  height: 8000px;
+  width: 1px;
+}
 
 .aivics-brick-mask #brickHandy1 {
   top: 0;

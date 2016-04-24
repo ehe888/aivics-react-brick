@@ -8,21 +8,34 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="//cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.css">
     <link rel="stylesheet" href="/css/jquery.json-view.min.css">
-    <link rel="stylesheet" href="/assets/index.css">
+    <link rel="stylesheet" href="assets/index.css">
     <style>
     #workspace {
       position: absolute;
       top: 5%;
       left: 5%;
-      width: 40%;
+      width: 65%;
       height: 90%;
       border: 1px solid black;
     }
+
+    .aivics-brick-setting-panel {
+      position: absolute;
+      top: 0;
+      right: 0%;
+      width: 35%;
+      height: 100%;
+      border: 0px solid black;
+      overflow:scroll;
+      padding: 0;
+      border-left: 1px solid black;
+    }
+
     #console {
       position: absolute;
       top: 5%;
-      left: 55%;
-      width: 40%;
+      left: 72%;
+      width: 25%;
       height: 90%;
       border: 1px solid black;
       overflow:scroll;
@@ -36,7 +49,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 65%;
       height: 100%;
     }
     </style>
@@ -86,6 +99,7 @@
           }
       }
     })();
+
     </script>
     <script src="assets/bundle.js"></script>
   </body>

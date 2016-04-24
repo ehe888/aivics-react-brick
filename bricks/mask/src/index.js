@@ -1,7 +1,8 @@
 "use strict"
 
 /**
- * Parent should implement event handler : onResize
+ * Props must be provided:
+ * 	1. onBrickResize(position){} - Parent should implement event handler : onBrickResize
  *
  * Sample implementation:
     onBrickResize(position) {
@@ -56,7 +57,13 @@ require("./style.css");
 class MaskBox extends React.Component {
   constructor(props){   //Equals to getInitialState
       super(props);
+      this.activeBrickId = this.props.activeBrickId;
       this.handleResize = this.handleResize.bind(this);
+      this.handleDoubleClick = this.handleDoubleClick.bind(this);
+  }
+
+  handleDoubleClick(){
+      //$(this.refs.aivicsBrickMask).css("display", "none");
   }
 
   handleResize(maskBox) {
@@ -67,8 +74,7 @@ class MaskBox extends React.Component {
       top: maskBox.position().top + 5
     };
 
-    console.log({ finalPosition: finalPosition });
-    this.props.onResize(finalPosition);
+    this.props.onBrickResize(this.activeBrickId, finalPosition);
   }
 
   componentDidMount(){
@@ -263,7 +269,9 @@ class MaskBox extends React.Component {
 
   componentDidUpdate(prevProps, prevState){
     $(this.refs.aivicsBrickMask).css("display", "block");
+
     var activeBrickPosition = this.props.activeBrickPosition;
+
     var maskPosition = {
       left: activeBrickPosition.left - 5,
       top: activeBrickPosition.top - 5,
@@ -275,9 +283,11 @@ class MaskBox extends React.Component {
   }
 
   render() {
+    this.activeBrickId = this.props.activeBrickId;
     return (
       <div ref="aivicsBrickMask"
-          className="aivics-brick-mask" >
+          className="aivics-brick-mask"
+          onDoubleClick={this.handleDoubleClick} >
           <div id="brickHandy1" className="aivics-brick-handy"></div>
           <div id="brickHandy2" className="aivics-brick-handy"></div>
           <div id="brickHandy3" className="aivics-brick-handy"></div>
@@ -286,6 +296,10 @@ class MaskBox extends React.Component {
           <div id="brickHandy6" className="aivics-brick-handy"></div>
           <div id="brickHandy7" className="aivics-brick-handy"></div>
           <div id="brickHandy8" className="aivics-brick-handy"></div>
+          <div id="brickRefTop" className="aivics-brick-ref-line"></div>
+          <div id="brickRefBottom" className="aivics-brick-ref-line"></div>
+          <div id="brickRefLeft" className="aivics-brick-ref-line"></div>
+          <div id="brickRefRight" className="aivics-brick-ref-line"></div>
       </div>
     )
   }

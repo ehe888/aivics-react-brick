@@ -1,0 +1,29 @@
+
+.aivics-brick-setting-panel {
+  font-size: 10px;
+}
+
+.aivics-brick-setting-panel .input-group {
+  width: 100%;
+}
+
+.aivics-brick-setting-panel .input-group .input-group-addon
+{
+  max-width: 48px;
+  min-width: 48px;
+}
+.aivics-brick-setting-panel .input-group .input-group-addon,
+.aivics-brick-setting-panel .input-group .form-control  {
+  border: 0;
+  padding: 2px 4px;
+  height: 24px;
+  font-size: 10px;
+  border-radius: 0;
+  border-bottom: 1px solid #ccc;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.aivics-brick-setting-panel .form-group {
+  margin-bottom: 0;
+}

@@ -25,28 +25,51 @@ require("./style.css");
 /**
  * ES6 Class Delcaration - equals to React.createClass
  */
+
 class Brick extends React.Component {
+
+
   constructor(props){   //Equals to getInitialState
       super(props);
-      this.handleDoubleClick = this.handleDoubleClick.bind(this);
+
+      this.refName = "aivicsBrick"; //Class constant used to referece this component
+      this.dataStorage = this.props.dataStorage;
+      this.model = this.dataStorage.model("Bricks");
+      this.handleOverlayClick = this.handleOverlayClick.bind(this);
+      this.reload = this.reload.bind(this);
+      this.getDOMElement = this.getDOMElement.bind(this);
+  }
+
+  //Use data to update view settings, TODO: implement as a delegate method
+  reload(data){
+    $(this.getDOMElement()).css(data.dimension)
+              .css(data);
+
+  }
+
+  //shorthand to get DOMElement
+  getDOMElement(){
+    return this.refs[this.refName];
   }
 
   componentDidMount(){
-    var self = this;
+    var record = this.model.find({ id: this.props.id });
+    this.reload(record);
   }
 
-  handleDoubleClick(e) {
+  handleOverlayClick(e) {
     e.preventDefault();
-
     if(e.target.className !== e.currentTarget.className){
       return;
     }
 
+    var $this = $(this.getDOMElement());
+
     //set mask over current brick;
-    var left = e.currentTarget.offsetLeft;
-    var top = e.currentTarget.offsetTop;
-    var width = e.currentTarget.offsetWidth;
-    var height = e.currentTarget.offsetHeight;
+    var left = $this.position().left;
+    var top = $this.position().top;
+    var width = $this.width();
+    var height = $this.height();
 
     var position = {
       left: left,
@@ -55,24 +78,48 @@ class Brick extends React.Component {
       height: height
     };
 
-    this.props.onBrickClick(e, position);
+    this.props.onBrickSelect(e, this.props.id, position);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    var moveToBrickPosition = nextProps.moveToBrickPosition;
-    if(moveToBrickPosition){
-      $(this.refs.aivicsBrick).css(moveToBrickPosition);
-    }
+  componentDidUpdate(prevProps, prevState) {
+    // var moveToBrickPosition = this.props.moveToBrickPosition;
+    // if(moveToBrickPosition){
+    //
+    // }
+    //Important -> Here we will update Local Data Storage
+    var record = this.model.find({ id: this.props.id });
+    // var self = this;
+    // _.merge(record, { dimension: moveToBrickPosition } );
+    // console.log({ record: record });
+    // this.model.upsert(record);
+    this.reload(record);
   }
+
 
   render() {
+
+    var subContent = "";
+    if(this.props.renderContent){
+      subContent = this.props.renderContent();
+    }
+
     return (
-      <div ref="aivicsBrick"
-          className="aivics-brick"
-          onDoubleClick={this.handleDoubleClick} >
+      <div id={this.props.id}
+          ref={this.refName}
+          className="aivics-brick" >
+          <div ref="brickContentWrapper"
+              className="aivics-brick-content-wrapper">
+            {subContent}
+          </div>
+          <div ref="brickContentOverlay"
+              className="aivics-brick-content-overlay"
+              onClick={this.handleOverlayClick} >
+          </div>
       </div>
     )
   }
 }
+
+
 
 module.exports = Brick;
