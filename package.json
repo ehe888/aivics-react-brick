@@ -1,9 +1,10 @@
 {
   "name": "aivics-react-brick",
-  "version": "0.1.1",
+  "version": "0.1.10",
   "description": "building bricks, reactjs",
   "main": "./lib/index.js",
   "scripts": {
+    "prepublish": "webpack",
     "test": "karma start"
   },
   "repository": {
@@ -36,6 +37,7 @@
     "karma-webpack": "^1.7.0",
     "react": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
+    "uuid": "^2.0.2",
     "webpack": "^1.12.15"
   }
 }

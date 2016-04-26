@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>编辑器</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.css">
+    <link rel="stylesheet" href="/css/jquery.json-view.min.css">
+    <link rel="stylesheet" href="assets/index.css">
+    <style>
+    #workspace {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      width: 65%;
+      height: 90%;
+      border: 1px solid black;
+    }
+
+    .aivics-brick-setting-panel {
+      position: absolute;
+      top: 0;
+      right: 0%;
+      width: 35%;
+      height: 100%;
+      border: 0px solid black;
+      overflow:scroll;
+      padding: 0;
+      border-left: 1px solid black;
+    }
+
+    #console {
+      position: absolute;
+      top: 5%;
+      left: 72%;
+      width: 25%;
+      height: 90%;
+      border: 1px solid black;
+      overflow:scroll;
+      padding: 0;
+    }
+    #output {
+      position: relative;
+      margin: 0 auto;
+    }
+    .editor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 65%;
+      height: 100%;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="workspace">
+    </div>
+    <div id="console">
+      <div id="output">
+
+      </div>
+    </div>
+    <script src="//cdn.bootcss.com/react/0.14.7/react.js"></script>
+    <script src="//cdn.bootcss.com/react/0.14.7/react-dom.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+    <script src="//cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.js"></script>
+    <script src="//cdn.bootcss.com/marked/0.3.5/marked.js"></script>
+    <script src="//cdn.bootcss.com/lodash.js/4.6.1/lodash.js"></script>
+    <script src="js/jquery.json-view.min.js"></script>
+    <script>
+    (function(){
+      function json2html(json) {
+        var i, ret = "";
+        ret += "<ul>";
+        for( i in json) {
+            ret += "<li>"+i+": ";
+            if( typeof json[i] === "object") ret += json2html(json[i]);
+            else ret += json[i];
+            ret += "</li>";
+        }
+        ret += "</ul>";
+        return ret;
+      }
+      if(window.console && console.log){
+          var old = console.log;
+          console.log = function(){
+              //Array.prototype.unshift.call(arguments, 'Report: ');
+              $("#output").jsonView(arguments);
+              old.apply(this, arguments);
+              var scrollTop = $("#output").height() - $("#console").height();
+
+              if(scrollTop > 0){
+
+                $("#console").animate({ scrollTop: scrollTop }, 100);
+              }
+
+          }
+      }
+    })();
+
+    </script>
+    <script src="assets/bundle.js"></script>
+  </body>
+</html>

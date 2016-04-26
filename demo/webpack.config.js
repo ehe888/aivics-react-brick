@@ -2,8 +2,10 @@ var Webpack = require('webpack');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var buildPath = path.resolve(__dirname, 'lib');
-var mainPath = path.resolve(__dirname, 'src', 'index.js');
+var mainPath = path.resolve(__dirname, 'main.js');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+console.log(mainPath);
 
 var config = {
 
@@ -19,7 +21,8 @@ var config = {
     "react-dom": "ReactDOM",
     "jquery": "jQuery",
     "jquery-ui": "jQuery",
-    "webpack": "Webpack"
+    "webpack": "Webpack",
+    "_": "lodash"
   },
 
   output: {
@@ -30,9 +33,7 @@ var config = {
     // as that points to where the files will eventually be bundled
     // in production
     path: buildPath,
-    filename: '[name].js',
-    libraryTarget: "commonjs2",
-    library: "BrickFactory",
+    filename: 'bundle.js',
     publicPath: "/assets/"
   },
   module: {
@@ -70,16 +71,16 @@ var config = {
     new ExtractTextPlugin("[name].css", {
       allChunks: true
     })
-    ,new Webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    })
-    ,new Webpack.optimize.UglifyJsPlugin({
-      compress:{
-        warnings: true
-      }
-    })
+    // ,new Webpack.DefinePlugin({
+    //   'process.env': {
+    //     'NODE_ENV': JSON.stringify('production')
+    //   }
+    // })
+    // ,new Webpack.optimize.UglifyJsPlugin({
+    //   compress:{
+    //     warnings: true
+    //   }
+    // })
   ]
 };
 
