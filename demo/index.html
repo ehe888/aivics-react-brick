@@ -12,18 +12,19 @@
     <style>
     #workspace {
       position: absolute;
-      top: 5%;
-      left: 5%;
-      width: 65%;
-      height: 90%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       border: 1px solid black;
+      overflow: hidden;
     }
 
     .aivics-brick-setting-panel {
       position: absolute;
       top: 0;
       right: 0%;
-      width: 35%;
+      width: 240px;
       height: 100%;
       border: 0px solid black;
       overflow:scroll;
@@ -51,17 +52,18 @@
       left: 0;
       width: 65%;
       height: 100%;
+      overflow: hidden;
     }
     </style>
   </head>
-  <body>
+  <body style="overflow:hidden;">
     <div id="workspace">
     </div>
-    <div id="console">
+    <!-- <div id="console">
       <div id="output">
 
       </div>
-    </div>
+    </div> -->
     <script src="//cdn.bootcss.com/react/0.14.7/react.js"></script>
     <script src="//cdn.bootcss.com/react/0.14.7/react-dom.js"></script>
     <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
@@ -83,21 +85,23 @@
         ret += "</ul>";
         return ret;
       }
-      if(window.console && console.log){
-          var old = console.log;
-          console.log = function(){
-              //Array.prototype.unshift.call(arguments, 'Report: ');
-              $("#output").jsonView(arguments);
-              old.apply(this, arguments);
-              var scrollTop = $("#output").height() - $("#console").height();
 
-              if(scrollTop > 0){
 
-                $("#console").animate({ scrollTop: scrollTop }, 100);
-              }
-
-          }
-      }
+      // if(window.console && console.log){
+      //     var old = console.log;
+      //     console.log = function(){
+      //         //Array.prototype.unshift.call(arguments, 'Report: ');
+      //         $("#output").jsonView(arguments);
+      //         old.apply(this, arguments);
+      //         var scrollTop = $("#output").height() - $("#console").height();
+      //
+      //         if(scrollTop > 0){
+      //
+      //           $("#console").animate({ scrollTop: scrollTop }, 100);
+      //         }
+      //
+      //     }
+      // }
     })();
 
     </script>

@@ -63,7 +63,7 @@ class MaskBox extends React.Component {
   }
 
   handleDoubleClick(){
-      //$(this.refs.aivicsBrickMask).css("display", "none");
+      $(this.refs.aivicsBrickMask).css("display", "none"); //Double click to hide mask
   }
 
   handleResize(maskBox) {

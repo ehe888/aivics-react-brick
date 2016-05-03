@@ -12,7 +12,7 @@
  * 		align option - top-left, top-right, bottom-left, bottom-right
  * 		rotate of content
  * 	 	offset of content - top, left, bottom, right
- * 	
+ *
  */
 
 require("./style.css")
@@ -136,8 +136,9 @@ class BrickSettingPanel extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (this.props.activeBrickId !== nextProps.activeBrickId
-        || _.isEmpty(this.props.settingChangeName) );
+    var shouldUpdate = (this.props.activeBrickId !== nextProps.activeBrickId
+        || _.isEmpty(nextProps.settingChangeName) );
+    return shouldUpdate;
   }
 
   render() {

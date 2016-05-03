@@ -9,11 +9,7 @@ class FieldBgColor extends React.Component {
       return this.refs[this.refName];
     };
     this.handleChange = this.handleChange.bind(this);
-
-    var record = this.props.model.find({ id: this.props.brickId });
-    var defaultValue = record.backgroundColor || "#000000";
-
-    this.state = { currentColor: defaultValue };
+    this.state = {};
   }
 
   handleChange(e, ui) {
@@ -23,8 +19,8 @@ class FieldBgColor extends React.Component {
     var delay = 300; //800ms
     var $field = $(e.target);
 
-    var fieldName = $field.attr("name");
-    console.log(changeToValue);
+    var fieldName = $this.attr("name");
+    console.log(fieldName + " changed to ==> " + changeToValue);
 
     var record = this.props.model.find({ id: this.props.brickId });
     record.backgroundColor = changeToValue;
@@ -51,10 +47,8 @@ class FieldBgColor extends React.Component {
   }
 
   render() {
-
-
-    console.log(this.state.currentColor);
-
+    var record = this.props.model.find({ id: this.props.brickId });
+    var defaultValue = record.backgroundColor || "#000000";
     return (
       <div className="form-group">
         <div className="input-group">
@@ -64,8 +58,8 @@ class FieldBgColor extends React.Component {
               name={this.refName}
               key={this.refName}
               className="form-control"
-              value={this.state.currentColor}
-              onChange={this.handleChange}
+              defaultValue={defaultValue}
+              onInput={this.handleChange}
               />
           <div className="input-group-addon input-color-text">#FFFFFF</div>
         </div>
