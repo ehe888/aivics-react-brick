@@ -9,6 +9,15 @@
 
 import uuid from 'uuid'
 
+function hexToRgbA(hex, opacity) {
+    var bigint = parseInt(hex.substring(1), 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+
+    return "rgba(" + r + "," + g + "," + b + "," + opacity + ")";
+}
+
 var Model = function(name){
   if(!( this instanceof Model)){
     return new Model(name);
@@ -17,11 +26,72 @@ var Model = function(name){
   this.collections = [];
 }
 
+Model.prototype.findByPath = function(path, collection){
+    console.log("path", path);
+    var ids = _.split(path, '/');
+
+    if(_.isEmpty(ids)) return null;
+
+    if(ids.length === 1){
+      console.log(ids[0], collection);
+      return _.find(collection, { id: ids[0] });
+    }else{
+      var id = ids[0];
+      ids.shift();
+      var p = ids.join( "/");
+      var collect = _.find(collection, { id: id })
+      console.log("collection", collect.bricks);
+      return this.findByPath(p, collect.bricks);
+    }
+}
+
 Model.prototype.find = function(filter){
-  if(!filter) return this.collections;
 
-  return _.find(this.collections, filter);
 
+  var results = [];
+  if(!filter)
+    results = this.collections;
+  else{
+    results = this.findByPath(filter.id, this.collections);
+  }
+
+
+  console.log(_.isArray(results));
+
+  if(_.isEmpty(results)){
+    return null;
+  }
+
+  if( !_.isArray(results) ){
+    return new Proxy(results, {
+      get: function(target, property, receiver){
+        if(property === "backgroundColor"){
+          return hexToRgbA(target.backgroundColor, target.backgroundOpacity);
+        }
+        return target[property];
+      }
+    });
+  }
+
+  var rets = results.map(function(r){
+    return new Proxy(r, {
+      get: function(target, property, receiver){
+        if(property === "backgroundColor"){
+          return hexToRgbA(target.backgroundColor, target.backgroundOpacity);
+        }
+        return target[property];
+      }
+    });
+  });
+
+  if( !_.isEmpty(rets) ){
+    if(rets.length > 1)
+      return rets;
+    else {
+      return rets[0];
+    }
+  }
+  return null;
 }
 Model.prototype.upsert = function(data) {
     if(!data) return false;
@@ -35,13 +105,26 @@ Model.prototype.upsert = function(data) {
         //update
         _.merge(record, data);
       }
-      return record;
+      return new Proxy(record, {
+        get: function(target, property, receiver){
+          if(property === "backgroundColor"){
+            return hexToRgbA(target.backgroundColor, target.backgroundOpacity);
+          }
+          return target[property];
+        }
+      });
     }else{
       //generate id and insert
       data.id = uuid.v4();
       this.collections.push(data);
-
-      return data;
+      return new Proxy(data, {
+        get: function(target, property, receiver){
+          if(property === "backgroundColor"){
+            return hexToRgbA(target.backgroundColor, target.backgroundOpacity);
+          }
+          return target[property];
+        }
+      });
     }
 }
 Model.prototype.delete = function(filter){

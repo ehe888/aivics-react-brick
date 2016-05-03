@@ -11,14 +11,13 @@
  *				height: 0.50,
  *			},
  *			zIndex: 1000,
- *			styles: {
- *				"backgroundColor": "rgba(240, 240, 240, 0.9)"
- *			},
+ *			backgroundColor: "rgba(240, 240, 240, 0.9)",
  *			classNames: [ 'aClass', 'bClass' ]
  *		}
  */
 
 import React from "react"
+import Bricks from "../../../src"
 
 require("./style.css");
 
@@ -32,9 +31,8 @@ class Brick extends React.Component {
   constructor(props){   //Equals to getInitialState
       super(props);
 
-      this.refName = "aivicsBrick"; //Class constant used to referece this component
-      this.dataStorage = this.props.dataStorage;
-      this.model = this.dataStorage.model("Bricks");
+      this.refName = "aivicsBrick";
+      this.model = this.props.dataStorage.model("Bricks");
       this.handleOverlayClick = this.handleOverlayClick.bind(this);
       this.reload = this.reload.bind(this);
       this.getDOMElement = this.getDOMElement.bind(this);
@@ -42,9 +40,9 @@ class Brick extends React.Component {
 
   //Use data to update view settings, TODO: implement as a delegate method
   reload(data){
-    $(this.getDOMElement()).css(data.dimension)
+    $(this.getDOMElement())
+              .css(data.dimension)
               .css(data);
-
   }
 
   //shorthand to get DOMElement
@@ -71,6 +69,12 @@ class Brick extends React.Component {
     var width = $this.width();
     var height = $this.height();
 
+    if(this.props.containerId){
+        var container = this.model.find({ id: this.props.containerId });
+        left +=container.dimension.left;
+        top += container.dimension.top;
+    }
+
     var position = {
       left: left,
       top: top,
@@ -95,13 +99,31 @@ class Brick extends React.Component {
     this.reload(record);
   }
 
+  renderNest(){
+    var self = this;
+    var parentId = this.props.id;
+    var record = this.model.find({ id: this.props.id });
+
+    if(!_.isEmpty(record.bricks)){
+      return record.bricks.map(function(b){
+        var bid = parentId + "/" + b.id;
+
+        var TagName = $.Bricks[b.brickType];
+        return React.createElement(TagName, {
+          id:bid, key:bid, containerId: parentId,
+            dataStorage:self.props.dataStorage,
+            onBrickSelect:self.props.onBrickSelect
+        });
+      })
+    }
+  }
 
   render() {
-
     var subContent = "";
     if(this.props.renderContent){
       subContent = this.props.renderContent();
     }
+
 
     return (
       <div id={this.props.id}
@@ -109,7 +131,11 @@ class Brick extends React.Component {
           className="aivics-brick" >
           <div ref="brickContentWrapper"
               className="aivics-brick-content-wrapper">
+            {this.renderNest()}
             {subContent}
+          </div>
+          <div ref="brickContentForegrond"
+              className="aivics-brick-content-foreground">
           </div>
           <div ref="brickContentOverlay"
               className="aivics-brick-content-overlay"
@@ -119,7 +145,5 @@ class Brick extends React.Component {
     )
   }
 }
-
-
 
 module.exports = Brick;

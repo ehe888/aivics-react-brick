@@ -5,17 +5,11 @@
 
 .aivics-brick {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  height: 150px;
-  width: 150px;
-  background-color: rgba(40,40,40,0.2);
   overflow: visible;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   border: dotted 1px gray;
-  overflow: hidden;
 }
 
 .aivics-brick > .aivics-brick-content-wrapper {
@@ -37,6 +31,15 @@
 .aivics-brick-content-overlay:hover {
   cursor: pointer;
   background: rgba(210,210,210,0.2)
+}
+
+.aivics-brick .aivics-brick-content-foreground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0);
 }
 
 /*.aivics-brick:hover {

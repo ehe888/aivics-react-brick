@@ -3,9 +3,11 @@
 /**
  * Demo entry
  */
-
+import uuid from 'uuid'
 import React from "react"
 import Bricks from '../src'
+
+$.Bricks = Bricks;
 
 let BrickMask = Bricks.Mask;
 let Brick = Bricks.Base;
@@ -23,13 +25,26 @@ var data = DataStorage.model('Bricks').upsert({
       top: 10,
       left: 20,
       width: 50,
-      height: 50,
+      height: 50
     },
     "zIndex": 100,
-    styles: {
-      "backgroundColor": "rgba(240, 240, 210, 0.9)"
-    },
-    classNames: [ 'aClass', 'bClass' ]
+    "backgroundColor": "#d3f9dd",
+    "backgroundOpacity": 0.5,
+    classNames: [ 'aClass', 'bClass' ],
+    bricks: [{
+        id: uuid.v4(),
+        name: "a nesetd brick",
+        brickType: "Base",
+        dimension: {
+          top: 10,
+          left: 20,
+          width: 50,
+          height: 50
+        },
+        "zIndex": 100,
+        "backgroundColor": "#d3ffff",
+        "backgroundOpacity": 0.5
+    }]
 });
 
 var data2 = DataStorage.model('Bricks').upsert({
@@ -39,12 +54,11 @@ var data2 = DataStorage.model('Bricks').upsert({
       top: 100,
       left: 100,
       width: 50,
-      height: 50,
+      height: 50
     },
     "zIndex": 100,
-    styles: {
-      "backgroundColor": "rgba(240, 240, 210, 0.9)"
-    },
+    "backgroundColor": "#d3f9dd",
+    "backgroundOpacity": 0.1,
     labelText: "This is label box!!",
     settings: [ "labelText" ]
 });
@@ -66,6 +80,7 @@ class Editor extends React.Component {
   }
 
   onBrickSelect(e, brickId, position) {
+    console.log("on brick selected");
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -77,7 +92,7 @@ class Editor extends React.Component {
   onBrickSettingChange(brickId, fieldName, changeToValue) {
     var record = DataStorage.model("Bricks").find({ id: brickId });
 
-    console.log({ changed: record });
+    console.log({ fieldName: fieldName, changeToValue: changeToValue });
     this.setState({
       activeBrickId: brickId,
       settingChangeName: fieldName,
@@ -101,21 +116,21 @@ class Editor extends React.Component {
     }
 
     if( position.left + position.width > editorWidth ){
-      position.width = editorWidth - position.left;
+      position.left = editorWidth - position.width;
     }
 
     if(position.top + position.height > editorHeight){
-      position.height = editorHeight - position.top;
+      position.top = editorHeight - position.height;
     }
 
     if(position.left >= editorWidth ){
-      position.left = editorWidth-1;
-      position.width = 1;
+      position.left = 0;
+      //position.width = 1;
     }
 
     if(position.top >= editorHeight){
-      position.top = editorHeight -1;
-      position.height = 1;
+      position.top = 0;
+      //position.height = 1;
     }
 
     var record = DataStorage.model("Bricks").find({ id: activeBrickId });
@@ -152,13 +167,6 @@ class Editor extends React.Component {
           onBrickSelect={self.onBrickSelect} />
       )
     });
-
-    // <Brick id={data.id}
-    //   dataStorage={DataStorage}
-    //   onBrickSelect={this.onBrickSelect} />
-    // <LabelBrick id={data2.id}
-    //     dataStorage={DataStorage}
-    //     onBrickSelect={this.onBrickSelect} />
 
     return (
       <div>
