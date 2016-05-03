@@ -67,7 +67,7 @@ class LabelBrick extends React.Component  {
       <Brick id={this.props.id}
             dataStorage={this.props.dataStorage}
             onBrickSelect={this.props.onBrickSelect}
-            renderContent={this.renderContent}>
+            renderContent={this.renderContent} >
       </Brick>
     )
   }

@@ -17,7 +17,6 @@
  */
 
 import React from "react"
-import Bricks from "../../../src"
 
 require("./style.css");
 
