@@ -6,6 +6,7 @@ import React from "react"
 import uuid from "uuid"
 
 import PageAddDelete from "./PageAddDelete"
+import SettingsTab from "./SettingsTab"
 
 class PageSettingPanel extends React.Component {
 
@@ -29,6 +30,7 @@ class PageSettingPanel extends React.Component {
           onPageAdd = {this.props.onPageAdd}
           onPageDelete = {this.props.onPageDelete}
           />
+        <SettingsTab />
       </div>
     )
   }
