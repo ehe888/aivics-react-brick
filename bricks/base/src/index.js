@@ -63,8 +63,10 @@ class Brick extends React.Component {
     var $this = $(this.getDOMElement());
 
     //set mask over current brick;
-    var left = $this.position().left;
-    var top = $this.position().top;
+    // var left = $this.position().left;
+    // var top = $this.position().top;
+    var left = _.replace($this[0].style.left, 'px', '');
+    var top  = _.replace($this[0].style.top, 'px', '');
     var width = $this.width();
     var height = $this.height();
 
