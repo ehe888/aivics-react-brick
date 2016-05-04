@@ -24,8 +24,12 @@ class SettingsTab extends React.Component {
   render() {
     return (
       <div className="btn-group settings-tab" role="group" aria-label="...">
-        <button type="button" className="btn btn-default">Page</button>
-        <button type="button" className="btn btn-default">Trasition</button>
+        <button type="button"
+                className="btn btn-default"
+                onClick={this.props.onPageSettingsClick}>Page</button>
+        <button type="button"
+                className="btn btn-default"
+                onClick={this.props.onPageTransitionClick}>Transition</button>
       </div>
     )
   }

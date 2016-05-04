@@ -6,7 +6,7 @@
 import uuid from 'uuid'
 import React from "react"
 import Bricks from '../src'
-import PageSettingPanel from '../settings/page/src'
+import PageSettingPanel from '../settings/pageTools/src'
 
 $.Bricks = Bricks;
 
@@ -46,6 +46,8 @@ class Story extends React.Component {
     this.onBrickSettingChange = this.onBrickSettingChange.bind(this);
     this.onPageAdd = this.onPageAdd.bind(this);
     this.onPageDelete = this.onPageDelete.bind(this);
+    this.onPageSettingsClick = this.onPageSettingsClick.bind(this);
+    this.onPageTransitionClick = this.onPageTransitionClick.bind(this);
 
     this.state = {
         activeBrickId: data.id,
@@ -170,6 +172,14 @@ class Story extends React.Component {
     }
   }
 
+  onPageSettingsClick() {
+    console.log("onPageSettingsClick")
+  }
+
+  onPageTransitionClick() {
+    console.log("onPageTransitionClick")
+  }
+
   render() {
     var activeBrickPosition = this.state.activeBrickPosition;
 
@@ -195,6 +205,8 @@ class Story extends React.Component {
           <PageSettingPanel
             onPageAdd = {this.onPageAdd}
             onPageDelete = {this.onPageDelete}
+            onPageSettingsClick = {this.onPageSettingsClick}
+            onPageTransitionClick = {this.onPageTransitionClick}
             dataStorage={DataStorage}
           />
         </div>

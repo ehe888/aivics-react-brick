@@ -30,7 +30,10 @@ class PageSettingPanel extends React.Component {
           onPageAdd = {this.props.onPageAdd}
           onPageDelete = {this.props.onPageDelete}
           />
-        <SettingsTab />
+        <SettingsTab
+          onPageSettingsClick = {this.props.onPageSettingsClick}
+          onPageTransitionClick = {this.props.onPageTransitionClick}
+          />
       </div>
     )
   }
