@@ -10,19 +10,51 @@ class FieldImage extends React.Component {
     this.getDOMElement = function(){
       return this.refs[this.refName];
     };
+
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(e, ui) {
+    var changeToValue = e.target.value;
+    var self = this;
+    var $this = $(this.getDOMElement());
+    var delay = 300; //800ms
+    var $field = $(e.target);
+
+    clearTimeout($this.data('timer'));
+    $this.data('timer', setTimeout(function(){
+      $this.removeData('timer');
+      var fieldName = $field.attr("name");
+      // console.log({ fieldName: fieldName });
+
+      //change Label of brick
+      //then notify parent
+      //Update birck Label
+      var record = self.props.model.find({ id: self.props.brickId });
+      record.imageUrl = changeToValue;
+      //notify parent
+      self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
+
+    }, delay ));
   }
 
   render() {
     var record = this.props.model.find({ id: this.props.brickId });
     // console.log(record.pageImage)
     return (
-      <div>
-        <input className="btn btn-primary"
-               type="submit"
-               name={this.refName}
-               value={record.pageImage}
-               onClick={this.props.onImageBtnClick}
-               />
+      <div className="form-group">
+        <div className="input-group">
+          <div className="input-group-addon">Image</div>
+            <input type="textarea"
+              ref={this.refName}
+              key={this.refName}
+              name={this.refName}
+              defaultValue={this.props.model.find({ id: this.props.brickId }).imageUrl}
+              className="form-control"
+              placeholder="ImageUrl"
+              onInput={this.handleChange}
+              />
+        </div>
       </div>
     )
   }

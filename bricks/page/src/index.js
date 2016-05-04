@@ -43,7 +43,7 @@ class Page extends React.Component  {
     var record = this.model.find({ id: this.props.id });
     return (
       <div>
-        <img className="aivics-page-image" src={record.pageImage}/>
+        <img className="aivics-page-image" src={record.imageUrl}/>
         <h3 className="aivcis-page-title-paragraph"
           dangerouslySetInnerHTML={ { __html: record.title} } ></h3>
       </div>

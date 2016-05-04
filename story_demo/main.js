@@ -34,8 +34,7 @@ var data = DataStorage.model('Bricks').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page",
-    pageImage: "https://avatars1.githubusercontent.com/u/2785730?v=3&s=96",
-    settings: ["pageTitle", "imageBtn"]
+    settings: ["pageTitle", "imageUrl"]
 });
 
 

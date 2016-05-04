@@ -41,7 +41,7 @@ const _baseHeight = "baseHeight";
 const _labelText = "labelText";
 const _baseLeft = "baseLeft";
 const _baseBgColor = "baseBgColor";
-const _imageBtn = "imageBtn"
+const _imageUrl = "imageUrl"
 const _pageTitle = "pageTitle"
 
 
@@ -118,7 +118,7 @@ class BrickSettingPanel extends React.Component {
         "baseHeight": renderHeightField.bind(this),
         "labelText": renderLabelTextField.bind(this),
         "baseBgColor": renderBgColorField.bind(this),
-        "imageBtn": renderImageField.bind(this),
+        "imageUrl": renderImageField.bind(this),
         "pageTitle": renderPageTitleField.bind(this)
       }
   }
