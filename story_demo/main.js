@@ -32,7 +32,9 @@ var data = DataStorage.model('Bricks').upsert({
     "zIndex": 100,
     "backgroundColor": "#d3f9dd",
     "backgroundOpacity": 0.5,
-    classNames: [ 'aClass', 'bClass' ]
+    classNames: [ 'aClass', 'bClass' ],
+    title: "new page",
+    settings: ["pageTitle"]
 });
 
 
@@ -135,7 +137,8 @@ class Story extends React.Component {
         "zIndex": 100,
         "backgroundColor": "#d3f9dd",
         "backgroundOpacity": 0.5,
-        classNames: [ 'aClass', 'bClass' ]
+        classNames: [ 'aClass', 'bClass' ],
+        settings: ["pageTitle"]
     })
     this.setState({
       activeBrickId: newPage.id,

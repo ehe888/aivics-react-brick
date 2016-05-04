@@ -26,6 +26,7 @@ import FieldWidth from "./FieldWidth"
 import FieldHeight from "./FieldHeight"
 import FieldLabelText from "./FieldLabelText"
 import FieldBgColor from "./FieldBgColor"
+import FieldPageTitle from "./FieldPageTitle"
 
 //
 // const _aivicsBrickSettingsTop = "aivicsBrickSettingsTop";
@@ -39,6 +40,7 @@ const _baseHeight = "baseHeight";
 const _labelText = "labelText";
 const _baseLeft = "baseLeft";
 const _baseBgColor = "baseBgColor";
+const _pageTitle = "pageTitle"
 
 
 var renderField = function(name){
@@ -76,6 +78,10 @@ var renderBgColorField = function(){
   return renderField.call(this, FieldBgColor);
 }
 
+var renderPageTitleField = function(){
+  return renderField.call(this, FieldPageTitle)
+}
+
 /*===================================================================*/
 
 /**
@@ -104,7 +110,8 @@ class BrickSettingPanel extends React.Component {
         "baseWidth": renderWidthField.bind(this),
         "baseHeight": renderHeightField.bind(this),
         "labelText": renderLabelTextField.bind(this),
-        "baseBgColor": renderBgColorField.bind(this)
+        "baseBgColor": renderBgColorField.bind(this),
+        "pageTitle": renderPageTitleField.bind(this)
       }
   }
 
@@ -123,7 +130,7 @@ class BrickSettingPanel extends React.Component {
   renderFields(){
     var record = this.model.find({ id: this.props.activeBrickId });
     var settingFields = _.union(this.baseSettings, record.settings);
-
+    console.log(record.settings)
     var self = this;
     return settingFields.map(function(result){
       var r = self.fields[result];
