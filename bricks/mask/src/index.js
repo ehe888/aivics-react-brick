@@ -67,11 +67,14 @@ class MaskBox extends React.Component {
   }
 
   handleResize(maskBox) {
+
+    var left = _.replace(maskBox[0].style.left, 'px', ''),
+        top = _.replace(maskBox[0].style.top, 'px', '');
     var finalPosition = {
       width: maskBox.width() - 10,
       height: maskBox.height() - 10,
-      left: maskBox.position().left + 5,
-      top: maskBox.position().top + 5
+      left: parseInt(left) + 5,
+      top: parseInt(top) + 5
     };
 
     this.props.onBrickResize(this.activeBrickId, finalPosition);

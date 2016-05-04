@@ -114,7 +114,6 @@ class Story extends React.Component {
 
     _.merge(record, { dimension: position });
 
-
     this.setState({
       activeBrickId: activeBrickId,
       activeBrickPosition: position,
