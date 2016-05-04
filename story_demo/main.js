@@ -42,8 +42,9 @@ class Story extends React.Component {
     this.onBrickSelect = this.onBrickSelect.bind(this);
     this.onBrickResize = this.onBrickResize.bind(this);
     this.onBrickSettingChange = this.onBrickSettingChange.bind(this);
-    this.onPageAdding = this.onPageAdding.bind(this);
-    console.log("data.id = " + data.id);
+    this.onPageAdd = this.onPageAdd.bind(this);
+    this.onPageDelete = this.onPageDelete.bind(this);
+
     this.state = {
         activeBrickId: data.id,
         activeBrickPosition: data.dimension,
@@ -122,7 +123,7 @@ class Story extends React.Component {
     });
   }
 
-  onPageAdding(){
+  onPageAdd(){
     var newPage = DataStorage.model('Bricks').upsert({
         name: "a brick",
         brickType: "Page",
@@ -137,14 +138,34 @@ class Story extends React.Component {
         "backgroundOpacity": 0.5,
         classNames: [ 'aClass', 'bClass' ]
     })
-    console.log(this)
     this.setState({
       activeBrickId: newPage.id,
       activeBrickPosition: newPage.dimension,
       settingChangeName: null,
       settingChangeValue: null
     });
+  }
 
+  onPageDelete(){
+    var activeBrickId = this.state.activeBrickId
+    console.log(activeBrickId);
+
+    var model = DataStorage.model('Bricks'),
+        pages = model.find();
+
+    if (pages.length > 1) {
+      model.delete({id: activeBrickId});
+      pages = model.find();
+
+      var lastPage = _.last(pages)
+      this.setState({
+        activeBrickId: lastPage.id,
+        activeBrickPosition: lastPage.dimension,
+        settingChangeName: null,
+        settingChangeValue: null
+      });
+
+    }
   }
 
   render() {
@@ -170,7 +191,8 @@ class Story extends React.Component {
       <div>
         <div ref="header" className="header">
           <PageSettingPanel
-            onPageAdding = {this.onPageAdding}
+            onPageAdd = {this.onPageAdd}
+            onPageDelete = {this.onPageDelete}
             dataStorage={DataStorage}
           />
         </div>

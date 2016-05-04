@@ -18,7 +18,7 @@ class PageSettingPanel extends React.Component {
 
     this.getDOMElement = function(){
       return this.refs[this.refName];
-    };
+    }
 
   }
 
@@ -26,7 +26,9 @@ class PageSettingPanel extends React.Component {
     return (
       <div ref="PageSettingPanel" className="aivics-page-setting-panel">
         <PageAddDelete
-          onPageAdding = {this.props.onPageAdding}/>
+          onPageAdd = {this.props.onPageAdd}
+          onPageDelete = {this.props.onPageDelete}
+          />
       </div>
     )
   }
