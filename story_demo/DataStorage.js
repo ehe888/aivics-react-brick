@@ -85,11 +85,12 @@ Model.prototype.find = function(filter){
   });
 
   if( !_.isEmpty(rets) ){
-    if(rets.length > 1)
-      return rets;
-    else {
-      return rets[0];
-    }
+    return rets;
+    // if(rets.length > 1)
+    //   return rets;
+    // else {
+    //   return rets[0];
+    // }
   }
   return null;
 }

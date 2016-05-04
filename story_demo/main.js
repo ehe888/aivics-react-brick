@@ -6,12 +6,14 @@
 import uuid from 'uuid'
 import React from "react"
 import Bricks from '../src'
+import PageSettingPanel from '../settings/page/src'
 
 $.Bricks = Bricks;
 
 let BrickMask = Bricks.Mask;
 let Brick = Bricks.Base;
 let LabelBrick = Bricks.Label;
+let Page = Bricks.Page;
 let BrickSetting = Bricks.settings.Base;
 
 import DataStorage from './DataStorage'
@@ -20,51 +22,21 @@ import DataStorage from './DataStorage'
 
 var data = DataStorage.model('Bricks').upsert({
     name: "a brick",
-    brickType: "Base",
+    brickType: "Page",
     dimension: {
       top: 10,
-      left: 20,
-      width: 50,
-      height: 50
+      left: 400,
+      width: 375,
+      height: 667
     },
     "zIndex": 100,
     "backgroundColor": "#d3f9dd",
     "backgroundOpacity": 0.5,
-    classNames: [ 'aClass', 'bClass' ],
-    bricks: [{
-        id: uuid.v4(),
-        name: "a nesetd brick",
-        brickType: "Base",
-        dimension: {
-          top: 10,
-          left: 20,
-          width: 50,
-          height: 50
-        },
-        "zIndex": 100,
-        "backgroundColor": "#d3ffff",
-        "backgroundOpacity": 0.5
-    }]
-});
-
-var data2 = DataStorage.model('Bricks').upsert({
-    name: "another brick",
-    brickType: "Label",
-    dimension: {
-      top: 100,
-      left: 100,
-      width: 50,
-      height: 50
-    },
-    "zIndex": 100,
-    "backgroundColor": "#d3f9dd",
-    "backgroundOpacity": 0.1,
-    labelText: "This is label box!!",
-    settings: [ "labelText" ]
+    classNames: [ 'aClass', 'bClass' ]
 });
 
 
-class Editor extends React.Component {
+class Story extends React.Component {
   constructor(props) {
     super(props);
     this.onBrickSelect = this.onBrickSelect.bind(this);
@@ -102,10 +74,10 @@ class Editor extends React.Component {
   }
 
   onBrickResize(activeBrickId, position) {
-    var editorLeft = $(this.refs.editor).position().left;
-    var editorTop = $(this.refs.editor).position().top;
-    var editorWidth = $(this.refs.editor).width();
-    var editorHeight = $(this.refs.editor).height();
+    var editorLeft = $(this.refs.story).position().left;
+    var editorTop = $(this.refs.story).position().top;
+    var editorWidth = $(this.refs.story).width();
+    var editorHeight = $(this.refs.story).height();
 
     //Constrain the component inside the container
     if(position.left < 0){
@@ -170,7 +142,12 @@ class Editor extends React.Component {
 
     return (
       <div>
-        <div ref="editor" className="editor">
+        <div ref="header" className="header">
+          <PageSettingPanel
+            dataStorage={DataStorage}
+          />
+        </div>
+        <div ref="story" className="story">
           {contents}
           <BrickMask activeBrickId={this.state.activeBrickId}
               activeBrickPosition={activeBrickPosition}
@@ -187,6 +164,6 @@ class Editor extends React.Component {
   }
 }
 
-ReactDOM.render(<Editor />,
+ReactDOM.render(<Story />,
     document.getElementById('workspace')
 );
