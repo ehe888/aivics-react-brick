@@ -21,7 +21,8 @@ class PageAddDelete extends React.Component {
   }
 
   addPageEvent(event){
-    console.log("add page")
+    
+    this.props.onPageAdding();
   }
 
   deletePageEvent(event){

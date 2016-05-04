@@ -25,7 +25,8 @@ class PageSettingPanel extends React.Component {
   render() {
     return (
       <div ref="PageSettingPanel" className="aivics-page-setting-panel">
-        <PageAddDelete />
+        <PageAddDelete
+          onPageAdding = {this.props.onPageAdding}/>
       </div>
     )
   }
