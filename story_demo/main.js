@@ -92,6 +92,7 @@ class Story extends React.Component {
     var editorWidth = $(this.refs.story).width();
     var editorHeight = $(this.refs.story).height();
 
+
     //Constrain the component inside the container
     if(position.left < 0){
       position.left = 0;
@@ -122,6 +123,8 @@ class Story extends React.Component {
     if(!record){
       return;
     }
+    position.width = record.dimension.width;
+    position.height = record.dimension.height;
 
     _.merge(record, { dimension: position });
 
