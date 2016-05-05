@@ -29,10 +29,14 @@ class Transition extends React.Component {
     var fromTop = fromPage.dimension.top,
         toTop = toPage.dimension.top;
 
-    var startX = fromLeft < toLeft? (fromPage.dimension.left + fromPage.dimension.width) : (fromPage.dimension.left),
+    var startX = (fromPage.dimension.left + fromPage.dimension.width),
         startY = fromPage.dimension.top + fromPage.dimension.height/2,
-        endX = fromLeft < toLeft? (toPage.dimension.left) : (toPage.dimension.left + toPage.dimension.width),
-        endY = toPage.dimension.top + toPage.dimension.height/2;
+        middleX = (toPage.dimension.left - 80),
+        middleY = toPage.dimension.top + toPage.dimension.height/2,
+        endX = (toPage.dimension.left-5),
+        endY = middleY;
+
+    var points = startX+","+startY+" " + middleX+","+middleY+" "+endX+","+endY;
 
     return(
       <svg width={startX+endX} height={endX + endY}>
@@ -46,8 +50,7 @@ class Transition extends React.Component {
                 <path d="M 0 0 L 10 5 L 0 10 z" />
           </marker>
         </defs>
-        <line x1={startX} y1={startY} x2={endX} y2={endY} fill="none" stroke="black" markerEnd="url(#Triangle)" strokeWidth="2">
-        </line>
+        <polyline points={points} fill="none" stroke="black" markerEnd="url(#Triangle)" strokeWidth="3" />
       </svg>
     )
   }

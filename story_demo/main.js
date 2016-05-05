@@ -150,7 +150,7 @@ class Story extends React.Component {
         "backgroundOpacity": 1,
         "title": title,
         classNames: [ 'aClass', 'bClass' ],
-        settings: ["pageTitle", "imageBtn"]
+        settings: ["pageTitle", "imageUrl"]
     })
     this.setState({
       activeBrickId: newPage.id,
@@ -219,6 +219,19 @@ class Story extends React.Component {
   }
 
   onNewTransitionSubmit(fromPageId, toPageId) {
+    var transitions = DataStorage.model('Transitions').find();
+    var hasTransition = false;
+    if (transitions) {
+      transitions.map(function(transition){
+        if (transition.fromPageId == fromPageId && transition.toPageId == toPageId) {
+          hasTransition = true;
+          return
+        }
+      })
+    }
+    if (hasTransition) {
+      return;
+    }
     var newTransition = DataStorage.model('Transitions').upsert({
         name: "Transition",
         brickType: "Transition",
@@ -228,14 +241,7 @@ class Story extends React.Component {
         "fromPageId": fromPageId,
         "toPageId": toPageId
     })
-
-    var position = this.state.activeBrickPosition;
-    this.setState({
-      activeBrickId: fromPageId,
-      activeBrickPosition: toPageId,
-      settingChangeName: null,
-      settingChangeValue: null
-    })
+    this.setState(this.state)
   }
 
   render() {
@@ -246,7 +252,7 @@ class Story extends React.Component {
     var self = this;
     var contents = components.map(function(comp){
       var DynaBrick = Bricks[comp.brickType];
-      //console.log(brick);
+
 
       return (
         <DynaBrick id={comp.id} key={comp.id}
