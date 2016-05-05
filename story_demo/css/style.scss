@@ -9,6 +9,8 @@
 }
 
 .header{
+  position: relative;
+  z-index: 1000;
   height: 40px;
   padding: 6px;
   background: #343d46;
@@ -33,7 +35,7 @@
   overflow:scroll;
   padding: 0;
   border-left: 1px solid black;
-  z-index: 10;
+  z-index: 100;
 }
 
 .aivics-page-transition-panel{

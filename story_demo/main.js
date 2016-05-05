@@ -49,9 +49,10 @@ class Story extends React.Component {
     this.onBrickSettingChange = this.onBrickSettingChange.bind(this);
     this.onPageAdd = this.onPageAdd.bind(this);
     this.onPageDelete = this.onPageDelete.bind(this);
-    this.onPageSettingsClick = this.onPageSettingsClick.bind(this);
-    this.onPageTransitionClick = this.onPageTransitionClick.bind(this);
+
     this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
+    this.onPageScaleSmall = this.onPageScaleSmall.bind(this);
+    this.onPageScaleLarge = this.onPageScaleLarge.bind(this);
 
     this.state = {
         activeBrickId: data.id,
@@ -59,6 +60,8 @@ class Story extends React.Component {
         settingChangeName: null,
         settingChangeValue: null
     };
+
+    this.storyScale = 1.0;
   }
 
   onBrickSelect(e, brickId, position) {
@@ -179,6 +182,32 @@ class Story extends React.Component {
     }
   }
 
+  onPageScaleLarge() {
+    if (this.storyScale < 2) {
+      this.storyScale += 0.2;
+      var width = 200 * this.storyScale;
+      $(".story").css({
+        'transform': 'scale('+this.storyScale+')',
+        'transform-origin': '0 0'
+      })
+      var state = this.state;
+      this.setState(state)
+    }
+  }
+
+  onPageScaleSmall() {
+    if (this.storyScale > 0.4) {
+      this.storyScale -= 0.2;
+      var width = 200 * this.storyScale;
+      $(".story").css({
+        'transform': 'scale('+this.storyScale+')',
+        'transform-origin': '0 0'
+      })
+      var state = this.state;
+      this.setState(state)
+    }
+  }
+
   onPageSettingsClick() {
     $(".aivics-page-transition-panel").hide();
     $(".aivics-brick-setting-panel").show();
@@ -251,6 +280,8 @@ class Story extends React.Component {
             onPageDelete = {this.onPageDelete}
             onPageSettingsClick = {this.onPageSettingsClick}
             onPageTransitionClick = {this.onPageTransitionClick}
+            onPageScaleLarge = {this.onPageScaleLarge}
+            onPageScaleSmall = {this.onPageScaleSmall}
             dataStorage={DataStorage}
           />
         </div>
@@ -258,6 +289,7 @@ class Story extends React.Component {
           {contents}
           <BrickMask activeBrickId={this.state.activeBrickId}
               activeBrickPosition={activeBrickPosition}
+              storyScale = {this.storyScale}
               onBrickResize={this.onBrickResize} />
           {transition}
         </div>

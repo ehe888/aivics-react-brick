@@ -60,6 +60,8 @@ class MaskBox extends React.Component {
       this.activeBrickId = this.props.activeBrickId;
       this.handleResize = this.handleResize.bind(this);
       this.handleDoubleClick = this.handleDoubleClick.bind(this);
+
+      this.zoomScale = this.props.storyScale || 1;
   }
 
   handleDoubleClick(){
@@ -83,9 +85,22 @@ class MaskBox extends React.Component {
   componentDidMount(){
     var self = this;
     var maskBox = $(self.refs.aivicsBrickMask);
+
+
     $( this.refs.aivicsBrickMask ).draggable({
-      refreshPositions: true,
+      refreshPositions: false,
       start: function(e, ui) {
+
+      },
+      drag: function(event, ui) {
+        var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+        var newLeft = (ui.originalPosition.left + changeLeft)/self.zoomScale; // adjust new left by our zoomScale
+
+        var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+        var newTop = (ui.originalPosition.top + changeTop)/self.zoomScale; // adjust new top by our zoomScale
+
+        ui.position.left = newLeft;
+        ui.position.top = newTop;
 
       },
       stop: function(e, ui){
@@ -283,6 +298,8 @@ class MaskBox extends React.Component {
     };
     $(this.refs.aivicsBrickMask).css(maskPosition);
     $(this.refs.aivicsBrickMask).css("z-index", 99999);
+
+    this.zoomScale = this.props.storyScale || 1;
   }
 
   render() {
