@@ -3,6 +3,8 @@
 require('./css/style.css')
 
 import React from "react"
+import PageTransitionNew from "./PageTransitionNew"
+import PageTransitionList from "./PageTransitionList"
 
 class PageTransition extends React.Component {
 
@@ -20,9 +22,21 @@ class PageTransition extends React.Component {
   }
 
   render() {
+
+    var model = this.props.dataStorage.model("Bricks")
+    var activeBrick = model.find({id: this.props.activeBrickId})
+
     return (
       <div ref="PageTransitionPanel" className="aivics-page-transition-panel">
-        Transitions
+        <PageTransitionList
+          activeBrickId = {this.props.activeBrickId}
+          dataStorage = {this.props.dataStorage}
+        />
+        <div className="line"></div>
+        <PageTransitionNew
+          activeBrickId = {this.props.activeBrickId}
+          dataStorage = {this.props.dataStorage}
+        />
       </div>
     )
   }

@@ -1,3 +1,23 @@
-
+.aivics-page-transition-panel > div {
+  margin: 5px auto; }
+.aivics-page-transition-panel .line {
+  height: 1px;
+  background: black;
+  margin: 15px auto; }
+.aivics-page-transition-panel .pageTransitionList {
+  position: relative;
+  width: 100%;
+  height: 50%;
+  overflow: scroll; }
+.aivics-page-transition-panel .pageTransitionNew {
+  text-align: center; }
+  .aivics-page-transition-panel .pageTransitionNew > div {
+    margin: 5px auto; }
+  .aivics-page-transition-panel .pageTransitionNew .btn {
+    margin-top: 25px; }
+.aivics-page-transition-panel .pageTransitionTo {
+  width: 100%; }
+  .aivics-page-transition-panel .pageTransitionTo .btn {
+    width: 100%; }
 
 /*# sourceMappingURL=style.css.map */

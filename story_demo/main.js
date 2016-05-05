@@ -7,6 +7,7 @@ import uuid from 'uuid'
 import React from "react"
 import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
+import PageTransition from '../settings/pageTransition/src'
 
 $.Bricks = Bricks;
 
@@ -15,6 +16,7 @@ let Brick = Bricks.Base;
 let LabelBrick = Bricks.Label;
 let Page = Bricks.Page;
 let BrickSetting = Bricks.settings.Base;
+
 
 import DataStorage from './DataStorage'
 
@@ -33,7 +35,7 @@ var data = DataStorage.model('Bricks').upsert({
     "backgroundColor": "#d3f9dd",
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
-    title: "new page",
+    title: "new page 0",
     settings: ["pageTitle", "imageUrl"]
 });
 
@@ -127,6 +129,8 @@ class Story extends React.Component {
   }
 
   onPageAdd(){
+    var currentPages = DataStorage.model('Bricks').find();
+    var title = "new page " + currentPages.length;
     var newPage = DataStorage.model('Bricks').upsert({
         name: "a brick",
         brickType: "Page",
@@ -139,6 +143,7 @@ class Story extends React.Component {
         "zIndex": 100,
         "backgroundColor": "#d3f9dd",
         "backgroundOpacity": 1,
+        "title": title,
         classNames: [ 'aClass', 'bClass' ],
         settings: ["pageTitle", "imageBtn"]
     })
@@ -173,11 +178,13 @@ class Story extends React.Component {
   }
 
   onPageSettingsClick() {
-    console.log("onPageSettingsClick")
+    $(".aivics-page-transition-panel").hide();
+    $(".aivics-brick-setting-panel").show();
   }
 
   onPageTransitionClick() {
-    console.log("onPageTransitionClick")
+    $(".aivics-page-transition-panel").show();
+    $(".aivics-brick-setting-panel").hide();
   }
 
   render() {
@@ -222,7 +229,12 @@ class Story extends React.Component {
             settingChangeName={this.state.settingChangeName}
             settingChangeValue={this.state.settingChangeValue}
             onBrickSettingChange={this.onBrickSettingChange} />
+        <PageTransition
+          activeBrickId={this.state.activeBrickId}
+          dataStorage={DataStorage}
+        />
       </div>
+
     )
   }
 }
