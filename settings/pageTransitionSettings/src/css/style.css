@@ -20,4 +20,9 @@
   .aivics-page-transition-panel .pageTransitionTo .btn {
     width: 100%; }
 
+.pageTransitionList li {
+  cursor: pointer; }
+  .pageTransitionList li .transitionDelete {
+    display: none; }
+
 /*# sourceMappingURL=style.css.map */

@@ -22,6 +22,7 @@ class PageTransitionList extends React.Component {
           return (
             <li className="list-group-item" id={transition.id} key={transition.id}>
               {activePage.title+" -> " +toPage.title}
+              <button type="button" className="btn btn-danger btn-block transitionDelete">删除</button>
             </li>
           )
         }else if (transition.toPageId == activeBrickId) {
@@ -29,7 +30,8 @@ class PageTransitionList extends React.Component {
               fromPage = pageModels.find({id: fromPageId});
           return (
             <li className="list-group-item" id={transition.id} key={transition.id}>
-              {activePage.title+" <- " +fromPage.title}
+              <span>{activePage.title+" <- " +fromPage.title}</span>
+              <button type="button" className="btn btn-danger btn-block transitionDelete">删除</button>
             </li>
           )
         }
