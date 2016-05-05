@@ -15,7 +15,7 @@ class PageSettingPanel extends React.Component {
 
     this.refName = "PageSettingPanel";
     this.dataStorage = this.props.dataStorage;
-    this.model = this.dataStorage.model("Bricks");
+    this.model = this.dataStorage.model("Pages");
 
     this.getDOMElement = function(){
       return this.refs[this.refName];

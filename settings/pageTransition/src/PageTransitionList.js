@@ -9,7 +9,7 @@ class PageTransitionList extends React.Component {
   }
 
   render() {
-    var model = this.props.dataStorage.model("Bricks");
+    var model = this.props.dataStorage.model("Pages");
 
     return (
       <div className="pageTransitionList">

@@ -8,6 +8,7 @@ import React from "react"
 import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
 import PageTransition from '../settings/pageTransition/src'
+import PageSettings from '../settings/pageSettings/src'
 
 $.Bricks = Bricks;
 
@@ -22,7 +23,7 @@ import DataStorage from './DataStorage'
 
 //window.DataStorage = DataStorage;
 
-var data = DataStorage.model('Bricks').upsert({
+var data = DataStorage.model('Pages').upsert({
     name: "a brick",
     brickType: "Page",
     dimension: {
@@ -70,7 +71,7 @@ class Story extends React.Component {
   }
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
-    var record = DataStorage.model("Bricks").find({ id: brickId });
+    var record = DataStorage.model("Pages").find({ id: brickId });
 
     console.log({ fieldName: fieldName, changeToValue: changeToValue });
     this.setState({
@@ -113,7 +114,7 @@ class Story extends React.Component {
       //position.height = 1;
     }
 
-    var record = DataStorage.model("Bricks").find({ id: activeBrickId });
+    var record = DataStorage.model("Pages").find({ id: activeBrickId });
     if(!record){
       return;
     }
@@ -129,9 +130,9 @@ class Story extends React.Component {
   }
 
   onPageAdd(){
-    var currentPages = DataStorage.model('Bricks').find();
+    var currentPages = DataStorage.model('Pages').find();
     var title = "new page " + currentPages.length;
-    var newPage = DataStorage.model('Bricks').upsert({
+    var newPage = DataStorage.model('Pages').upsert({
         name: "a brick",
         brickType: "Page",
         dimension: {
@@ -159,7 +160,7 @@ class Story extends React.Component {
     var activeBrickId = this.state.activeBrickId
     console.log(activeBrickId);
 
-    var model = DataStorage.model('Bricks'),
+    var model = DataStorage.model('Pages'),
         pages = model.find();
 
     if (pages.length > 1) {
@@ -190,7 +191,7 @@ class Story extends React.Component {
   render() {
     var activeBrickPosition = this.state.activeBrickPosition;
 
-    var components = DataStorage.model("Bricks").find();
+    var components = DataStorage.model("Pages").find();
 
     console.log("render of editor");
 
@@ -223,7 +224,7 @@ class Story extends React.Component {
               activeBrickPosition={activeBrickPosition}
               onBrickResize={this.onBrickResize} />
         </div>
-        <BrickSetting
+        <PageSettings
             activeBrickId={this.state.activeBrickId}
             dataStorage={DataStorage}
             settingChangeName={this.state.settingChangeName}
