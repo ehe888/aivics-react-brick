@@ -7,7 +7,7 @@ import uuid from 'uuid'
 import React from "react"
 import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
-import PageTransition from '../settings/pageTransition/src'
+import PageTransitionSettings from '../settings/pageTransitionSettings/src'
 import PageSettings from '../settings/pageSettings/src'
 
 $.Bricks = Bricks;
@@ -17,7 +17,7 @@ let Brick = Bricks.Base;
 let LabelBrick = Bricks.Label;
 let Page = Bricks.Page;
 let BrickSetting = Bricks.settings.Base;
-
+let Transition = Bricks.Transition;
 
 import DataStorage from './DataStorage'
 
@@ -51,6 +51,7 @@ class Story extends React.Component {
     this.onPageDelete = this.onPageDelete.bind(this);
     this.onPageSettingsClick = this.onPageSettingsClick.bind(this);
     this.onPageTransitionClick = this.onPageTransitionClick.bind(this);
+    this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
 
     this.state = {
         activeBrickId: data.id,
@@ -188,12 +189,30 @@ class Story extends React.Component {
     $(".aivics-brick-setting-panel").hide();
   }
 
+  onNewTransitionSubmit(fromPageId, toPageId) {
+    var newTransition = DataStorage.model('Transitions').upsert({
+        name: "Transition",
+        brickType: "Transition",
+        "zIndex": 1,
+        "backgroundColor": "#000000",
+        "backgroundOpacity": 1,
+        "fromPageId": fromPageId,
+        "toPageId": toPageId
+    })
+
+    var position = this.state.activeBrickPosition;
+    this.setState({
+      activeBrickId: fromPageId,
+      activeBrickPosition: toPageId,
+      settingChangeName: null,
+      settingChangeValue: null
+    })
+  }
+
   render() {
     var activeBrickPosition = this.state.activeBrickPosition;
 
     var components = DataStorage.model("Pages").find();
-
-    console.log("render of editor");
 
     var self = this;
     var contents = components.map(function(comp){
@@ -206,6 +225,23 @@ class Story extends React.Component {
           onBrickSelect={self.onBrickSelect} />
       )
     });
+
+    var transitionModels = DataStorage.model("Transitions").find();
+    var transition = "";
+    if (transitionModels) {
+      transition = transitionModels.map(function(transition){
+        console.log(transition)
+        return (
+          <Transition
+            id={transition.id}
+            key={transition.id}
+            dataStorage={DataStorage}
+            fromPageId={transition.fromPageId}
+            toPageId={transition.toPageId}
+          />
+        )
+      });
+    }
 
     return (
       <div>
@@ -223,6 +259,7 @@ class Story extends React.Component {
           <BrickMask activeBrickId={this.state.activeBrickId}
               activeBrickPosition={activeBrickPosition}
               onBrickResize={this.onBrickResize} />
+          {transition}
         </div>
         <PageSettings
             activeBrickId={this.state.activeBrickId}
@@ -230,9 +267,10 @@ class Story extends React.Component {
             settingChangeName={this.state.settingChangeName}
             settingChangeValue={this.state.settingChangeValue}
             onBrickSettingChange={this.onBrickSettingChange} />
-        <PageTransition
+        <PageTransitionSettings
           activeBrickId={this.state.activeBrickId}
           dataStorage={DataStorage}
+          onNewTransitionSubmit={this.onNewTransitionSubmit}
         />
       </div>
 

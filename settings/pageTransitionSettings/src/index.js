@@ -36,6 +36,7 @@ class PageTransition extends React.Component {
         <PageTransitionNew
           activeBrickId = {this.props.activeBrickId}
           dataStorage = {this.props.dataStorage}
+          onNewTransitionSubmit = {this.props.onNewTransitionSubmit}
         />
       </div>
     )

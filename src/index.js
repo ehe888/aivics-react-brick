@@ -5,6 +5,7 @@ var BaseBrick = require("../bricks/base/src");
 var LabelBrick = require("../bricks/label/src");
 var BaseBrickSettingPanel = require("../settings/base/src");
 var Page = require("../bricks/page/src");
+var Transition = require("../bricks/transition/src")
 
 var Bricks = function(){
   if( !(this instanceof Bricks) ){
@@ -20,6 +21,7 @@ var Bricks = function(){
   this.settings.Base = BaseBrickSettingPanel;
 
   this.Page = Page;
+  this.Transition = Transition;
 
   this.Label = LabelBrick;
   this.settings.Label = BaseBrickSettingPanel;

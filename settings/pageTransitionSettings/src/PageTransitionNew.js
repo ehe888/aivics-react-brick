@@ -14,6 +14,8 @@ class PageTransitionTo extends React.Component {
     var toPage = $(e.target).html();
     var dropdownTitle = $(".pageTransitionTo").find($(".title"));
     dropdownTitle.html(toPage)
+    var toPaeId = $(e.target).parent().attr("id");
+    this.props.onToPageClick(toPaeId)
   }
 
   render() {
@@ -26,7 +28,7 @@ class PageTransitionTo extends React.Component {
         return;
       }
       return (
-        <li id={brick.id} key={brick.id}><a href="#" onClick={self.onToPageClick}> {brick.title}</a></li>
+        <li id={brick.id} key={brick.id}><a id={brick.id} href="#" onClick={self.onToPageClick}> {brick.title}</a></li>
       )
     })
 
@@ -49,9 +51,23 @@ class PageTransitionNew extends React.Component {
 
   constructor(props){
     super(props);
+
+    this.selectedToPage = "";
+
+    this.onToPageClick = this.onToPageClick.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState){
+  }
+
+  onToPageClick(toPageId) {
+    this.selectedToPage = toPageId;
+  }
+
+  onNewTransitionSubmit(event) {
+    if (this.selectedToPage.length > 0){
+      this.props.onNewTransitionSubmit(this.props.activeBrickId, this.selectedToPage)
+    }
   }
 
   render() {
@@ -68,8 +84,10 @@ class PageTransitionNew extends React.Component {
         <PageTransitionTo
           activeBrickId = {this.props.activeBrickId}
           dataStorage = {this.props.dataStorage}
+          onToPageClick = {this.onToPageClick}
         />
-        <button className="btn btn-primary">新建</button>
+        <button className="btn btn-primary"
+                onClick={(event)=>this.onNewTransitionSubmit(event)}>新建</button>
       </div>
     )
   }
