@@ -60,6 +60,7 @@ class Page extends React.Component  {
 
   handleOverlayClick(e) {
     e.preventDefault();
+    e.stopPropagation();
     if(e.target.className !== e.currentTarget.className){
       return;
     }
@@ -70,12 +71,6 @@ class Page extends React.Component  {
     var top  = _.replace($this[0].style.top, 'px', '');
     var width = $this.width();
     var height = $this.height();
-
-    if(this.props.containerId){
-        var container = this.model.find({ id: this.props.containerId });
-        left +=container.dimension.left;
-        top += container.dimension.top;
-    }
 
     var position = {
       left: left,
@@ -91,7 +86,6 @@ class Page extends React.Component  {
     var self = this;
     var parentId = this.props.id;
     var record = this.model.find({ id: this.props.id });
-
     if(!_.isEmpty(record.bricks)){
       return record.bricks.map(function(b){
         var bid = parentId + "/" + b.id;
@@ -100,7 +94,9 @@ class Page extends React.Component  {
         return React.createElement(TagName, {
           id:bid, key:bid, containerId: parentId,
             dataStorage:self.props.dataStorage,
-            onBrickSelect:self.props.onBrickSelect
+            onBrickSelect:self.props.onBrickSelect,
+            title: b.title,
+            position: b.dimension
         });
       })
     }

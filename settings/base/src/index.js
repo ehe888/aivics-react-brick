@@ -28,6 +28,7 @@ import FieldLabelText from "./FieldLabelText"
 import FieldBgColor from "./FieldBgColor"
 import FieldPageTitle from "./FieldPageTitle"
 import FieldImage from "./FieldImage"
+import PageAddReference from "./PageAddReference"
 
 //
 // const _aivicsBrickSettingsTop = "aivicsBrickSettingsTop";
@@ -43,6 +44,7 @@ const _baseLeft = "baseLeft";
 const _baseBgColor = "baseBgColor";
 const _imageUrl = "imageUrl"
 const _pageTitle = "pageTitle"
+const _pageReference = "pageReference"
 
 
 
@@ -89,6 +91,15 @@ var renderPageTitleField = function(){
   return renderField.call(this, FieldPageTitle)
 }
 
+var renderPageReference = function(){
+  return (
+    <PageAddReference model={this.model} key={uuid.v4()}
+          brickId={this.props.activeBrickId}
+          onPageAddReference={this.props.onPageAddReference}
+          onBrickSettingChange={this.props.onBrickSettingChange} />
+  )
+}
+
 /*===================================================================*/
 
 /**
@@ -100,7 +111,7 @@ class BrickSettingPanel extends React.Component {
       super(props);
       this.refName = "aivicsBrickSetting";
       this.dataStorage = this.props.dataStorage;
-      this.model = this.dataStorage.model("Bricks");
+      this.model = this.dataStorage.model(this.props.brickType);
 
       this.getDOMElement = function(){
         return this.refs[this.refName];
@@ -119,7 +130,8 @@ class BrickSettingPanel extends React.Component {
         "labelText": renderLabelTextField.bind(this),
         "baseBgColor": renderBgColorField.bind(this),
         "imageUrl": renderImageField.bind(this),
-        "pageTitle": renderPageTitleField.bind(this)
+        "pageTitle": renderPageTitleField.bind(this),
+        "pageReference": renderPageReference.bind(this)
       }
   }
 
@@ -132,6 +144,7 @@ class BrickSettingPanel extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState){
+    this.model = this.dataStorage.model(this.props.brickType);
     var record = this.model.find({ id: this.props.activeBrickId });
   }
 

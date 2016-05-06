@@ -8,7 +8,7 @@ import React from "react"
 import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
 import PageTransitionSettings from '../settings/pageTransitionSettings/src'
-import PageSettings from '../settings/pageSettings/src'
+// import PageSettings from '../settings/pageSettings/src'
 
 $.Bricks = Bricks;
 
@@ -37,7 +37,8 @@ var data = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 0",
-    settings: ["pageTitle", "imageUrl"]
+    settings: ["pageTitle", "imageUrl", "pageReference"],
+    bricks: []
 });
 
 var data2 = DataStorage.model('Pages').upsert({
@@ -54,7 +55,7 @@ var data2 = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 1",
-    settings: ["pageTitle", "imageUrl"]
+    settings: ["pageTitle", "imageUrl", "pageReference"]
 });
 
 
@@ -71,10 +72,12 @@ class Story extends React.Component {
     this.onTransitionDeleteClick = this.onTransitionDeleteClick.bind(this);
     this.onPageScaleSmall = this.onPageScaleSmall.bind(this);
     this.onPageScaleLarge = this.onPageScaleLarge.bind(this);
+    this.onPageAddReference = this.onPageAddReference.bind(this);
 
     this.state = {
         activeBrickId: data.id,
         activeBrickPosition: data.dimension,
+        activeBrickType: data.brickType,
         settingChangeName: null,
         settingChangeValue: null
     };
@@ -84,11 +87,14 @@ class Story extends React.Component {
 
   onBrickSelect(e, brickId, position) {
     console.log("on brick selected");
+    var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
+                      .find({id: brickId});
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
       settingChangeName: null,
-      settingChangeValue: null
+      settingChangeValue: null,
+      activeBrickType: activeBrick.brickType
     });
   }
 
@@ -141,8 +147,23 @@ class Story extends React.Component {
     if(!record){
       return;
     }
-    position.width = record.dimension.width;
-    position.height = record.dimension.height;
+    if (this.state.activeBrickType == "Page") {
+      position.width = record.dimension.width;
+      position.height = record.dimension.height;
+    }
+
+    var ids = activeBrickId.split("/");
+    if (ids.length > 1) {
+      ids.map(function(id, i){
+        if (i == ids.length-1) {
+          return;
+        }
+        var parent = DataStorage.model("Pages").find({ id: id });
+        var dimension = parent.dimension;
+        position.top -= dimension.top;
+        position.left -= dimension.left;
+      })
+    }
 
     _.merge(record, { dimension: position });
 
@@ -171,11 +192,12 @@ class Story extends React.Component {
         "backgroundOpacity": 1,
         "title": title,
         classNames: [ 'aClass', 'bClass' ],
-        settings: ["pageTitle", "imageUrl"]
+        settings: ["pageTitle", "imageUrl", "pageReference"]
     })
     this.setState({
       activeBrickId: newPage.id,
       activeBrickPosition: newPage.dimension,
+      activeBrickType: newPage.brickType,
       settingChangeName: null,
       settingChangeValue: null
     });
@@ -203,6 +225,7 @@ class Story extends React.Component {
       this.setState({
         activeBrickId: lastPage.id,
         activeBrickPosition: lastPage.dimension,
+        activeBrickType: lastPage.brickType,
         settingChangeName: null,
         settingChangeValue: null
       });
@@ -276,6 +299,48 @@ class Story extends React.Component {
     this.setState(this.state)
   }
 
+  onPageAddReference() {
+    console.log("onPageAddReference")
+    if (this.state.activeBrickType == "Page") {
+      var page = DataStorage.model("Pages").find({id: this.state.activeBrickId});
+      if (!page.bricks) {
+        page.bricks = [];
+      }
+      page.bricks.push({
+        id: uuid.v4(),
+        name: "reference",
+        brickType: "PageReference",
+        dimension: {
+          top: 50,
+          left: 120,
+          width: 100,
+          height: 30
+        },
+        "zIndex": 100,
+        "backgroundColor": "#FFFFFF",
+        "backgroundOpacity": 1,
+        "title": "reference",
+        "settings": ["pageTitle"]
+      })
+
+      this.setState(this.state)
+    }
+  }
+
+
+  mapBrickTypeToModelType(brickType){
+    switch (brickType) {
+      case 'Page':
+        return 'Pages';break;
+      case 'PageReference':
+        return 'Pages';break;
+      case 'Transition':
+        return 'Transitions';break;
+      default:
+        return 'Bricks';
+    }
+  }
+
   render() {
     var activeBrickPosition = this.state.activeBrickPosition;
 
@@ -284,7 +349,6 @@ class Story extends React.Component {
     var self = this;
     var contents = components.map(function(comp){
       var DynaBrick = Bricks[comp.brickType];
-
 
       return (
         <DynaBrick id={comp.id} key={comp.id}
@@ -310,7 +374,7 @@ class Story extends React.Component {
         )
       });
     }
-
+    var brickType = this.mapBrickTypeToModelType(this.state.activeBrickType);
     return (
       <div>
         <div ref="header" className="header">
@@ -329,12 +393,16 @@ class Story extends React.Component {
           <BrickMask activeBrickId={this.state.activeBrickId}
               activeBrickPosition={activeBrickPosition}
               storyScale = {this.storyScale}
+              dataStorage = {DataStorage}
+              brickType = {brickType}
               onBrickResize={this.onBrickResize} />
           {transition}
         </div>
-        <PageSettings
+        <BrickSetting
             activeBrickId={this.state.activeBrickId}
             dataStorage={DataStorage}
+            brickType={brickType}
+            onPageAddReference={this.onPageAddReference}
             settingChangeName={this.state.settingChangeName}
             settingChangeValue={this.state.settingChangeValue}
             onBrickSettingChange={this.onBrickSettingChange} />

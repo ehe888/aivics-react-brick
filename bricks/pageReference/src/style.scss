@@ -1,0 +1,13 @@
+.pageReference{
+  position: absolute;
+  // padding: 10px;
+  border: solid 1px black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10000000;
+  p{
+    text-align: center;
+  }
+}

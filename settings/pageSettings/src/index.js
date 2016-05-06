@@ -28,6 +28,7 @@ import FieldLabelText from "../../base/src/FieldLabelText"
 import FieldBgColor from "../../base/src/FieldBgColor"
 import FieldPageTitle from "../../base/src/FieldPageTitle"
 import FieldImage from "../../base/src/FieldImage"
+import PageAddReference from "./PageAddReference"
 
 //
 // const _aivicsBrickSettingsTop = "aivicsBrickSettingsTop";
@@ -43,7 +44,7 @@ const _baseLeft = "baseLeft";
 const _baseBgColor = "baseBgColor";
 const _imageUrl = "imageUrl"
 const _pageTitle = "pageTitle"
-
+const _pageReference = "pageReference"
 
 
 var renderField = function(name){
@@ -89,6 +90,10 @@ var renderPageTitleField = function(){
   return renderField.call(this, FieldPageTitle)
 }
 
+var renderPageReference = function(){
+  return renderField.call(this, PageAddReference)
+}
+
 /*===================================================================*/
 
 /**
@@ -119,7 +124,8 @@ class BrickSettingPanel extends React.Component {
         "labelText": renderLabelTextField.bind(this),
         "baseBgColor": renderBgColorField.bind(this),
         "imageUrl": renderImageField.bind(this),
-        "pageTitle": renderPageTitleField.bind(this)
+        "pageTitle": renderPageTitleField.bind(this),
+        "pageReference": renderPageReference.bind(this)
       }
   }
 

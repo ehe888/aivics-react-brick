@@ -40,6 +40,10 @@ Model.prototype.findByPath = function(path, collection){
       ids.shift();
       var p = ids.join( "/");
       var collect = _.find(collection, { id: id })
+      console.log("collection", collection)
+      if (!collect) {
+        return [];
+      }
       console.log("collection", collect.bricks);
       return this.findByPath(p, collect.bricks);
     }

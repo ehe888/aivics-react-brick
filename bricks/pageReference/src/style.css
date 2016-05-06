@@ -1,0 +1,12 @@
+.pageReference {
+  position: absolute;
+  border: solid 1px black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10000000; }
+  .pageReference p {
+    text-align: center; }
+
+/*# sourceMappingURL=style.css.map */

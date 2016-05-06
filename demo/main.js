@@ -178,6 +178,7 @@ class Editor extends React.Component {
         </div>
         <BrickSetting
             activeBrickId={this.state.activeBrickId}
+            brickType={"Bricks"}
             dataStorage={DataStorage}
             settingChangeName={this.state.settingChangeName}
             settingChangeValue={this.state.settingChangeValue}
