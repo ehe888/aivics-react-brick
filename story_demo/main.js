@@ -183,13 +183,20 @@ class Story extends React.Component {
 
   onPageDelete(){
     var activeBrickId = this.state.activeBrickId
-    console.log(activeBrickId);
 
     var model = DataStorage.model('Pages'),
         pages = model.find();
 
     if (pages.length > 1) {
       model.delete({id: activeBrickId});
+      var transitions = DataStorage.model('Transitions').find();
+      if (transitions) {
+        transitions.map(function(transition){
+          if (transition.fromPageId == activeBrickId || transition.toPageId == activeBrickId) {
+            DataStorage.model('Transitions').delete({id: transition.id})
+          }
+        })
+      }
       pages = model.find();
 
       var lastPage = _.last(pages)
