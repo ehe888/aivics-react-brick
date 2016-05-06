@@ -21,15 +21,25 @@ class SettingsTab extends React.Component {
 
   }
 
+  onPageSettingsClick() {
+    $(".aivics-page-transition-panel").hide();
+    $(".aivics-brick-setting-panel").show();
+  }
+
+  onPageTransitionClick() {
+    $(".aivics-page-transition-panel").show();
+    $(".aivics-brick-setting-panel").hide();
+  }
+
   render() {
     return (
       <div className="btn-group settings-tab" role="group" aria-label="...">
         <button type="button"
                 className="btn btn-default"
-                onClick={this.props.onPageSettingsClick}>Page</button>
+                onClick={(event)=>this.onPageSettingsClick()}>Page</button>
         <button type="button"
                 className="btn btn-default"
-                onClick={this.props.onPageTransitionClick}>Transition</button>
+                onClick={(event)=>this.onPageTransitionClick()}>Transition</button>
       </div>
     )
   }

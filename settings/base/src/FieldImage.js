@@ -40,6 +40,7 @@ class FieldImage extends React.Component {
 
   render() {
     var record = this.props.model.find({ id: this.props.brickId });
+    var defaultValue = record.imageUrl
     // console.log(record.pageImage)
     return (
       <div className="form-group">
@@ -49,7 +50,7 @@ class FieldImage extends React.Component {
               ref={this.refName}
               key={this.refName}
               name={this.refName}
-              defaultValue={this.props.model.find({ id: this.props.brickId }).imageUrl}
+              defaultValue={defaultValue}
               className="form-control"
               placeholder="ImageUrl"
               onInput={this.handleChange}

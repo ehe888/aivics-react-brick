@@ -9,7 +9,7 @@ class PageAddReference extends React.Component {
   render() {
     return (
       <button className="btn btn-primary btn-block" type="button"
-              onClick={this.props.onPageAddReference}>Reference</button>
+              onClick={this.props.onPageAddReference}>Add Reference</button>
     )
   }
 

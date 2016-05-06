@@ -89,6 +89,7 @@ class Story extends React.Component {
     console.log("on brick selected");
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
                       .find({id: brickId});
+
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -96,18 +97,24 @@ class Story extends React.Component {
       settingChangeValue: null,
       activeBrickType: activeBrick.brickType
     });
+
   }
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
     var record = DataStorage.model("Pages").find({ id: brickId });
 
     console.log({ fieldName: fieldName, changeToValue: changeToValue });
+    let position = this.state.activeBrickPosition,
+        brickType = this.state.activeBrickType;
+    console.info(position)
     this.setState({
       activeBrickId: brickId,
       settingChangeName: fieldName,
       settingChangeValue: changeToValue,
-      activeBrickPosition: record.dimension
+      activeBrickPosition: position,
+      activeBrickType: brickType
     });
+    console.info(this.state.activeBrickPosition)
   }
 
   onBrickResize(activeBrickId, position) {
@@ -173,6 +180,7 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null
     });
+    console.info(this.state.activeBrickPosition);
   }
 
   onPageAdd(){
@@ -259,16 +267,6 @@ class Story extends React.Component {
     }
   }
 
-  onPageSettingsClick() {
-    $(".aivics-page-transition-panel").hide();
-    $(".aivics-brick-setting-panel").show();
-  }
-
-  onPageTransitionClick() {
-    $(".aivics-page-transition-panel").show();
-    $(".aivics-brick-setting-panel").hide();
-  }
-
   onNewTransitionSubmit(fromPageId, toPageId, remark) {
     var transitions = DataStorage.model('Transitions').find();
     var hasTransition = false;
@@ -313,8 +311,8 @@ class Story extends React.Component {
         dimension: {
           top: 50,
           left: 120,
-          width: 100,
-          height: 30
+          width: 200,
+          height: 50
         },
         "zIndex": 100,
         "backgroundColor": "#FFFFFF",
@@ -342,11 +340,30 @@ class Story extends React.Component {
   }
 
   render() {
-    var activeBrickPosition = this.state.activeBrickPosition;
+    console.info(this.state.activeBrickPosition)
+    var self = this;
+    let brickPosition = {
+      top: this.state.activeBrickPosition.top,
+      left: this.state.activeBrickPosition.left,
+      width: this.state.activeBrickPosition.width,
+      height: this.state.activeBrickPosition.height
+    };
+    var ids = this.state.activeBrickId.split("/");
+    if (ids.length > 1) {
+      ids.map(function(id, i){
+        if (i == ids.length -1) {
+          return;
+        }
+        var component = DataStorage.model("Pages").find({id: id});
+        var position = component.dimension;
+        brickPosition.top += position.top;
+        brickPosition.left += position.left;
+      })
+    }
+    console.info(this.state.activeBrickPosition)
 
     var components = DataStorage.model("Pages").find();
 
-    var self = this;
     var contents = components.map(function(comp){
       var DynaBrick = Bricks[comp.brickType];
 
@@ -383,15 +400,13 @@ class Story extends React.Component {
             onPageDelete = {this.onPageDelete}
             onPageSettingsClick = {this.onPageSettingsClick}
             onPageTransitionClick = {this.onPageTransitionClick}
-            onPageScaleLarge = {this.onPageScaleLarge}
-            onPageScaleSmall = {this.onPageScaleSmall}
             dataStorage={DataStorage}
           />
         </div>
         <div ref="story" className="story">
           {contents}
           <BrickMask activeBrickId={this.state.activeBrickId}
-              activeBrickPosition={activeBrickPosition}
+              activeBrickPosition={brickPosition}
               storyScale = {this.storyScale}
               dataStorage = {DataStorage}
               brickType = {brickType}

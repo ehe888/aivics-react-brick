@@ -25,7 +25,7 @@ class FieldPageTitle extends React.Component {
       var fieldName = $field.attr("name");
       var record = self.props.model.find({ id: self.props.brickId });
       record.title = changeToValue;
-      self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
+      self.props.onBrickSettingChange(self.props.brickId, fieldName, changeToValue);
 
     }, delay ));
   }
@@ -40,7 +40,7 @@ class FieldPageTitle extends React.Component {
 
   render() {
     var record = this.props.model.find({ id: this.props.brickId });
-    var defaultValue = record.pageTitle;
+    var defaultValue = record.title;
     return (
       <div className="form-group">
         <div className="input-group">
