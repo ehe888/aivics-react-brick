@@ -31,12 +31,14 @@ class Transition extends React.Component {
 
     var startX = (fromPage.dimension.left + fromPage.dimension.width),
         startY = fromPage.dimension.top + fromPage.dimension.height/2,
-        middleX = (toPage.dimension.left - 80),
-        middleY = toPage.dimension.top + toPage.dimension.height/2,
+        middle0X = fromPage.dimension.left + fromPage.dimension.width + 80,
+        middle0Y = startY,
+        middle1X = (toPage.dimension.left - 80),
+        middle1Y = toPage.dimension.top + toPage.dimension.height/2,
         endX = (toPage.dimension.left-5),
-        endY = middleY;
+        endY = middle1Y;
 
-    var points = startX+","+startY+" " + middleX+","+middleY+" "+endX+","+endY;
+    var points = startX+","+startY+" " + middle0X+","+middle0Y+" " + middle1X+","+middle1Y+" "+endX+","+endY;
 
     return(
       <svg width={startX+endX} height={endX + endY}>
