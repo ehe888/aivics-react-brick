@@ -1,4 +1,9 @@
-svg {
+.transition p {
+  position: absolute;
+  text-align: center;
+  padding: 5px;
+  color: red; }
+.transition svg {
   position: absolute;
   z-index: 1;
   width: 100%;

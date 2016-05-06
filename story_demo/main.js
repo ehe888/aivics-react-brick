@@ -246,7 +246,7 @@ class Story extends React.Component {
     $(".aivics-brick-setting-panel").hide();
   }
 
-  onNewTransitionSubmit(fromPageId, toPageId) {
+  onNewTransitionSubmit(fromPageId, toPageId, remark) {
     var transitions = DataStorage.model('Transitions').find();
     var hasTransition = false;
     if (transitions) {
@@ -264,10 +264,9 @@ class Story extends React.Component {
         name: "Transition",
         brickType: "Transition",
         "zIndex": 1,
-        "backgroundColor": "#000000",
-        "backgroundOpacity": 1,
         "fromPageId": fromPageId,
-        "toPageId": toPageId
+        "toPageId": toPageId,
+        "remark": remark
     })
     this.setState(this.state)
   }
@@ -306,6 +305,7 @@ class Story extends React.Component {
             dataStorage={DataStorage}
             fromPageId={transition.fromPageId}
             toPageId={transition.toPageId}
+            remark={transition.remark}
           />
         )
       });

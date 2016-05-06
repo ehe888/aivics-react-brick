@@ -66,7 +66,10 @@ class PageTransitionNew extends React.Component {
 
   onNewTransitionSubmit(event) {
     if (this.selectedToPage.length > 0){
-      this.props.onNewTransitionSubmit(this.props.activeBrickId, this.selectedToPage)
+      var remark = $(".transition-remark").val();
+      this.props.onNewTransitionSubmit(this.props.activeBrickId, this.selectedToPage, remark)
+      $(".transition-remark").val("");
+      
     }
   }
 
@@ -86,6 +89,10 @@ class PageTransitionNew extends React.Component {
           dataStorage = {this.props.dataStorage}
           onToPageClick = {this.onToPageClick}
         />
+        <div className="input-group">
+          <span className="input-group-addon" id="from-addon2">remark</span>
+          <input type="text" className="form-control transition-remark" placeholder="remark" aria-describedby="from-addon2" />
+        </div>
         <button className="btn btn-primary"
                 onClick={(event)=>this.onNewTransitionSubmit(event)}>新建</button>
       </div>
