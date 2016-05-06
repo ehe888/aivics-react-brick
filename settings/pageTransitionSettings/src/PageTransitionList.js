@@ -8,7 +8,28 @@ class PageTransitionList extends React.Component {
   componentDidUpdate(prevProps, prevState){
   }
 
+  openCloseList(event) {
+    event.stopPropagation()
+    var list = $(event.target).parent();
+    if (list.hasClass('li-active')) {
+      list.removeClass('li-active');
+      list.find($("button")).hide();
+    }else{
+      list.addClass('li-active');
+      list.find($("button")).show();
+    }
+  }
+
+  onTransitionDeleteClick(event) {
+    event.stopPropagation()
+    var list = $(event.target).parent(),
+        transitionId = list.attr('id');
+
+    this.props.onTransitionDeleteClick(transitionId);
+  }
+
   render() {
+    var self = this;
     var transitions = this.props.dataStorage.model("Transitions").find();
     var pageModels = this.props.dataStorage.model("Pages");
     var activeBrickId = this.props.activeBrickId;
@@ -21,17 +42,21 @@ class PageTransitionList extends React.Component {
               toPage = pageModels.find({id: toPageId});
           return (
             <li className="list-group-item" id={transition.id} key={transition.id}>
-              {activePage.title+" -> " +toPage.title}
-              <button type="button" className="btn btn-danger btn-block transitionDelete">删除</button>
+              <div onClick={(event)=>self.openCloseList(event)}>{activePage.title+" -> " +toPage.title}</div>
+              <button type="button" className="btn btn-danger btn-block transitionDelete"
+                onClick={(event)=>self.onTransitionDeleteClick(event)}>删除</button>
             </li>
           )
         }else if (transition.toPageId == activeBrickId) {
           var fromPageId = transition.fromPageId,
               fromPage = pageModels.find({id: fromPageId});
           return (
-            <li className="list-group-item" id={transition.id} key={transition.id}>
-              <span>{activePage.title+" <- " +fromPage.title}</span>
-              <button type="button" className="btn btn-danger btn-block transitionDelete">删除</button>
+            <li className="list-group-item" id={transition.id} key={transition.id}
+                onClick={(event)=>self.openCloseList(event)}
+            >
+              <div onClick={(event)=>self.openCloseList(event)}>{activePage.title+" <- " +fromPage.title}</div>
+              <button type="button" className="btn btn-danger btn-block transitionDelete"
+                onClick={(event)=>self.onTransitionDeleteClick(event)}>删除</button>
             </li>
           )
         }

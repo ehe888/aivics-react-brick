@@ -28,7 +28,7 @@ var data = DataStorage.model('Pages').upsert({
     brickType: "Page",
     dimension: {
       top: 10,
-      left: 400,
+      left: 100,
       width: 375,
       height: 667
     },
@@ -37,6 +37,23 @@ var data = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 0",
+    settings: ["pageTitle", "imageUrl"]
+});
+
+var data2 = DataStorage.model('Pages').upsert({
+    name: "a brick",
+    brickType: "Page",
+    dimension: {
+      top: 50,
+      left: 800,
+      width: 375,
+      height: 667
+    },
+    "zIndex": 100,
+    "backgroundColor": "#d3f9dd",
+    "backgroundOpacity": 1,
+    classNames: [ 'aClass', 'bClass' ],
+    title: "new page 1",
     settings: ["pageTitle", "imageUrl"]
 });
 
@@ -51,6 +68,7 @@ class Story extends React.Component {
     this.onPageDelete = this.onPageDelete.bind(this);
 
     this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
+    this.onTransitionDeleteClick = this.onTransitionDeleteClick.bind(this);
     this.onPageScaleSmall = this.onPageScaleSmall.bind(this);
     this.onPageScaleLarge = this.onPageScaleLarge.bind(this);
 
@@ -247,6 +265,11 @@ class Story extends React.Component {
     this.setState(this.state)
   }
 
+  onTransitionDeleteClick(transitionId) {
+    DataStorage.model('Transitions').delete({id: transitionId});
+    this.setState(this.state)
+  }
+
   render() {
     var activeBrickPosition = this.state.activeBrickPosition;
 
@@ -311,6 +334,7 @@ class Story extends React.Component {
         <PageTransitionSettings
           activeBrickId={this.state.activeBrickId}
           dataStorage={DataStorage}
+          onTransitionDeleteClick = {this.onTransitionDeleteClick}
           onNewTransitionSubmit={this.onNewTransitionSubmit}
         />
       </div>

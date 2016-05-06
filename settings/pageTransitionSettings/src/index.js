@@ -29,6 +29,7 @@ class PageTransition extends React.Component {
     return (
       <div ref="PageTransitionPanel" className="aivics-page-transition-panel">
         <PageTransitionList
+          onTransitionDeleteClick = {this.props.onTransitionDeleteClick}
           activeBrickId = {this.props.activeBrickId}
           dataStorage = {this.props.dataStorage}
         />
