@@ -2,7 +2,8 @@
   position: absolute;
   text-align: center;
   padding: 5px;
-  color: red; }
+  color: red;
+  z-index: 10; }
 .transition svg {
   position: absolute;
   z-index: 1;
