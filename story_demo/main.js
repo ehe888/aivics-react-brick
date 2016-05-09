@@ -20,7 +20,13 @@ let Transition = Bricks.Transition;
 
 import DataStorage from './DataStorage'
 
-//window.DataStorage = DataStorage;
+//defin BrickType and ModelType name
+const _pageBrickType = 'Page';
+const _pageModelType = 'Pages';
+const _pageReferenceBrickType = 'PageReference';
+const _pageReferenceModelType = 'Pages';
+const _transitionBrickType = 'Transition';
+const _transitionModelType = 'Transitions';
 
 var data = DataStorage.model('Pages').upsert({
     name: "a brick",
@@ -78,10 +84,9 @@ class Story extends React.Component {
         activeBrickPosition: data.offset,
         activeBrickType: data.brickType,
         settingChangeName: null,
-        settingChangeValue: null
-    };
-
-    this.storyScale = 1.0;
+        settingChangeValue: null,
+        storyScale: 1.0
+    }
   }
 
   onBrickSelect(e, brickId, position) {
@@ -153,6 +158,8 @@ class Story extends React.Component {
     if(!record){
       return;
     }
+
+    //Page cannot change width & height
     if (this.state.activeBrickType == "Page") {
       position.width = record.offset.width;
       position.height = record.offset.height;
@@ -179,7 +186,6 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null
     });
-    console.info(this.state.activeBrickPosition);
   }
 
   onPageAdd(){
@@ -218,6 +224,8 @@ class Story extends React.Component {
 
     if (pages.length > 1) {
       model.delete({id: activeBrickId});
+
+      //also delete related transitions
       var transitions = DataStorage.model('Transitions').find();
       if (transitions) {
         transitions.map(function(transition){
@@ -241,28 +249,24 @@ class Story extends React.Component {
   }
 
   onPageScaleLarge() {
-    if (this.storyScale < 2) {
-      this.storyScale += 0.2;
-      var width = 200 * this.storyScale;
+    if (this.state.storyScale < 2) {
+      this.state.storyScale += 0.2;
+      var width = 200 * this.state.storyScale;
       $(".story").css({
-        'transform': 'scale('+this.storyScale+')',
+        'transform': 'scale('+this.state.storyScale+')',
         'transform-origin': '0 0'
       })
-      var state = this.state;
-      this.setState(state)
     }
   }
 
   onPageScaleSmall() {
-    if (this.storyScale > 0.4) {
-      this.storyScale -= 0.2;
-      var width = 200 * this.storyScale;
+    if (this.state.storyScale > 0.4) {
+      this.state.storyScale -= 0.2;
+      var width = 200 * this.state.storyScale;
       $(".story").css({
-        'transform': 'scale('+this.storyScale+')',
+        'transform': 'scale('+this.state.storyScale+')',
         'transform-origin': '0 0'
       })
-      var state = this.state;
-      this.setState(state)
     }
   }
 
@@ -270,6 +274,7 @@ class Story extends React.Component {
     var transitions = DataStorage.model('Transitions').find();
     var hasTransition = false;
     if (transitions) {
+      //ignore submit if transition exits
       transitions.map(function(transition){
         if (transition.fromPageId == fromPageId && transition.toPageId == toPageId) {
           hasTransition = true;
@@ -303,7 +308,8 @@ class Story extends React.Component {
       if (!page.bricks) {
         page.bricks = [];
       }
-      page.bricks.push({
+
+      var newReference = {
         id: uuid.v4(),
         name: "reference",
         brickType: "PageReference",
@@ -318,9 +324,17 @@ class Story extends React.Component {
         "backgroundOpacity": 1,
         "title": "reference",
         "settings": ["pageTitle"]
-      })
+      };
+      page.bricks.push(newReference)
 
-      this.setState(this.state)
+      this.setState({
+        activeBrickId: newReference.id,
+        activeBrickPosition: newReference.offset,
+        activeBrickType: newReference.brickType,
+        settingChangeName: null,
+        settingChangeValue: null
+      });
+
     }
   }
 
@@ -337,6 +351,9 @@ class Story extends React.Component {
         return 'Bricks';
     }
   }
+
+
+
 
   render() {
 
@@ -398,6 +415,8 @@ class Story extends React.Component {
             onPageDelete = {this.onPageDelete}
             onPageSettingsClick = {this.onPageSettingsClick}
             onPageTransitionClick = {this.onPageTransitionClick}
+            onPageScaleLarge = {this.onPageScaleLarge}
+            onPageScaleSmall = {this.onPageScaleSmall}
             dataStorage={DataStorage}
           />
         </div>
@@ -405,7 +424,7 @@ class Story extends React.Component {
           {contents}
           <BrickMask activeBrickId={this.state.activeBrickId}
               activeBrickPosition={brickPosition}
-              storyScale = {this.storyScale}
+              storyScale = {this.state.storyScale}
               dataStorage = {DataStorage}
               brickType = {brickType}
               onBrickResize={this.onBrickResize} />

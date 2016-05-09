@@ -298,18 +298,6 @@ class MaskBox extends React.Component {
     $(this.refs.aivicsBrickMask).css("display", "block");
     var model = this.props.dataStorage.model(this.props.brickType);
     var activeBrickPosition = this.props.activeBrickPosition;
-    // var ids = this.props.activeBrickId.split("/");
-    // if (ids.length > 1) {
-    //   ids.map(function(id, i){
-    //     if (i == ids.length -1) {
-    //       return;
-    //     }
-    //     var component = model.find({id: id});
-    //     var position = component.dimension;
-    //     activeBrickPosition.top += position.top;
-    //     activeBrickPosition.left += position.left;
-    //   })
-    // }
 
     var maskPosition = {
       left: activeBrickPosition.left - 5,
