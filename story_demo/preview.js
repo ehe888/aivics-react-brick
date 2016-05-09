@@ -25,17 +25,59 @@ class Preview extends React.Component {
 
   constructor(props){
     super(props)
+
+    this.state = {
+      pageId: ''
+    }
+  }
+
+  componentDidUpdate() {
+
+  }
+
+  onBrickSelect(e, id, position) {
+    var toPageId = "";
+    var transitions = DataStorage.model("Transitions").find();
+    transitions.map(function(transition){
+      if (transition.fromPageId == id) {
+        toPageId = transition.toPageId;
+        return;
+      }
+    })
+    if (toPageId.length > 0) {
+      this.setState({
+        pageId: toPageId
+      })
+    }
+
   }
 
   render() {
+
+    var homePage;
+    var model = DataStorage.model("Pages");
+
+    if (this.state.pageId.length <= 0) {
+      homePage = model.find()[0];
+    }else {
+      homePage = model.find({id: this.state.pageId});
+    }
+
     return (
       <div className="preview-content">
         <div ref="header" className="header">
-        <div className="btn-group preview" role="group">
-          <button type="button"
-                  className="btn btn-default"
-                  onClick={this.props.showStory}>BACK</button>
+          <div className="btn-group preview" role="group">
+            <button type="button"
+                    className="btn btn-default"
+                    onClick={this.props.showStory}>BACK</button>
+          </div>
         </div>
+        <div ref="content" className="preview">
+          <Page id={homePage.id} key={homePage.id}
+            dataStorage={DataStorage}
+            preview= {true}
+            onBrickSelect={(e, id, position)=>this.onBrickSelect(e, id, position)}
+          />
         </div>
       </div>
     )

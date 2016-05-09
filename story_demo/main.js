@@ -412,6 +412,7 @@ class Story extends React.Component {
         <DynaBrick id={comp.id} key={comp.id}
           dataStorage={DataStorage}
           onPageContextMenu = {self.onPageContextMenu}
+          preview={false}
           onBrickSelect={self.onBrickSelect} />
       )
     });

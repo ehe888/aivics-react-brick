@@ -25,14 +25,26 @@
     overflow: hidden;
     display: none;
 
-    .btn-group{
-      display: inline-block;
-      vertical-align: center;
-      margin: auto 10px;
+    .header {
+      .btn-group{
+        display: inline-block;
+        vertical-align: center;
+        margin: auto 10px;
+      }
+
+      .preview {
+        float: left;
+      }
     }
 
-    .preview {
-      float: left;
+    >div.preview {
+      position: relative;
+      text-align: center;
+      width: 100%;
+      .aivics-page{
+        position: static;
+        margin: 20px auto;
+      }
     }
 
   }

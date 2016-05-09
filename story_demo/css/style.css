@@ -21,12 +21,19 @@
     height: 100%;
     overflow: hidden;
     display: none; }
-    #workspace .preview-content .btn-group {
+    #workspace .preview-content .header .btn-group {
       display: inline-block;
       vertical-align: center;
       margin: auto 10px; }
-    #workspace .preview-content .preview {
+    #workspace .preview-content .header .preview {
       float: left; }
+    #workspace .preview-content > div.preview {
+      position: relative;
+      text-align: center;
+      width: 100%; }
+      #workspace .preview-content > div.preview .aivics-page {
+        position: static;
+        margin: 20px auto; }
 
 .header {
   position: relative;

@@ -20,8 +20,10 @@ class Page extends React.Component  {
   }
 
   reload(data){
-    $(this.getDOMElement())
-              .css(data.offset)
+
+    var offset = data.offset;
+    $(this.refs[this.refName])
+              .css(offset)
               .css(data);
   }
 
@@ -87,14 +89,15 @@ class Page extends React.Component  {
 
   contextMenu(event) {
     event.preventDefault();
-    var position = {
-      left: event.pageX,
-      top: event.pageY
-    }
-    console.log(event);
-    this.props.onPageContextMenu(this.props.id, position);
+    if (!this.props.preview) {
+      var position = {
+        left: event.pageX,
+        top: event.pageY
+      }
+      this.props.onPageContextMenu(this.props.id, position);
 
-    return false;
+      return false;
+    }
   }
 
   renderNest(){
@@ -133,7 +136,7 @@ class Page extends React.Component  {
     return (
       <div id={this.props.id}
           ref={this.refName}
-          className="aivics-brick" >
+          className="aivics-brick aivics-page" >
           <div className="aivics-page-header">
             <p className="status">01:30</p>
             <p className="title">{record.title}</p>
