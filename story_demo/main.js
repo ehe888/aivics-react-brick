@@ -165,6 +165,7 @@ class Story extends React.Component {
       position.height = record.offset.height;
     }
 
+    //delte parents' offset
     var ids = activeBrickId.split("/");
     if (ids.length > 1) {
       ids.map(function(id, i){
@@ -326,9 +327,9 @@ class Story extends React.Component {
         "settings": ["pageTitle"]
       };
       page.bricks.push(newReference)
-
+      console.info("newReference: " + newReference.id);
       this.setState({
-        activeBrickId: newReference.id,
+        activeBrickId: page.id+"/"+newReference.id,
         activeBrickPosition: newReference.offset,
         activeBrickType: newReference.brickType,
         settingChangeName: null,
