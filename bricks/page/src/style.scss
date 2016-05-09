@@ -20,6 +20,7 @@
   height: 64px;
   background-color: #1A191E;
   text-align: center;
+  z-index: 100000;
   p{
     color: white;
   }
@@ -30,5 +31,14 @@
 
   p.title{
     font-size: 18px;
+  }
+
+}
+
+.aivics-brick {
+  div.aivics-page-content-wrapper {
+    position: relative;
+    top: 0;left: 0;width: 100%;
+    overflow: hidden;
   }
 }

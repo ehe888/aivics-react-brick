@@ -13,12 +13,20 @@
   width: 100%;
   height: 64px;
   background-color: #1A191E;
-  text-align: center; }
+  text-align: center;
+  z-index: 100000; }
   .aivics-page-header p {
     color: white; }
   .aivics-page-header p.status {
     font-size: 12px; }
   .aivics-page-header p.title {
     font-size: 18px; }
+
+.aivics-brick div.aivics-page-content-wrapper {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden; }
 
 /*# sourceMappingURL=style.css.map */

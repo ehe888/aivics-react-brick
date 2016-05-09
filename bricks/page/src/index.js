@@ -49,6 +49,9 @@ class Page extends React.Component  {
     var record = this.model.find({ id: this.props.id });
     this.reload(record);
     this.updateContentView();
+
+    var height = record.offset.height;
+    $(this.refs.brickContentWrapper).height(height-64);
   }
 
 
@@ -124,7 +127,7 @@ class Page extends React.Component  {
             <p className="title">{record.title}</p>
           </div>
           <div ref="brickContentWrapper"
-              className="aivics-brick-content-wrapper">
+              className="aivics-page-content-wrapper">
             {this.renderNest()}
             {subContent}
           </div>

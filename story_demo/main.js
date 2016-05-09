@@ -177,6 +177,7 @@ class Story extends React.Component {
         position.top -= offset.top;
         position.left -= offset.left;
       })
+      position.top -= 64;
     }
 
     _.merge(record, { offset: position });
@@ -376,7 +377,9 @@ class Story extends React.Component {
         brickPosition.top += position.top;
         brickPosition.left += position.left;
       })
+      brickPosition.top += 64;
     }
+
 
     var components = DataStorage.model("Pages").find();
 
