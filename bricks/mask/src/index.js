@@ -311,12 +311,25 @@ class MaskBox extends React.Component {
     this.zoomScale = this.props.storyScale || 1;
   }
 
+  contextMenu(event) {
+    event.preventDefault();
+    var position = {
+      left: event.pageX,
+      top: event.pageY
+    }
+    console.log(event);
+    this.props.onPageContextMenu(this.props.activeBrickId, position);
+
+    return false;
+  }
+
   render() {
     this.activeBrickId = this.props.activeBrickId;
     return (
       <div ref="aivicsBrickMask"
           className="aivics-brick-mask"
-          onDoubleClick={this.handleDoubleClick} >
+          onDoubleClick={this.handleDoubleClick}
+          onContextMenu={(event)=>this.contextMenu(event)}>
           <div id="brickHandy1" className="aivics-brick-handy"></div>
           <div id="brickHandy2" className="aivics-brick-handy"></div>
           <div id="brickHandy3" className="aivics-brick-handy"></div>

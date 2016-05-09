@@ -1,0 +1,17 @@
+.pageContextMenu{
+  position: absolute;
+  z-index: 10000000;
+  width: 500px;
+  display: none;
+
+  .list-group{
+    display: inline-block;
+    vertical-align: top;
+    width: 250px;
+  }
+
+  div.pages {
+    margin-top: 40px;
+    display: none;
+  }
+}

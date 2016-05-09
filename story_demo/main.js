@@ -8,6 +8,7 @@ import React from "react"
 import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
 import PageTransitionSettings from '../settings/pageTransitionSettings/src'
+import PageContextMenu from '../settings/contextMenu/src'
 
 $.Bricks = Bricks;
 
@@ -78,6 +79,7 @@ class Story extends React.Component {
     this.onPageScaleSmall = this.onPageScaleSmall.bind(this);
     this.onPageScaleLarge = this.onPageScaleLarge.bind(this);
     this.onPageAddReference = this.onPageAddReference.bind(this);
+    this.onPageContextMenu = this.onPageContextMenu.bind(this);
 
     this.state = {
         activeBrickId: data.id,
@@ -85,7 +87,8 @@ class Story extends React.Component {
         activeBrickType: data.brickType,
         settingChangeName: null,
         settingChangeValue: null,
-        storyScale: 1.0
+        storyScale: 1.0,
+        contextMenuPosition: {left: 0, top: 0}
     }
   }
 
@@ -250,6 +253,20 @@ class Story extends React.Component {
     }
   }
 
+  onPageContextMenu(brickId, position) {
+    var record = DataStorage.model("Pages").find({id: brickId});
+    $(".pageContextMenu").show();
+    this.setState({
+        activeBrickId:brickId,
+        activeBrickPosition: record.offset,
+        activeBrickType: record.brickType,
+        settingChangeName: null,
+        settingChangeValue: null,
+        storyScale: this.state.storyScale,
+        contextMenuPosition: position
+    })
+  }
+
   onPageScaleLarge() {
     if (this.state.storyScale < 2) {
       this.state.storyScale += 0.2;
@@ -389,6 +406,7 @@ class Story extends React.Component {
       return (
         <DynaBrick id={comp.id} key={comp.id}
           dataStorage={DataStorage}
+          onPageContextMenu = {self.onPageContextMenu}
           onBrickSelect={self.onBrickSelect} />
       )
     });
@@ -431,9 +449,17 @@ class Story extends React.Component {
               storyScale = {this.state.storyScale}
               dataStorage = {DataStorage}
               brickType = {brickType}
+              onPageContextMenu = {self.onPageContextMenu}
               onBrickResize={this.onBrickResize} />
           {transition}
         </div>
+        <PageContextMenu
+          activeBrickId={this.state.activeBrickId}
+          position={this.state.contextMenuPosition}
+          onPageAddReference={this.onPageAddReference}
+          dataStorage = {DataStorage}
+          onNewTransitionSubmit = {this.onNewTransitionSubmit}
+        />
         <BrickSetting
             activeBrickId={this.state.activeBrickId}
             dataStorage={DataStorage}

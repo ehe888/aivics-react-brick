@@ -1,0 +1,14 @@
+.pageContextMenu {
+  position: absolute;
+  z-index: 10000000;
+  width: 500px;
+  display: none; }
+  .pageContextMenu .list-group {
+    display: inline-block;
+    vertical-align: top;
+    width: 250px; }
+  .pageContextMenu div.pages {
+    margin-top: 40px;
+    display: none; }
+
+/*# sourceMappingURL=style.css.map */

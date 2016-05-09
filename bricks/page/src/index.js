@@ -85,6 +85,18 @@ class Page extends React.Component  {
     this.props.onBrickSelect(e, this.props.id, position);
   }
 
+  contextMenu(event) {
+    event.preventDefault();
+    var position = {
+      left: event.pageX,
+      top: event.pageY
+    }
+    console.log(event);
+    this.props.onPageContextMenu(this.props.id, position);
+
+    return false;
+  }
+
   renderNest(){
     var self = this;
     var parentId = this.props.id;
@@ -136,7 +148,8 @@ class Page extends React.Component  {
           </div>
           <div ref="brickContentOverlay"
               className="aivics-brick-content-overlay"
-              onClick={this.handleOverlayClick} >
+              onClick={this.handleOverlayClick}
+              onContextMenu={(event)=>this.contextMenu(event)}>
           </div>
       </div>
     )
