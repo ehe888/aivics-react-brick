@@ -81,6 +81,8 @@ class Story extends React.Component {
     this.onPageAddReference = this.onPageAddReference.bind(this);
     this.onPageContextMenu = this.onPageContextMenu.bind(this);
 
+    this.onPreview = this.onPreview.bind(this);
+
     this.state = {
         activeBrickId: data.id,
         activeBrickPosition: data.offset,
@@ -371,7 +373,9 @@ class Story extends React.Component {
     }
   }
 
-
+  onPreview() {
+    console.log("preview");
+  }
 
 
   render() {
@@ -439,6 +443,7 @@ class Story extends React.Component {
             onPageTransitionClick = {this.onPageTransitionClick}
             onPageScaleLarge = {this.onPageScaleLarge}
             onPageScaleSmall = {this.onPageScaleSmall}
+            onPreview = {this.onPreview}
             dataStorage={DataStorage}
           />
         </div>

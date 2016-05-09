@@ -27,6 +27,11 @@ class PageSettingPanel extends React.Component {
   render() {
     return (
       <div ref="PageSettingPanel" className="aivics-page-setting-panel">
+        <div className="btn-group preview" role="group">
+          <button type="button"
+                  className="btn btn-default"
+                  onClick={this.props.onPreview}>PREVIEW</button>
+        </div>
         <PageAddDelete
           onPageAdd = {this.props.onPageAdd}
           onPageDelete = {this.props.onPageDelete}
