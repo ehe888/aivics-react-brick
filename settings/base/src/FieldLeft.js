@@ -31,7 +31,7 @@ class FieldLeft extends React.Component {
       if(!_.isNaN(changeToValue)){
         //Update brick Left
         var record = self.props.model.find({ id: self.props.brickId });
-        record.dimension.left = changeToValue;
+        record.offset.left = changeToValue;
         //notify parent
         self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
       }
@@ -41,17 +41,17 @@ class FieldLeft extends React.Component {
 
   componentDidMount(){
     // var record = this.props.model.find({ id: this.props.brickId });
-    // $("input[name='" + this.refName + "']").val(record.dimension.Left);
+    // $("input[name='" + this.refName + "']").val(record.offset.Left);
   }
 
   componentDidUpdate(prevProps, prevState){
     // var record = this.props.model.find({ id: this.props.brickId });
-    // $("input[name='" + this.refName + "']").val(record.dimension.left);
+    // $("input[name='" + this.refName + "']").val(record.offset.left);
   }
 
   render() {
     var record = this.props.model.find({ id: this.props.brickId });
-    var defaultValue = record.dimension.left;
+    var defaultValue = record.offset.left;
     return (
       <div className="form-group">
         <div className="input-group">

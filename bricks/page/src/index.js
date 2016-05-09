@@ -21,7 +21,7 @@ class Page extends React.Component  {
 
   reload(data){
     $(this.getDOMElement())
-              .css(data.dimension)
+              .css(data.offset)
               .css(data);
   }
 
@@ -96,7 +96,7 @@ class Page extends React.Component  {
             dataStorage:self.props.dataStorage,
             onBrickSelect:self.props.onBrickSelect,
             title: b.title,
-            position: b.dimension
+            position: b.offset
         });
       })
     }

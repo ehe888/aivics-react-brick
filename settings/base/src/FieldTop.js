@@ -31,7 +31,7 @@ class FieldTop extends React.Component {
       if(!_.isNaN(changeToValue)){
         //Update brick top
         var record = self.props.model.find({ id: self.props.brickId });
-        record.dimension.top = changeToValue;
+        record.offset.top = changeToValue;
         //notify parent
         self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
       }
@@ -41,17 +41,17 @@ class FieldTop extends React.Component {
 
   componentDidMount(){
     // var record = this.props.model.find({ id: this.props.brickId });
-    // $("input[name='" + this.refName + "']").val(record.dimension.top);
+    // $("input[name='" + this.refName + "']").val(record.offset.top);
   }
 
   componentDidUpdate(prevProps, prevState){
     // var record = this.props.model.find({ id: this.props.brickId });
-    // $("input[name='" + this.refName + "']").val(record.dimension.top);
+    // $("input[name='" + this.refName + "']").val(record.offset.top);
   }
 
   render() {
     var record = this.props.model.find({ id: this.props.brickId });
-    var defaultValue = record.dimension.top;
+    var defaultValue = record.offset.top;
     return (
       <div className="form-group">
         <div className="input-group">

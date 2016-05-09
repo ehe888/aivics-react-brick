@@ -32,7 +32,7 @@ class FieldWidth extends React.Component {
       if(!_.isNaN(changeToValue)){
         //Update birck width
         var record = self.props.model.find({ id: self.props.brickId });
-        record.dimension.width = changeToValue;
+        record.offset.width = changeToValue;
         //notify parent
         self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
       }
@@ -42,17 +42,17 @@ class FieldWidth extends React.Component {
 
   componentDidMount(){
     // var record = this.props.model.find({ id: this.props.brickId });
-    // $("input[name='" + this.refName + "']").val(record.dimension.width);
+    // $("input[name='" + this.refName + "']").val(record.offset.width);
   }
 
   componentDidUpdate(prevProps, prevState){
     // var record = this.props.model.find({ id: this.props.brickId });
-    // $("input[name='" + this.refName + "']").val(record.dimension.width);
+    // $("input[name='" + this.refName + "']").val(record.offset.width);
   }
 
   render() {
     var record = this.props.model.find({ id: this.props.brickId });
-    var defaultValue = record.dimension.width;
+    var defaultValue = record.offset.width;
     return (
       <div className="form-group">
         <div className="input-group">

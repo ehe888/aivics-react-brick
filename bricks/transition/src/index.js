@@ -55,18 +55,18 @@ class Transition extends React.Component {
         fromPage = model.find({id: fromPageId}),
         toPage = model.find({id: toPageId});
 
-    var fromLeft = fromPage.dimension.left,
-        toLeft = toPage.dimension.left;
-    var fromTop = fromPage.dimension.top,
-        toTop = toPage.dimension.top;
+    var fromLeft = fromPage.offset.left,
+        toLeft = toPage.offset.left;
+    var fromTop = fromPage.offset.top,
+        toTop = toPage.offset.top;
 
-    var startX = (fromPage.dimension.left + fromPage.dimension.width),
-        startY = fromPage.dimension.top + fromPage.dimension.height/2,
-        middle0X = fromPage.dimension.left + fromPage.dimension.width + 80,
+    var startX = (fromPage.offset.left + fromPage.offset.width),
+        startY = fromPage.offset.top + fromPage.offset.height/2,
+        middle0X = fromPage.offset.left + fromPage.offset.width + 80,
         middle0Y = startY,
-        middle1X = (toPage.dimension.left - 80),
-        middle1Y = toPage.dimension.top + toPage.dimension.height/2,
-        endX = (toPage.dimension.left-5),
+        middle1X = (toPage.offset.left - 80),
+        middle1Y = toPage.offset.top + toPage.offset.height/2,
+        endX = (toPage.offset.left-5),
         endY = middle1Y;
 
     var points = startX+","+startY+" " + middle0X+","+middle0Y+" " + middle1X+","+middle1Y+" "+endX+","+endY;
