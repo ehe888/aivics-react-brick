@@ -375,6 +375,7 @@ class Story extends React.Component {
 
   onPreview() {
     console.log("preview");
+    this.props.showPreview();
   }
 
 
@@ -434,7 +435,7 @@ class Story extends React.Component {
     }
     var brickType = this.mapBrickTypeToModelType(this.state.activeBrickType);
     return (
-      <div>
+      <div className="story-content">
         <div ref="header" className="header">
           <PageSettingPanel
             onPageAdd = {this.onPageAdd}
@@ -484,7 +485,4 @@ class Story extends React.Component {
     )
   }
 }
-
-ReactDOM.render(<Story />,
-    document.getElementById('workspace')
-);
+module.exports = Story;

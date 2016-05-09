@@ -2,7 +2,7 @@ var Webpack = require('webpack');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var buildPath = path.resolve(__dirname, 'lib');
-var mainPath = path.resolve(__dirname, 'main.js');
+var mainPath = path.resolve(__dirname, 'index.js');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 console.log(mainPath);

@@ -66,7 +66,7 @@ class ContextMenu extends React.Component {
         return;
       }
       return (
-        <button type="button" className="list-group-item"
+        <button id={brick.id} key={brick.id} type="button" className="list-group-item"
           onClick={(event)=>self.onNewTransitionSubmit(brick.id)}>{brick.title}</button>
       )
     })
