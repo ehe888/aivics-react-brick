@@ -102,23 +102,27 @@ class Page extends React.Component  {
     }
   }
 
-  renderContent() {
-    var record = this.model.find({ id: this.props.id });
+  renderContent(record) {
     return (
       <div>
         <img className="aivics-page-image" src={record.imageUrl}/>
-        <h3 className="aivcis-page-title-paragraph"
-          dangerouslySetInnerHTML={ { __html: record.title} } ></h3>
+
       </div>
     )
   }
 
   render() {
-    var subContent = this.renderContent();
+    var record = this.model.find({ id: this.props.id });
+    var subContent = this.renderContent(record);
+
     return (
       <div id={this.props.id}
           ref={this.refName}
           className="aivics-brick" >
+          <div className="aivics-page-header">
+            <p className="status">01:30</p>
+            <p className="title">{record.title}</p>
+          </div>
           <div ref="brickContentWrapper"
               className="aivics-brick-content-wrapper">
             {this.renderNest()}

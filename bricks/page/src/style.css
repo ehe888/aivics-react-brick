@@ -8,4 +8,17 @@
   padding: 0px;
   margin: 0px; }
 
+.aivics-page-header {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  background-color: #1A191E;
+  text-align: center; }
+  .aivics-page-header p {
+    color: white; }
+  .aivics-page-header p.status {
+    font-size: 12px; }
+  .aivics-page-header p.title {
+    font-size: 18px; }
+
 /*# sourceMappingURL=style.css.map */
