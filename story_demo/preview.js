@@ -6,17 +6,10 @@
 import uuid from 'uuid'
 import React from "react"
 import Bricks from '../src'
-import PageSettingPanel from '../settings/pageTools/src'
-import PageTransitionSettings from '../settings/pageTransitionSettings/src'
-import PageContextMenu from '../settings/contextMenu/src'
+import TransitionSettings from '../settings/transitionSettings/src'
 
 $.Bricks = Bricks;
 
-let BrickMask = Bricks.Mask;
-let Brick = Bricks.Base;
-let LabelBrick = Bricks.Label;
-let Page = Bricks.Page;
-let BrickSetting = Bricks.settings.Base;
 let Transition = Bricks.Transition;
 let PagePreview = Bricks.PagePreview;
 
@@ -38,7 +31,7 @@ class Preview extends React.Component {
     var page = DataStorage.model("Pages").find()[0];
     $(".preview-wrapper").css({
       'width': page.offset.width,
-      'height': page.offset.height+64
+      'height': page.offset.height
     })
 
     this.pageViewUpdate();
@@ -62,7 +55,7 @@ class Preview extends React.Component {
     var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
       var $page = $(pages[i]);
-      $page.removeClass("animated fadeIn fadeOut")
+      this.clearAnimate($page)
       if ($page.attr('data-preview-id') == pageId) {
         $page.show();
       }else{
@@ -119,19 +112,26 @@ class Preview extends React.Component {
     }
 
     if ($fromPage && $toPage && fromPageTransition && toPageTransition) {
-      console.info("add animate")
-      $fromPage.removeClass("animated fadeIn");
-      $fromPage.addClass("animated fadeOut");
-      $toPage.show();
-      $toPage.addClass("animated fadeIn");
+      this.clearAnimate($fromPage);
+      $fromPage.hide();
 
-      // setTimeout(function(){
-      //   self.setState({
-      //     'pageId': toPageId
-      //   }, 1000);
-      // })
+      $fromPage.addClass("animated "+fromPageTransition);
+      $fromPage.show();
+      $toPage.show();
+      $toPage.addClass("animated "+toPageTransition);
+      setTimeout(function(){
+        self.clearAnimate($toPage)
+      },1000)
     }
 
+  }
+
+  clearAnimate($obj) {
+    $obj.removeClass("animated");
+    var effects = TransitionSettings.effects;
+    for (var i = 0; i < effects.length; i++) {
+      $obj.removeClass(effects[i]);
+    }
   }
 
   renderPages() {

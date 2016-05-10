@@ -17,14 +17,6 @@ class PagePreview extends React.Component {
     this.renderContent = this.renderContent.bind(this);
   }
 
-  // reload(data){
-  //
-  //   var offset = data.offset;
-  //   $(this.refs[this.refName])
-  //             .css(offset)
-  //             .css(data);
-  // }
-
   getDOMElement(){
     return this.refs[this.refName];
   }
@@ -68,7 +60,7 @@ class PagePreview extends React.Component {
       top: top,
       width: width,
       height: height
-    };
+    }
 
     this.props.onBrickSelect(e, this.props.id, position);
   }

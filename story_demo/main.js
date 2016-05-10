@@ -9,6 +9,7 @@ import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
 import PageTransitionSettings from '../settings/pageTransitionSettings/src'
 import PageContextMenu from '../settings/contextMenu/src'
+import TransitionSettings from '../settings/transitionSettings/src'
 
 $.Bricks = Bricks;
 
@@ -51,8 +52,8 @@ var data2 = DataStorage.model('Pages').upsert({
     name: "a brick",
     brickType: "Page",
     offset: {
-      top: 50,
-      left: 800,
+      top: 100,
+      left: 600,
       width: 375,
       height: 667
     },
@@ -61,6 +62,23 @@ var data2 = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 1",
+    settings: ["pageTitle", "imageUrl", "pageReference"]
+});
+
+var data3 = DataStorage.model('Pages').upsert({
+    name: "a brick",
+    brickType: "Page",
+    offset: {
+      top: 50,
+      left: 1150,
+      width: 375,
+      height: 667
+    },
+    "zIndex": 100,
+    "backgroundColor": "#33f0a1",
+    "backgroundOpacity": 1,
+    classNames: [ 'aClass', 'bClass' ],
+    title: "new page 2",
     settings: ["pageTitle", "imageUrl", "pageReference"]
 });
 
@@ -80,8 +98,11 @@ class Story extends React.Component {
     this.onPageScaleLarge = this.onPageScaleLarge.bind(this);
     this.onPageAddReference = this.onPageAddReference.bind(this);
     this.onPageContextMenu = this.onPageContextMenu.bind(this);
+    this.onTransitionSelected = this.onTransitionSelected.bind(this);
 
     this.onPreview = this.onPreview.bind(this);
+
+    this.lastSettings = 0;
 
     this.state = {
         activeBrickId: data.id,
@@ -90,7 +111,8 @@ class Story extends React.Component {
         settingChangeName: null,
         settingChangeValue: null,
         storyScale: 1.0,
-        contextMenuPosition: {left: 0, top: 0}
+        contextMenuPosition: {left: 0, top: 0},
+        activeTransitionId: null
     }
   }
 
@@ -103,8 +125,12 @@ class Story extends React.Component {
       activeBrickPosition: position,
       settingChangeName: null,
       settingChangeValue: null,
-      activeBrickType: activeBrick.brickType
+      activeBrickType: activeBrick.brickType,
+      activeTransitionId: null
     });
+
+    $(".transitionSettings").hide();
+    $(".aivics-brick-setting-panel").show();
 
   }
 
@@ -192,6 +218,9 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null
     });
+
+    $(".transitionSettings").hide();
+    $(".aivics-brick-setting-panel").show();
   }
 
   onPageAdd(){
@@ -220,6 +249,9 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null
     });
+
+    $(".transitionSettings").hide();
+    $(".aivics-brick-setting-panel").show();
   }
 
   onPageDelete(){
@@ -250,8 +282,9 @@ class Story extends React.Component {
         settingChangeName: null,
         settingChangeValue: null
       });
-
     }
+    $(".transitionSettings").hide();
+    $(".aivics-brick-setting-panel").show();
   }
 
   onPageContextMenu(brickId, position) {
@@ -313,7 +346,8 @@ class Story extends React.Component {
         "toPageId": toPageId,
         "remark": remark,
         "fromPageTransition": "fadeOut",
-        "toPageTransition": "fadeIn"
+        "toPageTransition": "fadeIn",
+        "background": "black"
     })
     this.setState(this.state)
   }
@@ -323,8 +357,26 @@ class Story extends React.Component {
     this.setState(this.state)
   }
 
+  onTransitionSelected(transitionId) {
+    var transitions = DataStorage.model("Transitions").find();
+    transitions.map(function(transition, i){
+      if (transition.id == transitionId) {
+        transition.background = "red"
+      }else {
+        transition.background = "black"
+      }
+    })
+    this.setState({
+      activeTransitionId: transitionId
+    });
+
+    $(".transitionSettings").show();
+    $(".aivics-page-transition-panel").hide();
+    $(".aivics-brick-setting-panel").hide();
+
+  }
+
   onPageAddReference() {
-    console.log("onPageAddReference")
     if (this.state.activeBrickType == "Page") {
       var page = DataStorage.model("Pages").find({id: this.state.activeBrickId});
       if (!page.bricks) {
@@ -348,7 +400,6 @@ class Story extends React.Component {
         "settings": ["pageTitle"]
       };
       page.bricks.push(newReference)
-      console.info("newReference: " + newReference.id);
       this.setState({
         activeBrickId: page.id+"/"+newReference.id,
         activeBrickPosition: newReference.offset,
@@ -356,7 +407,8 @@ class Story extends React.Component {
         settingChangeName: null,
         settingChangeValue: null
       });
-
+      $(".transitionSettings").hide();
+      $(".aivics-brick-setting-panel").show();
     }
   }
 
@@ -375,7 +427,6 @@ class Story extends React.Component {
   }
 
   onPreview() {
-    console.log("preview");
     this.props.showPreview();
   }
 
@@ -431,6 +482,7 @@ class Story extends React.Component {
             fromPageId={transition.fromPageId}
             toPageId={transition.toPageId}
             remark={transition.remark}
+            onTransitionSelected={self.onTransitionSelected}
           />
         )
       });
@@ -481,6 +533,10 @@ class Story extends React.Component {
           dataStorage={DataStorage}
           onTransitionDeleteClick = {this.onTransitionDeleteClick}
           onNewTransitionSubmit={this.onNewTransitionSubmit}
+        />
+        <TransitionSettings
+          dataStorage={DataStorage}
+          transitionId={this.state.activeTransitionId}
         />
       </div>
 

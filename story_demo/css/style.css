@@ -21,6 +21,8 @@
     height: 100%;
     overflow: hidden;
     display: none; }
+    #workspace .preview-content .preview-wrapper {
+      overflow: hidden; }
     #workspace .preview-content .header .btn-group {
       display: inline-block;
       vertical-align: center;
@@ -64,7 +66,7 @@
   width: 200%;
   height: 200%; }
 
-.aivics-brick-setting-panel, .aivics-page-transition-panel {
+.aivics-brick-setting-panel, .aivics-page-transition-panel, .transitionSettings {
   position: absolute;
   top: 40px;
   right: 0%;
@@ -78,6 +80,12 @@
 
 .aivics-page-transition-panel {
   display: none; }
+
+.transitionSettings {
+  display: none; }
+
+.settingsHide {
+  display: none !important; }
 
 #console {
   position: absolute;

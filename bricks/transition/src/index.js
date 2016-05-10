@@ -17,18 +17,29 @@ class TransitionRemark extends React.Component {
 
   componentPostionReload() {
     var top = this.props.top,
-        left= this.props.left;
+        left= this.props.left,
+        height = this.props.height;
     var div = $("#"+this.props.id);
     div.css({
       'top': top,
       'left': left,
       'width': this.props.width
     })
+
+    $("#event"+this.props.id).css({
+      'top': (top-height/2),
+      'left': left,
+      'width': this.props.width,
+      'height': height
+    })
   }
 
   render() {
     return (
-      <p id={this.props.id}>{this.props.remark}</p>
+      <div>
+        <p id={this.props.id}>{this.props.remark}</p>
+        <div id={"event"+this.props.id} className="transitionEvent" onClick={this.props.onTransitionSelected}></div>
+      </div>
     )
   }
 }
@@ -48,6 +59,8 @@ class Transition extends React.Component {
   }
 
   render() {
+
+    var transition = this.props.dataStorage.model("Transitions").find({id: this.props.id});
 
     var fromPageId = this.props.fromPageId,
         toPageId = this.props.toPageId,
@@ -79,7 +92,10 @@ class Transition extends React.Component {
           top = {Math.max(startY, endY) - (endY>startY?((endY-startY)/2):((startY-endY)/2))}
           left = {Math.min(startX, endX)}
           width = {startX>endX?(startX-endX):(endX-startX)}
+          height = {startY>endY?(startY-endY):(endY-startY)}
+          onTransitionSelected={(event)=>this.props.onTransitionSelected(transition.id)}
         />
+
         <svg width={startX+endX} height={endX + endY}>
           <defs>
               <marker id="Triangle"
@@ -91,7 +107,10 @@ class Transition extends React.Component {
                   <path d="M 0 0 L 10 5 L 0 10 z" />
             </marker>
           </defs>
-          <polyline points={points} fill="none" stroke="black" markerEnd="url(#Triangle)" strokeWidth="3" />
+          <polyline points={points} fill="none" stroke={transition.background}
+                markerEnd="url(#Triangle)"
+                strokeWidth="3"
+                />
         </svg>
       </div>
     )

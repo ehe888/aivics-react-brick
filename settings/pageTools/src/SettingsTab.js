@@ -24,11 +24,13 @@ class SettingsTab extends React.Component {
   onPageSettingsClick() {
     $(".aivics-page-transition-panel").hide();
     $(".aivics-brick-setting-panel").show();
+    $(".transitionSettings").hide();
   }
 
   onPageTransitionClick() {
     $(".aivics-page-transition-panel").show();
     $(".aivics-brick-setting-panel").hide();
+    $(".transitionSettings").hide();
   }
 
   render() {

@@ -25,6 +25,10 @@
     overflow: hidden;
     display: none;
 
+    .preview-wrapper{
+      overflow: hidden;
+    }
+
     .header {
       .btn-group{
         display: inline-block;
@@ -106,6 +110,15 @@
 .aivics-page-transition-panel{
   @extend .aivics-brick-setting-panel;
   display: none;
+}
+
+.transitionSettings {
+  @extend .aivics-brick-setting-panel;
+  display: none;
+}
+
+.settingsHide {
+  display: none !important;
 }
 
 #console {
