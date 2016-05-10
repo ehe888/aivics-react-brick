@@ -57,7 +57,7 @@ var data2 = DataStorage.model('Pages').upsert({
       height: 667
     },
     "zIndex": 100,
-    "backgroundColor": "#d3f9dd",
+    "backgroundColor": "#66E243",
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 1",
@@ -95,7 +95,6 @@ class Story extends React.Component {
   }
 
   onBrickSelect(e, brickId, position) {
-    console.log("on brick selected");
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
                       .find({id: brickId});
 
@@ -312,7 +311,9 @@ class Story extends React.Component {
         "zIndex": 1,
         "fromPageId": fromPageId,
         "toPageId": toPageId,
-        "remark": remark
+        "remark": remark,
+        "fromPageTransition": "fadeOut",
+        "toPageTransition": "fadeIn"
     })
     this.setState(this.state)
   }

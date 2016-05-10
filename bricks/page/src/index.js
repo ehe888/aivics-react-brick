@@ -133,9 +133,11 @@ class Page extends React.Component  {
     var record = this.model.find({ id: this.props.id });
     var subContent = this.renderContent(record);
 
+    var previewId = this.props.preview?this.props.id:"";
     return (
       <div id={this.props.id}
           ref={this.refName}
+          data-preview-id={previewId}
           className="aivics-brick aivics-page" >
           <div className="aivics-page-header">
             <p className="status">01:30</p>

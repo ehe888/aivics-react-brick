@@ -31,8 +31,8 @@
       position: relative;
       text-align: center;
       width: 100%; }
-      #workspace .preview-content > div.preview .aivics-page {
-        position: static;
+      #workspace .preview-content > div.preview .preview-wrapper {
+        position: relative;
         margin: 20px auto; }
 
 .header {
