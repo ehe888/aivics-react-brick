@@ -23,24 +23,26 @@ class PageReference extends React.Component {
 
   componentPositionReload() {
     var postion = this.props.position;
-    var $this = $("#"+this.refName)
+    var $this = $(this.refs[this.refName])
     $this.css({
       'top': postion.top,
       'left': postion.left,
       'width': postion.width,
       'height': postion.height
     })
+    console.log($this.width())
   }
 
   handleOverlayClick(e) {
     e.preventDefault();
     e.stopPropagation();
+    this.componentPositionReload();
     console.log("handleOverlayClick")
     if(e.target.className !== e.currentTarget.className){
       return;
     }
 
-    var $this = $("#"+this.refName)
+    var $this = $(this.refs[this.refName])
 
     var left = parseFloat(_.replace($this[0].style.left, 'px', ''));
     var top  = parseFloat(_.replace($this[0].style.top, 'px', ''));
@@ -60,7 +62,7 @@ class PageReference extends React.Component {
   render() {
 
     return (
-      <div className="pageReference" id={this.refName}>
+      <div className="pageReference" id={this.refName} ref={this.refName}>
         <p>{this.props.title}</p>
         <div ref="brickContentOverlay"
             className="aivics-brick-content-overlay"

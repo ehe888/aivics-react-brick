@@ -27,12 +27,20 @@ class Preview extends React.Component {
     super(props)
 
     this.state = {
-      pageId: ''
+      pageId: this.props.pageId || ''
     }
   }
 
   componentDidUpdate() {
 
+  }
+
+  showStory() {
+    this.props.showStory();
+    var pageId = DataStorage.model("Pages").find()[0].id;
+    this.setState({
+      'pageId': pageId
+    })
   }
 
   onBrickSelect(e, id, position) {
@@ -69,7 +77,7 @@ class Preview extends React.Component {
           <div className="btn-group preview" role="group">
             <button type="button"
                     className="btn btn-default"
-                    onClick={this.props.showStory}>BACK</button>
+                    onClick={(event)=>this.showStory(event)}>BACK</button>
           </div>
         </div>
         <div ref="content" className="preview">

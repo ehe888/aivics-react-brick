@@ -3,6 +3,8 @@
 import Story from "./main"
 import Preview from "./preview"
 
+import DataStorage from './DataStorage'
+
 class Workspace extends React.Component {
   constructor(props) {
     super(props);
