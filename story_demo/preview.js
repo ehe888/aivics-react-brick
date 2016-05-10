@@ -18,6 +18,7 @@ let LabelBrick = Bricks.Label;
 let Page = Bricks.Page;
 let BrickSetting = Bricks.settings.Base;
 let Transition = Bricks.Transition;
+let PagePreview = Bricks.PagePreview;
 
 import DataStorage from './DataStorage'
 
@@ -37,7 +38,7 @@ class Preview extends React.Component {
     var page = DataStorage.model("Pages").find()[0];
     $(".preview-wrapper").css({
       'width': page.offset.width,
-      'height': page.offset.height
+      'height': page.offset.height+64
     })
 
     this.pageViewUpdate();
@@ -48,8 +49,8 @@ class Preview extends React.Component {
   }
 
   pageViewUpdate() {
-    $(".preview .aivics-page").css({
-      top: "0px",
+    $(".preview .aivics-page-preview").css({
+      top: "64px",
       left: "0px"
     })
 
@@ -58,7 +59,7 @@ class Preview extends React.Component {
       pageId = DataStorage.model("Pages").find()[0].id;
     }
 
-    var pages = $(".preview").find($(".aivics-page"));
+    var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
       var $page = $(pages[i]);
       $page.removeClass("animated fadeIn fadeOut")
@@ -106,7 +107,7 @@ class Preview extends React.Component {
   prepareTransition(fromPageId, toPageId, fromPageTransition, toPageTransition) {
     var self = this;
     var $fromPage, $toPage;
-    var pages = $(".preview").find($(".aivics-page"));
+    var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
       var $page = $(pages[i]);
 
@@ -139,7 +140,7 @@ class Preview extends React.Component {
     var content = pages.map(function(page, i){
 
         return (
-          <Page
+          <PagePreview
             id={page.id} key={page.id}
             dataStorage={DataStorage}
             preview= {true}
@@ -169,6 +170,10 @@ class Preview extends React.Component {
         </div>
         <div ref="content" className="preview">
           <div className="preview-wrapper" ref="previewWrapper">
+            <div className="aivics-page-header">
+              <p className="status">01:30</p>
+              <p className="title">title</p>
+            </div>
             {pageContent}
           </div>
         </div>
