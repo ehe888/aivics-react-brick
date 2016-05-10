@@ -10,15 +10,25 @@ class Workspace extends React.Component {
     super(props);
 
     this.showPreview = this.showPreview.bind(this);
+
+    this.state = {
+      preview: false
+    }
   }
 
   showPreview(show) {
     if (!show) {
       $(".story-content").show();
       $(".preview-content").hide();
+      this.setState({
+        preview: false
+      })
     }else {
       $(".story-content").hide();
       $(".preview-content").show();
+      this.setState({
+        preview: true
+      })
     }
   }
 

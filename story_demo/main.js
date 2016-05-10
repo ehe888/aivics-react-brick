@@ -537,6 +537,7 @@ class Story extends React.Component {
         <TransitionSettings
           dataStorage={DataStorage}
           transitionId={this.state.activeTransitionId}
+          onTransitionDeleteClick={this.onTransitionDeleteClick}
         />
       </div>
 

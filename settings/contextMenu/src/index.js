@@ -12,7 +12,9 @@ class ContextMenu extends React.Component {
     this.componentPositionReload();
     var self = this;
     $(this.refs.AivicsPageContextMenu).hide();
-
+    $(".story").click(function(){
+      self.onContextMenuClose();
+    })
   }
 
   componentDidUpdate() {

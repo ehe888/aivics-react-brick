@@ -6,6 +6,10 @@ class TransitionSettings extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      effect: ''
+    }
   }
 
   onAnimationSelected(effectIn, effectOut) {
@@ -14,6 +18,9 @@ class TransitionSettings extends React.Component {
     transition.toPageTransition = effectIn;
     transition.fromPageTransition = effectOut;
     $(".transitionEffectTitle").html(effectIn)
+    this.setState({
+      effect: effectIn
+    })
   }
 
   render() {
@@ -26,7 +33,9 @@ class TransitionSettings extends React.Component {
     }
     return (
       <div className="transitionSettings">
+
         <div className="btn-group">
+          <p>Animation Effect</p>
           <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span className="transitionEffectTitle">{title}</span> <span className="caret"></span>
           </button>
@@ -35,6 +44,8 @@ class TransitionSettings extends React.Component {
             <li><a href="#" onClick={(event)=>this.onAnimationSelected("slideInUp", "slideOutUp")}>slideInUp</a></li>
           </ul>
         </div>
+        <button type="button" className="btn btn-danger btn-block transitionDelete"
+          onClick={(event)=>this.props.onTransitionDeleteClick(this.props.transitionId)}>删除</button>
       </div>
     )
   }

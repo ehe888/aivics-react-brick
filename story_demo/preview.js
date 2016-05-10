@@ -38,16 +38,17 @@ class Preview extends React.Component {
   }
 
   componentDidUpdate() {
-    this.pageViewUpdate();
+    var pageId = DataStorage.model("Pages").find()[0].id;
+    this.pageViewUpdate(pageId);
   }
 
-  pageViewUpdate() {
+  pageViewUpdate(id) {
     $(".preview .aivics-page-preview").css({
       top: "64px",
       left: "0px"
     })
 
-    var pageId = this.state.pageId;
+    var pageId = id?pageId:this.state.pageId;
     if (!pageId || pageId.length <= 0) {
       pageId = DataStorage.model("Pages").find()[0].id;
     }
@@ -66,7 +67,7 @@ class Preview extends React.Component {
 
   showStory() {
     this.props.showStory();
-    this.refreshPreview();
+    // this.refreshPreview();
   }
 
   refreshPreview() {
@@ -127,7 +128,7 @@ class Preview extends React.Component {
   }
 
   clearAnimate($obj) {
-    $obj.removeClass("animated");
+    // $obj.removeClass("animated");
     var effects = TransitionSettings.effects;
     for (var i = 0; i < effects.length; i++) {
       $obj.removeClass(effects[i]);
