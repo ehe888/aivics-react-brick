@@ -2,8 +2,9 @@
 
 require("./css/style.css")
 
-import PageAddReference from './pageAddReference.js'
-import PageAddTransitionContextMenu from './pageAddTransition.js'
+import PageAddReference from './menuPageAddReference.js'
+import PageAddTransitionContextMenu from './menuPageAddTransition.js'
+import DeleteContextMenu from './menuDelete.js'
 
 var PageAddTransitionMenu = PageAddTransitionContextMenu.PageAddTransitionMenu;
 var PageAddTranstionList = PageAddTransitionContextMenu.PageAddTranstionList;
@@ -16,7 +17,7 @@ class ContextMenu extends React.Component {
     this.onPageAddReference = this.onPageAddReference.bind(this);
     this.onContextTransitionMenu = this.onContextTransitionMenu.bind(this);
     this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
-
+    this.onDeleteBrick = this.onDeleteBrick.bind(this);
   }
 
   componentDidMount() {
@@ -84,6 +85,11 @@ class ContextMenu extends React.Component {
     $(".PageAddTranstionList").hide();
   }
 
+  onDeleteBrick() {
+    this.props.onPageDelete();
+    $(this.refs.AivicsPageContextMenu).hide();
+  }
+
   render() {
 
     return (
@@ -97,6 +103,9 @@ class ContextMenu extends React.Component {
             onContextTransitionMenu = {this.onContextTransitionMenu}
             ref = "AivicsContextTransition"
           />
+          <DeleteContextMenu
+            onPageDelete={this.onDeleteBrick}
+          />
 
         </div>
         <PageAddTranstionList
@@ -105,6 +114,7 @@ class ContextMenu extends React.Component {
           activeBrickId={this.props.activeBrickId}
           onNewTransitionSubmit={this.onNewTransitionSubmit}
         />
+
 
       </div>
     )

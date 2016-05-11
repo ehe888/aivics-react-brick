@@ -273,7 +273,6 @@ class Story extends React.Component {
           }
         })
       }
-      pages = model.find();
 
       var lastPage = _.last(pages)
       this.setState({
@@ -527,6 +526,7 @@ class Story extends React.Component {
           onPageAddReference={this.onPageAddReference}
           dataStorage = {DataStorage}
           onNewTransitionSubmit = {this.onNewTransitionSubmit}
+          onPageDelete = {this.onPageDelete}
         />
         <BrickSetting
             activeBrickId={this.state.activeBrickId}
