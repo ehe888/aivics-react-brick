@@ -5,6 +5,7 @@
  */
 import uuid from 'uuid'
 import React from "react"
+import ReactDOM from "react-dom"
 import Bricks from '../src'
 import PageSettingPanel from '../settings/pageTools/src'
 import PageTransitionSettings from '../settings/pageTransitionSettings/src'
@@ -104,6 +105,7 @@ class Story extends React.Component {
     this.onPreview = this.onPreview.bind(this);
 
     this.lastSettings = 0;
+    this.inBricks = true;
 
     this.state = {
         activeBrickId: data.id,
@@ -224,15 +226,15 @@ class Story extends React.Component {
     $(".aivics-brick-setting-panel").show();
   }
 
-  onPageAdd(){
+  onPageAdd(top = 10, left = 400){
     var currentPages = DataStorage.model('Pages').find();
     var title = "new page " + currentPages.length;
     var newPage = DataStorage.model('Pages').upsert({
         name: "a brick",
         brickType: "Page",
         offset: {
-          top: 10,
-          left: 400,
+          top: top,
+          left: left,
           width: 375,
           height: 667
         },
@@ -273,8 +275,9 @@ class Story extends React.Component {
           }
         })
       }
-
+      pages = model.find();
       var lastPage = _.last(pages)
+
       this.setState({
         activeBrickId: lastPage.id,
         activeBrickPosition: lastPage.offset,
@@ -292,8 +295,8 @@ class Story extends React.Component {
     $(".pageContextMenu").show();
     this.setState({
         activeBrickId:brickId,
-        activeBrickPosition: record.offset,
-        activeBrickType: record.brickType,
+        activeBrickPosition: record?record.offset : this.state.activeBrickPosition,
+        activeBrickType: record? record.brickType : this.state.activeBrickType,
         settingChangeName: null,
         settingChangeValue: null,
         storyScale: this.state.storyScale,
@@ -437,6 +440,19 @@ class Story extends React.Component {
     this.props.showPreview();
   }
 
+  contextMenu(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    var position = {
+      left: event.pageX,
+      top: event.pageY
+    }
+    this.onPageContextMenu(null, position);
+
+    return false;
+  }
+
 
   render() {
 
@@ -447,18 +463,21 @@ class Story extends React.Component {
       width: this.state.activeBrickPosition.width,
       height: this.state.activeBrickPosition.height
     };
-    var ids = this.state.activeBrickId.split("/");
-    if (ids.length > 1) {
-      ids.map(function(id, i){
-        if (i == ids.length -1) {
-          return;
-        }
-        var component = DataStorage.model("Pages").find({id: id});
-        var position = component.offset;
-        brickPosition.top += position.top;
-        brickPosition.left += position.left;
-      })
-      brickPosition.top += 64;
+
+    if (this.state.activeBrickId) {
+      var ids = this.state.activeBrickId.split("/");
+      if (ids.length > 1) {
+        ids.map(function(id, i){
+          if (i == ids.length -1) {
+            return;
+          }
+          var component = DataStorage.model("Pages").find({id: id});
+          var position = component.offset;
+          brickPosition.top += position.top;
+          brickPosition.left += position.left;
+        })
+        brickPosition.top += 64;
+      }
     }
 
 
@@ -509,9 +528,12 @@ class Story extends React.Component {
             dataStorage={DataStorage}
           />
         </div>
-        <div ref="story" className="story">
+        <div ref="story" className="story" onContextMenu={(event)=>this.contextMenu(event)}>
           {contents}
-          <BrickMask activeBrickId={this.state.activeBrickId}
+          <BrickMask
+              ref = "BrickMask"
+              key = "BrickMask"
+              activeBrickId={this.state.activeBrickId}
               activeBrickPosition={brickPosition}
               storyScale = {this.state.storyScale}
               dataStorage = {DataStorage}
@@ -526,7 +548,10 @@ class Story extends React.Component {
           onPageAddReference={this.onPageAddReference}
           dataStorage = {DataStorage}
           onNewTransitionSubmit = {this.onNewTransitionSubmit}
+          onPageAdd = {this.onPageAdd}
           onPageDelete = {this.onPageDelete}
+          brickType = {brickType}
+
         />
         <BrickSetting
             activeBrickId={this.state.activeBrickId}

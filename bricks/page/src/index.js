@@ -89,6 +89,7 @@ class Page extends React.Component  {
 
   contextMenu(event) {
     event.preventDefault();
+    event.stopPropagation();
     if (!this.props.preview) {
       var position = {
         left: event.pageX,

@@ -295,7 +295,11 @@ class MaskBox extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    $(this.refs.aivicsBrickMask).css("display", "block");
+    if (this.props.activeBrickId) {
+      $(this.refs.aivicsBrickMask).css("display", "block");
+    }else {
+      $(this.refs.aivicsBrickMask).css("display", "none");
+    }
     var model = this.props.dataStorage.model(this.props.brickType);
     var activeBrickPosition = this.props.activeBrickPosition;
 
@@ -313,6 +317,7 @@ class MaskBox extends React.Component {
 
   contextMenu(event) {
     event.preventDefault();
+    event.stopPropagation();
     var record = this.props.dataStorage.model("Pages").find({id: this.props.activeBrickId});
     if (record.brickType == "Page") {
       var position = {

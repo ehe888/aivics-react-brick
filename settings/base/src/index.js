@@ -149,18 +149,23 @@ class BrickSettingPanel extends React.Component {
   }
 
   renderFields(){
-    var record = this.model.find({ id: this.props.activeBrickId });
-    var settingFields = _.union(this.baseSettings, record.settings);
-    console.log(record.settings)
-    var self = this;
-    return settingFields.map(function(result){
-      var r = self.fields[result];
+    if (this.props.activeBrickId) {
 
-      if(r)
-        return r();
-      else
-        return "";
-    })
+      var record = this.model.find({ id: this.props.activeBrickId });
+      var settingFields = _.union(this.baseSettings, record.settings);
+      console.log(record.settings)
+      var self = this;
+      return settingFields.map(function(result){
+        var r = self.fields[result];
+
+        if(r)
+          return r();
+        else
+          return "";
+      })
+    }else {
+      return ""
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

@@ -5,6 +5,7 @@ require("./css/style.css")
 import PageAddReference from './menuPageAddReference.js'
 import PageAddTransitionContextMenu from './menuPageAddTransition.js'
 import DeleteContextMenu from './menuDelete.js'
+import PageAddContextMenu from './menuStoryAddPage'
 
 var PageAddTransitionMenu = PageAddTransitionContextMenu.PageAddTransitionMenu;
 var PageAddTranstionList = PageAddTransitionContextMenu.PageAddTranstionList;
@@ -85,28 +86,68 @@ class ContextMenu extends React.Component {
     $(".PageAddTranstionList").hide();
   }
 
+  onPageAdd(event) {
+    event.preventDefault();
+    var self = this;
+    var top = this.props.position.top,
+        left = this.props.position.left,
+        width = 375,
+        height = 667;
+    // top -= height/2;
+    // left += width/2
+    this.props.onPageAdd(top, left);
+    $(this.refs.AivicsPageContextMenu).hide();
+  }
+
   onDeleteBrick() {
     this.props.onPageDelete();
     $(this.refs.AivicsPageContextMenu).hide();
   }
 
+  renderPageContextMenuItems() {
+    //Pages context menu item: [AddReference, AddTransition, Delete]
+    return (
+      <div>
+        <PageAddReference
+          onPageAddReference = {this.onPageAddReference}
+          ref = "AivicsContextAddReference"
+        />
+        <PageAddTransitionMenu
+          onContextTransitionMenu = {this.onContextTransitionMenu}
+          ref = "AivicsContextTransition"
+        />
+        <DeleteContextMenu
+          onPageDelete={this.onDeleteBrick}
+        />
+      </div>
+    )
+  }
+
+  renderStoryContextMenuItems() {
+    return (
+      <PageAddContextMenu
+        onPageAdd={(event)=>this.onPageAdd(event)}
+      />
+    )
+  }
+
   render() {
+    var content = "";
+    if (this.props.activeBrickId) {
+      //From now, we only have page context menu
+      //TODO: support other brickType
+
+      content = this.renderPageContextMenuItems();
+
+    }else {
+      //click in storyboard
+      content = this.renderStoryContextMenuItems();
+    }
 
     return (
       <div className="pageContextMenu" ref="AivicsPageContextMenu">
         <div className="list-group pageMainContextMenu">
-          <PageAddReference
-            onPageAddReference = {this.onPageAddReference}
-            ref = "AivicsContextAddReference"
-          />
-          <PageAddTransitionMenu
-            onContextTransitionMenu = {this.onContextTransitionMenu}
-            ref = "AivicsContextTransition"
-          />
-          <DeleteContextMenu
-            onPageDelete={this.onDeleteBrick}
-          />
-
+          {content}
         </div>
         <PageAddTranstionList
           ref = "AivicsContextTransitionPages"

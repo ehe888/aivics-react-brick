@@ -69,20 +69,21 @@ class PageTransitionNew extends React.Component {
       var remark = $(".transition-remark").val();
       this.props.onNewTransitionSubmit(this.props.activeBrickId, this.selectedToPage, remark)
       $(".transition-remark").val("");
-      
+
     }
   }
 
   render() {
     var model = this.props.dataStorage.model("Pages")
     var activeBrick = model.find({id: this.props.activeBrickId})
+    var title = activeBrick?activeBrick.title: "";
 
     return (
       <div className="pageTransitionNew">
         <div>Add New Transition</div>
         <div className="input-group">
           <span className="input-group-addon" id="from-addon1">from</span>
-          <input type="text" className="form-control" value={activeBrick.title} placeholder="from" disabled="disabled" aria-describedby="from-addon1" />
+          <input type="text" className="form-control" value={title} placeholder="from" disabled="disabled" aria-describedby="from-addon1" />
         </div>
         <PageTransitionTo
           activeBrickId = {this.props.activeBrickId}
