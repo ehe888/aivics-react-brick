@@ -2,10 +2,21 @@
 
 require("./css/style.css")
 
+import PageAddReference from './pageAddReference.js'
+import PageAddTransitionContextMenu from './pageAddTransition.js'
+
+var PageAddTransitionMenu = PageAddTransitionContextMenu.PageAddTransitionMenu;
+var PageAddTranstionList = PageAddTransitionContextMenu.PageAddTranstionList;
+
 class ContextMenu extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.onPageAddReference = this.onPageAddReference.bind(this);
+    this.onContextTransitionMenu = this.onContextTransitionMenu.bind(this);
+    this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
+
   }
 
   componentDidMount() {
@@ -50,57 +61,55 @@ class ContextMenu extends React.Component {
 
   onContextMenuClose(event) {
     $(this.refs.AivicsPageContextMenu).hide();
-    $(this.refs.AivicsContextTransitionPages).hide();
+    // $(this.refs.AivicsContextTransitionPages).hide();
+    $(".PageAddTranstionList").hide();
   }
 
   onContextTransitionMenu(show) {
     var self = this;
     if (show) {
-      $(self.refs.AivicsContextTransitionPages).css('display', 'inline-block');
+      //why not working?
+      // $(self.refs.AivicsContextTransitionPages).css('display', 'inline-block');
+      $(".PageAddTranstionList").css('display', 'inline-block');
     }else {
-      $(self.refs.AivicsContextTransitionPages).hide();
+      $(".PageAddTranstionList").hide();
+      // $(self.refs.AivicsContextTransitionPages).hide();
     }
   }
 
   onNewTransitionSubmit(selectedToPageId) {
     this.props.onNewTransitionSubmit(this.props.activeBrickId, selectedToPageId, "")
     $(this.refs.AivicsPageContextMenu).hide();
-    $(this.refs.AivicsContextTransitionPages).hide();
+    // $(this.refs.AivicsContextTransitionPages).hide();
+    $(".PageAddTranstionList").hide();
   }
 
   render() {
 
-    var self = this;
-    var model = this.props.dataStorage.model("Pages");
-    var activeBrickId = this.props.activeBrickId;
-    var contents = model.find().map(function(brick, i){
-      if (brick.id == activeBrickId) {
-        return;
-      }
-      return (
-        <button id={brick.id} key={brick.id} type="button" className="list-group-item"
-          onClick={(event)=>self.onNewTransitionSubmit(brick.id)}>{brick.title}</button>
-      )
-    })
-
     return (
       <div className="pageContextMenu" ref="AivicsPageContextMenu">
         <div className="list-group pageMainContextMenu">
-          <button type="button" className="list-group-item"
-            onClick={(event)=>this.onPageAddReference(event)}>Add Reference</button>
-            <button type="button" className="list-group-item" ref="AivicsContextTransition"
-              onClick={(event)=>this.onContextTransitionMenu(true)}>Add Transition</button>
+          <PageAddReference
+            onPageAddReference = {this.onPageAddReference}
+            ref = "AivicsContextAddReference"
+          />
+          <PageAddTransitionMenu
+            onContextTransitionMenu = {this.onContextTransitionMenu}
+            ref = "AivicsContextTransition"
+          />
 
         </div>
-        <div className="list-group pages" ref="AivicsContextTransitionPages">
-          {contents}
+        <PageAddTranstionList
+          ref = "AivicsContextTransitionPages"
+          dataStorage={this.props.dataStorage}
+          activeBrickId={this.props.activeBrickId}
+          onNewTransitionSubmit={this.onNewTransitionSubmit}
+        />
 
-        </div>
       </div>
     )
 
   }
-
 }
 
 module.exports = ContextMenu;
