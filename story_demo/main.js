@@ -44,7 +44,7 @@ var data = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 0",
-    settings: ["pageTitle", "imageUrl", "pageReference"],
+    settings: ["pageTitle", "imageUrl"],
     bricks: []
 });
 
@@ -62,7 +62,7 @@ var data2 = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 1",
-    settings: ["pageTitle", "imageUrl", "pageReference"]
+    settings: ["pageTitle", "imageUrl"]
 });
 
 var data3 = DataStorage.model('Pages').upsert({
@@ -79,7 +79,7 @@ var data3 = DataStorage.model('Pages').upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 2",
-    settings: ["pageTitle", "imageUrl", "pageReference"]
+    settings: ["pageTitle", "imageUrl"]
 });
 
 
@@ -99,6 +99,7 @@ class Story extends React.Component {
     this.onPageAddReference = this.onPageAddReference.bind(this);
     this.onPageContextMenu = this.onPageContextMenu.bind(this);
     this.onTransitionSelected = this.onTransitionSelected.bind(this);
+    this.onTransitionChanged = this.onTransitionChanged.bind(this);
 
     this.onPreview = this.onPreview.bind(this);
 
@@ -240,7 +241,7 @@ class Story extends React.Component {
         "backgroundOpacity": 1,
         "title": title,
         classNames: [ 'aClass', 'bClass' ],
-        settings: ["pageTitle", "imageUrl", "pageReference"]
+        settings: ["pageTitle", "imageUrl"]
     })
     this.setState({
       activeBrickId: newPage.id,
@@ -376,9 +377,16 @@ class Story extends React.Component {
 
   }
 
-  onPageAddReference() {
+  onTransitionChanged(transitionId, remark) {
+    var transition = DataStorage.model("Transitions").find({id: transitionId});
+    transition.remark = remark;
+    this.setState(this.state)
+  }
+
+  onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
+
     if (this.state.activeBrickType == "Page") {
-      var page = DataStorage.model("Pages").find({id: this.state.activeBrickId});
+      var page = DataStorage.model("Pages").find({id: id});
       if (!page.bricks) {
         page.bricks = [];
       }
@@ -388,10 +396,10 @@ class Story extends React.Component {
         name: "reference",
         brickType: "PageReference",
         offset: {
-          top: 50,
-          left: 120,
-          width: 200,
-          height: 50
+          top: top,
+          left: left,
+          width: width,
+          height: height
         },
         "zIndex": 100,
         "backgroundColor": "#FFFFFF",
@@ -538,6 +546,7 @@ class Story extends React.Component {
           dataStorage={DataStorage}
           transitionId={this.state.activeTransitionId}
           onTransitionDeleteClick={this.onTransitionDeleteClick}
+          onTransitionChanged={this.onTransitionChanged}
         />
       </div>
 

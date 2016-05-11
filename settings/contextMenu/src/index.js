@@ -33,8 +33,20 @@ class ContextMenu extends React.Component {
 
   onPageAddReference(event) {
     event.preventDefault();
+    var self = this;
+    var top = this.props.position.top,
+        left = this.props.position.left,
+        width = 200,
+        height = 50;
 
-    this.props.onPageAddReference(this.props.activeBrickId);
+    var parent = this.props.dataStorage.model("Pages").find({ id: this.props.activeBrickId });
+    var offset = parent.offset;
+    top -= offset.top;
+    left -= offset.left;
+    top -= (64 + height/2);
+    // left -= (width / 2)
+    console.info(top + ", " + left)
+    this.props.onPageAddReference(this.props.activeBrickId, top, left);
     $(this.refs.AivicsPageContextMenu).hide();
   }
 
@@ -80,13 +92,11 @@ class ContextMenu extends React.Component {
             onClick={(event)=>this.onPageAddReference(event)}>Add Reference</button>
             <button type="button" className="list-group-item" ref="AivicsContextTransition"
               onClick={(event)=>this.onContextTransitionMenu(true)}>Add Transition</button>
-          <button type="button" className="list-group-item"
-            onClick={(event)=>this.onContextMenuClose(event)}>Close</button>
+
         </div>
         <div className="list-group pages" ref="AivicsContextTransitionPages">
           {contents}
-          <button type="button" className="list-group-item"
-            onClick={(event)=>this.onContextTransitionMenu(false)}>Close</button>
+
         </div>
       </div>
     )

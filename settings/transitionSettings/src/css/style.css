@@ -2,8 +2,12 @@
   margin-top: 20px;
   width: 100%;
   margin-left: 0px; }
+  .transitionSettings .btn-group p {
+    text-align: center; }
   .transitionSettings .btn-group .btn {
     width: 100%; }
+.transitionSettings .input-group {
+  margin-top: 20px; }
 .transitionSettings .transitionDelete {
   margin-top: 20px; }
 
