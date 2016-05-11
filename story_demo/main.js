@@ -324,7 +324,7 @@ class Story extends React.Component {
     }
   }
 
-  onNewTransitionSubmit(fromPageId, toPageId, remark) {
+  onNewTransitionSubmit(fromPageId, toPageId ,remark) {
     var transitions = DataStorage.model('Transitions').find();
     var hasTransition = false;
     if (transitions) {

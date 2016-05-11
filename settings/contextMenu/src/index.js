@@ -44,8 +44,6 @@ class ContextMenu extends React.Component {
     top -= offset.top;
     left -= offset.left;
     top -= (64 + height/2);
-    // left -= (width / 2)
-    console.info(top + ", " + left)
     this.props.onPageAddReference(this.props.activeBrickId, top, left);
     $(this.refs.AivicsPageContextMenu).hide();
   }
