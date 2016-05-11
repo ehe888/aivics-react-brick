@@ -22,8 +22,9 @@ class Preview extends React.Component {
   constructor(props){
     super(props)
 
+    var pageId = DataStorage.model("Pages").find()[0].id;
     this.state = {
-      pageId: this.props.pageId || ''
+      pageId: pageId || ''
     }
   }
 
@@ -104,10 +105,14 @@ class Preview extends React.Component {
     var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
       var $page = $(pages[i]);
-
+      console.info("attr: ", $page.attr('data-preview-id'))
+      console.info("from Page: ", fromPageId);
+      console.info("to Page: ", toPageId)
       if ($page.attr('data-preview-id') == fromPageId) {
+        console.info("from page success")
         $fromPage = $page;
       }else if ($page.attr('data-preview-id') == toPageId) {
+        console.info("to page success")
         $toPage = $page;
       }
     }

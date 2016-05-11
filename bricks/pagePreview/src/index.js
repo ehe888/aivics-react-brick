@@ -36,9 +36,8 @@ class PagePreview extends React.Component {
 
 
   componentDidUpdate(){
-    // var record = this.model.find({ id: this.props.id });
-    // this.reload(record);
-    // this.updateContentView();
+    var record = this.model.find({ id: this.props.id });
+    $(this.refs[this.refName]).css(record);
   }
 
   handleOverlayClick(e) {
