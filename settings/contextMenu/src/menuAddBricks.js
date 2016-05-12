@@ -27,6 +27,8 @@ class AddBricksListMenu extends React.Component {
           onClick={(event)=>this.props.onAddNewBrick("Base")}>Base</button>
         <button type="button" className="list-group-item"
           onClick={(event)=>this.props.onAddNewBrick("Label", ["labelText"])}>Label</button>
+        <button type="button" className="list-group-item"
+          onClick={(event)=>this.props.onAddNewBrick("Image", ["imageUrl"])}>Image</button>
       </div>
     )
   }

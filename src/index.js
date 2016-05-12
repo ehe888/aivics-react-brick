@@ -3,6 +3,7 @@
 var MaskBox = require("../bricks/mask/src");
 var BaseBrick = require("../bricks/base/src");
 var LabelBrick = require("../bricks/label/src");
+var ImageBrick = require("../bricks/image/src");
 var BaseBrickSettingPanel = require("../settings/base/src");
 var Page = require("../bricks/page/src");
 var PageReference = require("../bricks/pageReference/src")
@@ -20,6 +21,7 @@ var Bricks = function(){
    * Base Brick and Setting Panel
    */
   this.Base = BaseBrick;
+  this.Image = ImageBrick;
   this.settings.Base = BaseBrickSettingPanel;
 
   this.Page = Page;
