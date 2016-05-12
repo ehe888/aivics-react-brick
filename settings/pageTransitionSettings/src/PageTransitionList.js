@@ -31,7 +31,7 @@ class PageTransitionList extends React.Component {
   render() {
     var self = this;
     var transitions = this.props.dataStorage.model("Transitions").find();
-    var pageModels = this.props.dataStorage.model("Pages");
+    var pageModels = this.props.dataStorage.model("Bricks");
     var activeBrickId = this.props.activeBrickId;
     var activePage = pageModels.find({id: activeBrickId});
     var lists = "";

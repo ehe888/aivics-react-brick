@@ -105,7 +105,7 @@ class BrickSettingPanel extends React.Component {
       super(props);
       this.refName = "aivicsPageSetting";
       this.dataStorage = this.props.dataStorage;
-      this.model = this.dataStorage.model("Pages");
+      this.model = this.dataStorage.model("Brick");
 
       this.getDOMElement = function(){
         return this.refs[this.refName];

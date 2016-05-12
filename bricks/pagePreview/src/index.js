@@ -8,7 +8,7 @@ class PagePreview extends React.Component {
     super(props)
 
     this.refName = "aivicsPage";
-    this.model = this.props.dataStorage.model("Pages");
+    this.model = this.props.dataStorage.model("Bricks");
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     // this.reload = this.reload.bind(this);
     this.getDOMElement = this.getDOMElement.bind(this);

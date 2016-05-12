@@ -25,7 +25,9 @@ class ContextMenu extends React.Component {
     this.componentPositionReload();
     var self = this;
     $(this.refs.AivicsPageContextMenu).hide();
-    $(".story").click(function(){
+    $(".story").click(function(event){
+      // event.preventDefault();
+      // event.stopPropagation();
       self.onContextMenuClose();
     })
   }
@@ -52,7 +54,7 @@ class ContextMenu extends React.Component {
         width = 200,
         height = 50;
 
-    var parent = this.props.dataStorage.model("Pages").find({ id: this.props.activeBrickId });
+    var parent = this.props.dataStorage.model("Bricks").find({ id: this.props.activeBrickId });
     var offset = parent.offset;
     top -= offset.top;
     left -= offset.left;
@@ -70,6 +72,7 @@ class ContextMenu extends React.Component {
 
   onContextTransitionMenu(show) {
     var self = this;
+    $(this.refs.AivicsPageContextMenu).show();
     if (show) {
       //why not working?
       // $(self.refs.AivicsContextTransitionPages).css('display', 'inline-block');

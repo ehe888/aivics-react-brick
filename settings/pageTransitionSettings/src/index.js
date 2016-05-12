@@ -23,7 +23,7 @@ class PageTransition extends React.Component {
 
   render() {
 
-    var model = this.props.dataStorage.model("Pages")
+    var model = this.props.dataStorage.model("Bricks")
     var activeBrick = model.find({id: this.props.activeBrickId})
 
     return (

@@ -10,7 +10,7 @@ class PageReference extends React.Component {
     var ids = this.props.id.split("/");
     this.refName = ids[ids.length-1];
 
-    this.model = this.props.dataStorage.model("Pages");
+    this.model = this.props.dataStorage.model("Bricks");
   }
 
   componentDidMount() {

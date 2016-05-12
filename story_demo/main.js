@@ -25,13 +25,13 @@ import DataStorage from './DataStorage'
 
 //defin BrickType and ModelType name
 const _pageBrickType = 'Page';
-const _pageModelType = 'Pages';
+const _pageModelType = 'Bricks';
 const _pageReferenceBrickType = 'PageReference';
-const _pageReferenceModelType = 'Pages';
+const _pageReferenceModelType = 'Bricks';
 const _transitionBrickType = 'Transition';
 const _transitionModelType = 'Transitions';
 
-var data = DataStorage.model('Pages').upsert({
+var data = DataStorage.model("Bricks").upsert({
     name: "a brick",
     brickType: "Page",
     offset: {
@@ -49,7 +49,7 @@ var data = DataStorage.model('Pages').upsert({
     bricks: []
 });
 
-var data2 = DataStorage.model('Pages').upsert({
+var data2 = DataStorage.model("Bricks").upsert({
     name: "a brick",
     brickType: "Page",
     offset: {
@@ -66,7 +66,7 @@ var data2 = DataStorage.model('Pages').upsert({
     settings: ["pageTitle", "imageUrl"]
 });
 
-var data3 = DataStorage.model('Pages').upsert({
+var data3 = DataStorage.model("Bricks").upsert({
     name: "a brick",
     brickType: "Page",
     offset: {
@@ -138,7 +138,7 @@ class Story extends React.Component {
   }
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
-    var record = DataStorage.model("Pages").find({ id: brickId });
+    var record = DataStorage.model("Bricks").find({ id: brickId });
 
     console.log({ fieldName: fieldName, changeToValue: changeToValue });
     let position = this.state.activeBrickPosition,
@@ -187,7 +187,7 @@ class Story extends React.Component {
       //position.height = 1;
     }
 
-    var record = DataStorage.model("Pages").find({ id: activeBrickId });
+    var record = DataStorage.model("Bricks").find({ id: activeBrickId });
     if(!record){
       return;
     }
@@ -205,7 +205,7 @@ class Story extends React.Component {
         if (i == ids.length-1) {
           return;
         }
-        var parent = DataStorage.model("Pages").find({ id: id });
+        var parent = DataStorage.model("Bricks").find({ id: id });
         var offset = parent.offset;
         position.top -= offset.top;
         position.left -= offset.left;
@@ -227,9 +227,9 @@ class Story extends React.Component {
   }
 
   onPageAdd(top = 10, left = 400){
-    var currentPages = DataStorage.model('Pages').find();
+    var currentPages = DataStorage.model("Bricks").find();
     var title = "new page " + currentPages.length;
-    var newPage = DataStorage.model('Pages').upsert({
+    var newPage = DataStorage.model("Bricks").upsert({
         name: "a brick",
         brickType: "Page",
         offset: {
@@ -260,7 +260,7 @@ class Story extends React.Component {
   onPageDelete(){
     var activeBrickId = this.state.activeBrickId
 
-    var model = DataStorage.model('Pages'),
+    var model = DataStorage.model("Bricks"),
         pages = model.find();
 
     if (pages.length > 1) {
@@ -291,7 +291,7 @@ class Story extends React.Component {
   }
 
   onPageContextMenu(brickId, position) {
-    var record = DataStorage.model("Pages").find({id: brickId});
+    var record = DataStorage.model("Bricks").find({id: brickId});
     $(".pageContextMenu").show();
 
     var scroll = {
@@ -400,7 +400,7 @@ class Story extends React.Component {
   onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
 
     if (this.state.activeBrickType == "Page") {
-      var page = DataStorage.model("Pages").find({id: id});
+      var page = DataStorage.model("Bricks").find({id: id});
       if (!page.bricks) {
         page.bricks = [];
       }
@@ -438,9 +438,9 @@ class Story extends React.Component {
   mapBrickTypeToModelType(brickType){
     switch (brickType) {
       case 'Page':
-        return 'Pages';break;
+        return 'Bricks';break;
       case 'PageReference':
-        return 'Pages';break;
+        return 'Bricks';break;
       case 'Transition':
         return 'Transitions';break;
       default:
@@ -483,7 +483,7 @@ class Story extends React.Component {
           if (i == ids.length -1) {
             return;
           }
-          var component = DataStorage.model("Pages").find({id: id});
+          var component = DataStorage.model("Bricks").find({id: id});
           var position = component.offset;
           brickPosition.top += position.top;
           brickPosition.left += position.left;
@@ -493,7 +493,7 @@ class Story extends React.Component {
     }
 
 
-    var components = DataStorage.model("Pages").find();
+    var components = DataStorage.model("Bricks").find();
 
     var contents = components.map(function(comp){
       var DynaBrick = Bricks[comp.brickType];

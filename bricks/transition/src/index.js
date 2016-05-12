@@ -64,7 +64,7 @@ class Transition extends React.Component {
 
     var fromPageId = this.props.fromPageId,
         toPageId = this.props.toPageId,
-        model = this.props.dataStorage.model("Pages"),
+        model = this.props.dataStorage.model("Bricks"),
         fromPage = model.find({id: fromPageId}),
         toPage = model.find({id: toPageId});
 

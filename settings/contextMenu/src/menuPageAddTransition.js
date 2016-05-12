@@ -5,14 +5,16 @@ class PageAddTransitionMenu extends React.Component {
     super(props)
   }
 
-  onContextTransitionMenu(show) {
-    this.props.onContextTransitionMenu(show);
+  onContextTransitionMenu(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.onContextTransitionMenu(true);
   }
 
   render() {
     return (
       <button type="button" className="list-group-item" ref="AivicsContextTransition"
-        onClick={(event)=>this.onContextTransitionMenu(true)}>Add Transition</button>
+        onClick={(event)=>this.onContextTransitionMenu(event)}>Add Transition</button>
     )
   }
 }
@@ -28,7 +30,7 @@ class PageAddTranstionList extends React.Component {
 
   render() {
     var self = this;
-    var model = this.props.dataStorage.model("Pages");
+    var model = this.props.dataStorage.model("Bricks");
     var activeBrickId = this.props.activeBrickId;
     var contents = model.find().map(function(brick, i){
       if (brick.id == activeBrickId) {

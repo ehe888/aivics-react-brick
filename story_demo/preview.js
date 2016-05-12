@@ -22,14 +22,14 @@ class Preview extends React.Component {
   constructor(props){
     super(props)
 
-    var pageId = DataStorage.model("Pages").find()[0].id;
+    var pageId = DataStorage.model("Bricks").find()[0].id;
     this.state = {
       pageId: pageId || ''
     }
   }
 
   componentDidMount() {
-    var page = DataStorage.model("Pages").find()[0];
+    var page = DataStorage.model("Bricks").find()[0];
     $(".preview-wrapper").css({
       'width': page.offset.width,
       'height': page.offset.height
@@ -39,7 +39,7 @@ class Preview extends React.Component {
   }
 
   componentDidUpdate() {
-    var pageId = DataStorage.model("Pages").find()[0].id;
+    var pageId = DataStorage.model("Bricks").find()[0].id;
     this.pageViewUpdate(pageId);
   }
 
@@ -51,7 +51,7 @@ class Preview extends React.Component {
 
     var pageId = id?pageId:this.state.pageId;
     if (!pageId || pageId.length <= 0) {
-      pageId = DataStorage.model("Pages").find()[0].id;
+      pageId = DataStorage.model("Bricks").find()[0].id;
     }
 
     var pages = $(".preview").find($(".aivics-page-preview"));
@@ -73,7 +73,7 @@ class Preview extends React.Component {
 
   refreshPreview() {
 
-    var pageId = DataStorage.model("Pages").find()[0].id;
+    var pageId = DataStorage.model("Bricks").find()[0].id;
     this.setState({
       'pageId': pageId
     })
@@ -140,7 +140,7 @@ class Preview extends React.Component {
 
   renderPages() {
     var self = this;
-    var pages = DataStorage.model("Pages").find();
+    var pages = DataStorage.model("Bricks").find();
     var content = pages.map(function(page, i){
 
         return (
