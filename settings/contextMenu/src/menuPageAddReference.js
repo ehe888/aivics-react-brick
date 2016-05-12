@@ -8,7 +8,7 @@ class PageAddReference extends React.Component {
   render () {
     return (
       <button type="button" className="list-group-item"
-        onClick={(event)=>this.props.onPageAddReference(event)}>Add Reference</button>
+        onClick={(event)=>this.props.onPageAddReference(event)}>Add Bricks</button>
     )
   }
 }

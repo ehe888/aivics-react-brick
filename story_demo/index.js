@@ -5,6 +5,8 @@ import Preview from "./preview"
 
 import DataStorage from './DataStorage'
 
+import Config from "./config"
+
 class Workspace extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ class Workspace extends React.Component {
 
     this.state = {
       preview: false,
-      treeName: "referenceTree"
+      treeName: Config.mode.engineeringTree
     }
   }
 
@@ -39,11 +41,13 @@ class Workspace extends React.Component {
         <Story ref="AivicsStory"
                showPreview={(event)=>this.showPreview(true)}
                treeName={this.state.treeName}
+               config = {Config}
                 />
         <Preview
           ref="AivicsPreview"
           showStory={(event=>this.showPreview(false))}
-          treeName={this.state.treeName}/>
+          treeName={this.state.treeName}
+          config = {Config}/>
       </div>
     )
   }

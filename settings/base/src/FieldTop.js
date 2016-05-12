@@ -33,7 +33,7 @@ class FieldTop extends React.Component {
         var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
         record.offset.top = changeToValue;
         //notify parent
-        self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
+        self.props.onBrickSettingChange(self.props.brickId, fieldName, changeToValue);
       }
 
     }, delay ));

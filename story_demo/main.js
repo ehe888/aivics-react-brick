@@ -91,6 +91,7 @@ class Story extends React.Component {
     this.onBrickResize = this.onBrickResize.bind(this);
     this.onBrickSettingChange = this.onBrickSettingChange.bind(this);
     this.onPageAdd = this.onPageAdd.bind(this);
+    this.onBrickAdd = this.onBrickAdd.bind(this);
     this.onPageDelete = this.onPageDelete.bind(this);
 
     this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
@@ -117,12 +118,13 @@ class Story extends React.Component {
         contextMenuPosition: {left: 0, top: 0},
         activeTransitionId: null
     }
+
   }
 
   onBrickSelect(e, brickId, position) {
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
                       .find({id: brickId}, this.props.treeName);
-
+    console.info(brickId)
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -139,8 +141,7 @@ class Story extends React.Component {
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
     var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
-
-    console.log({ fieldName: fieldName, changeToValue: changeToValue });
+    console.info(brickId);
     let position = this.state.activeBrickPosition,
         brickType = this.state.activeBrickType;
 
@@ -150,7 +151,7 @@ class Story extends React.Component {
       settingChangeValue: changeToValue,
       activeBrickPosition: position,
       activeBrickType: brickType
-    });
+    })
 
   }
 
@@ -225,6 +226,43 @@ class Story extends React.Component {
     $(".transitionSettings").hide();
     $(".aivics-brick-setting-panel").show();
   }
+
+  onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
+
+    if (this.state.activeBrickType == "Page") {
+      var page = DataStorage.model("Bricks").find({id: id});
+      if (!page.engineeringTree) {
+        page.engineeringTree = [];
+      }
+
+      var newBrick = {
+        id: uuid.v4(),
+        name: "brick",
+        brickType: "Base",
+        offset: {
+          top: top,
+          left: left,
+          width: width,
+          height: height
+        },
+        "zIndex": 100,
+        "backgroundColor": "#FFFFFF",
+        "backgroundOpacity": 1,
+        "settings": []
+      };
+      page.engineeringTree.push(newBrick)
+      this.setState({
+        activeBrickId: page.id+"/"+newBrick.id,
+        activeBrickPosition: newBrick.offset,
+        activeBrickType: newBrick.brickType,
+        settingChangeName: null,
+        settingChangeValue: null
+      });
+      $(".transitionSettings").hide();
+      $(".aivics-brick-setting-panel").show();
+    }
+  }
+
 
   onPageAdd(top = 10, left = 400){
     var currentPages = DataStorage.model("Bricks").find();
@@ -563,9 +601,11 @@ class Story extends React.Component {
             dataStorage = {DataStorage}
             onNewTransitionSubmit = {this.onNewTransitionSubmit}
             onPageAdd = {this.onPageAdd}
+            onBrickAdd = {this.onBrickAdd}
             onPageDelete = {this.onPageDelete}
             brickType = {brickType}
             treeName = {this.props.treeName}
+            config = {this.props.config}
           />
         </div>
 

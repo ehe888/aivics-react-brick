@@ -5,7 +5,8 @@ require("./css/style.css")
 import PageAddReference from './menuPageAddReference.js'
 import PageAddTransitionContextMenu from './menuPageAddTransition.js'
 import DeleteContextMenu from './menuDelete.js'
-import PageAddContextMenu from './menuStoryAddPage'
+import AddBricksContextMenu from './menuAddBricks'
+
 
 var PageAddTransitionMenu = PageAddTransitionContextMenu.PageAddTransitionMenu;
 var PageAddTranstionList = PageAddTransitionContextMenu.PageAddTranstionList;
@@ -15,7 +16,7 @@ class ContextMenu extends React.Component {
   constructor(props) {
     super(props)
 
-    this.onPageAddReference = this.onPageAddReference.bind(this);
+    this.onAddBricksContextMenu = this.onAddBricksContextMenu.bind(this);
     this.onContextTransitionMenu = this.onContextTransitionMenu.bind(this);
     this.onNewTransitionSubmit = this.onNewTransitionSubmit.bind(this);
     this.onDeleteBrick = this.onDeleteBrick.bind(this);
@@ -26,8 +27,6 @@ class ContextMenu extends React.Component {
     var self = this;
     $(this.refs.AivicsPageContextMenu).hide();
     $(".story").click(function(event){
-      // event.preventDefault();
-      // event.stopPropagation();
       self.onContextMenuClose();
     })
   }
@@ -46,7 +45,7 @@ class ContextMenu extends React.Component {
     })
   }
 
-  onPageAddReference(event) {
+  onAddBricksContextMenu(event) {
     event.preventDefault();
     var self = this;
     var top = this.props.position.top,
@@ -60,7 +59,11 @@ class ContextMenu extends React.Component {
     left -= offset.left;
     top -= (64 + height/2);
 
-    this.props.onPageAddReference(this.props.activeBrickId, top, left);
+    if (this.props.treeName == this.props.config.mode.referenceTree) {
+      this.props.onPageAddReference(this.props.activeBrickId, top, left);
+    }else {
+      this.props.onBrickAdd(this.props.activeBrickId, top, left);
+    }
     $(this.refs.AivicsPageContextMenu).hide();
   }
 
@@ -112,9 +115,9 @@ class ContextMenu extends React.Component {
     //Pages context menu item: [AddReference, AddTransition, Delete]
     return (
       <div>
-        <PageAddReference
-          onPageAddReference = {this.onPageAddReference}
-          ref = "AivicsContextAddReference"
+        <AddBricksContextMenu
+          onAddBricksContextMenu = {this.onAddBricksContextMenu}
+          ref = "AivicsContextAddBricksContextMenu"
         />
         <PageAddTransitionMenu
           onContextTransitionMenu = {this.onContextTransitionMenu}

@@ -40,7 +40,7 @@ class Brick extends React.Component {
   //Use data to update view settings, TODO: implement as a delegate method
   reload(data){
     $(this.getDOMElement())
-              .css(data.dimension)
+              .css(data.offset)
               .css(data);
   }
 
@@ -50,7 +50,7 @@ class Brick extends React.Component {
   }
 
   componentDidMount(){
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
     this.reload(record);
   }
 
@@ -70,11 +70,11 @@ class Brick extends React.Component {
     var width = $this.width();
     var height = $this.height();
 
-    if(this.props.containerId){
-        var container = this.model.find({ id: this.props.containerId });
-        left +=container.dimension.left;
-        top += container.dimension.top;
-    }
+    // if(this.props.containerId){
+    //     var container = this.model.find({ id: this.props.containerId }, this.props.treeName);
+    //     left +=container.offset.left;
+    //     top += container.offset.top;
+    // }
 
     var position = {
       left: left,
@@ -103,7 +103,7 @@ class Brick extends React.Component {
   renderNest(){
     var self = this;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
 
     if(!_.isEmpty(record.bricks)){
       return record.bricks.map(function(b){
