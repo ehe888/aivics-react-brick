@@ -302,6 +302,9 @@ class Story extends React.Component {
     position.left += scroll.left;
     position.top += scroll.top - 40;
 
+    position.left/= this.state.storyScale;
+    position.top /= this.state.storyScale;
+
     this.setState({
         activeBrickId:brickId,
         activeBrickPosition: record?record.offset : this.state.activeBrickPosition,
