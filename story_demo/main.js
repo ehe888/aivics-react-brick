@@ -293,6 +293,15 @@ class Story extends React.Component {
   onPageContextMenu(brickId, position) {
     var record = DataStorage.model("Pages").find({id: brickId});
     $(".pageContextMenu").show();
+
+    var scroll = {
+      left: $(".story")[0].scrollLeft,
+      top: $(".story")[0].scrollTop
+    }
+
+    position.left += scroll.left;
+    position.top += scroll.top - 40;
+
     this.setState({
         activeBrickId:brickId,
         activeBrickPosition: record?record.offset : this.state.activeBrickPosition,
@@ -541,17 +550,18 @@ class Story extends React.Component {
               onPageContextMenu = {self.onPageContextMenu}
               onBrickResize={this.onBrickResize} />
           {transition}
+          <PageContextMenu
+            activeBrickId={this.state.activeBrickId}
+            position={this.state.contextMenuPosition}
+            onPageAddReference={this.onPageAddReference}
+            dataStorage = {DataStorage}
+            onNewTransitionSubmit = {this.onNewTransitionSubmit}
+            onPageAdd = {this.onPageAdd}
+            onPageDelete = {this.onPageDelete}
+            brickType = {brickType}
+          />
         </div>
-        <PageContextMenu
-          activeBrickId={this.state.activeBrickId}
-          position={this.state.contextMenuPosition}
-          onPageAddReference={this.onPageAddReference}
-          dataStorage = {DataStorage}
-          onNewTransitionSubmit = {this.onNewTransitionSubmit}
-          onPageAdd = {this.onPageAdd}
-          onPageDelete = {this.onPageDelete}
-          brickType = {brickType}
-        />
+
         <BrickSetting
             activeBrickId={this.state.activeBrickId}
             dataStorage={DataStorage}
