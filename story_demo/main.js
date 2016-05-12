@@ -121,7 +121,7 @@ class Story extends React.Component {
 
   onBrickSelect(e, brickId, position) {
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
-                      .find({id: brickId}, Page.treeName.referenceTree);
+                      .find({id: brickId}, this.props.treeName);
 
     this.setState({
       activeBrickId: brickId,
@@ -138,7 +138,7 @@ class Story extends React.Component {
   }
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
-    var record = DataStorage.model("Bricks").find({ id: brickId }, Page.treeName.referenceTree);
+    var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
 
     console.log({ fieldName: fieldName, changeToValue: changeToValue });
     let position = this.state.activeBrickPosition,
@@ -160,7 +160,7 @@ class Story extends React.Component {
     var editorWidth = $(this.refs.story).width();
     var editorHeight = $(this.refs.story).height();
 
-
+    var self = this;
     //Constrain the component inside the container
     if(position.left < 0){
       position.left = 0;
@@ -187,7 +187,7 @@ class Story extends React.Component {
       //position.height = 1;
     }
 
-    var record = DataStorage.model("Bricks").find({ id: activeBrickId }, Page.treeName.referenceTree);
+    var record = DataStorage.model("Bricks").find({ id: activeBrickId }, this.props.treeName);
     if(!record){
       return;
     }
@@ -205,7 +205,7 @@ class Story extends React.Component {
         if (i == ids.length-1) {
           return;
         }
-        var parent = DataStorage.model("Bricks").find({ id: id }, Page.treeName.referenceTree);
+        var parent = DataStorage.model("Bricks").find({ id: id }, self.props.treeName);
         var offset = parent.offset;
         position.top -= offset.top;
         position.left -= offset.left;
@@ -291,7 +291,7 @@ class Story extends React.Component {
   }
 
   onPageContextMenu(brickId, position) {
-    var record = DataStorage.model("Bricks").find({id: brickId}, Page.treeName.referenceTree);
+    var record = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
     $(".pageContextMenu").show();
 
     var scroll = {
@@ -483,7 +483,7 @@ class Story extends React.Component {
           if (i == ids.length -1) {
             return;
           }
-          var component = DataStorage.model("Bricks").find({id: id}, Page.treeName.referenceTree);
+          var component = DataStorage.model("Bricks").find({id: id}, self.props.treeName);
           var position = component.offset;
           brickPosition.top += position.top;
           brickPosition.left += position.left;
@@ -503,7 +503,7 @@ class Story extends React.Component {
           dataStorage={DataStorage}
           onPageContextMenu = {self.onPageContextMenu}
           preview={false}
-          treeName={Page.treeName.referenceTree}
+          treeName={self.props.treeName}
           onBrickSelect={self.onBrickSelect} />
       )
     });
@@ -552,7 +552,7 @@ class Story extends React.Component {
               storyScale = {this.state.storyScale}
               dataStorage = {DataStorage}
               brickType = {brickType}
-              treeName = {Page.treeName.referenceTree}
+              treeName = {this.props.treeName}
               onPageContextMenu = {self.onPageContextMenu}
               onBrickResize={this.onBrickResize} />
           {transition}
@@ -565,7 +565,7 @@ class Story extends React.Component {
             onPageAdd = {this.onPageAdd}
             onPageDelete = {this.onPageDelete}
             brickType = {brickType}
-            treeName = {Page.treeName.referenceTree}
+            treeName = {this.props.treeName}
           />
         </div>
 
@@ -576,7 +576,7 @@ class Story extends React.Component {
             onPageAddReference={this.onPageAddReference}
             settingChangeName={this.state.settingChangeName}
             settingChangeValue={this.state.settingChangeValue}
-            treeName = {Page.treeName.referenceTree}
+            treeName = {this.props.treeName}
             onBrickSettingChange={this.onBrickSettingChange} />
         <PageTransitionSettings
           activeBrickId={this.state.activeBrickId}

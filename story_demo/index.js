@@ -12,7 +12,8 @@ class Workspace extends React.Component {
     this.showPreview = this.showPreview.bind(this);
 
     this.state = {
-      preview: false
+      preview: false,
+      treeName: "referenceTree"
     }
   }
 
@@ -35,8 +36,14 @@ class Workspace extends React.Component {
   render() {
     return (
       <div>
-        <Story ref="AivicsStory" showPreview={(event)=>this.showPreview(true)}/>
-        <Preview ref="AivicsPreview" showStory={(event=>this.showPreview(false))}/>
+        <Story ref="AivicsStory"
+               showPreview={(event)=>this.showPreview(true)}
+               treeName={this.state.treeName}
+                />
+        <Preview
+          ref="AivicsPreview"
+          showStory={(event=>this.showPreview(false))}
+          treeName={this.state.treeName}/>
       </div>
     )
   }
