@@ -2,7 +2,7 @@
 
 require("./css/style.css")
 
-import PageAddReference from './menuPageAddReference.js'
+import PageAddContextMenu from './menuStoryAddPage.js'
 import PageAddTransitionContextMenu from './menuPageAddTransition.js'
 import DeleteContextMenu from './menuDelete.js'
 import AddBricksContextMenu from './menuAddBricks'
