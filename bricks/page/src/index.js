@@ -104,9 +104,9 @@ class Page extends React.Component  {
   renderNest(){
     var self = this;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id });
-    if(!_.isEmpty(record.bricks)){
-      return record.bricks.map(function(b){
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    if(!_.isEmpty(record[this.props.treeName])){
+      return record[this.props.treeName].map(function(b){
         var bid = parentId + "/" + b.id;
 
         var TagName = $.Bricks[b.brickType];
@@ -160,6 +160,11 @@ class Page extends React.Component  {
       </div>
     )
   }
+}
+
+Page.treeName = {
+  referenceTree: "referenceTree",
+  engineeringTree: "engineeringTree"
 }
 
 module.exports = Page;

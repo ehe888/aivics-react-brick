@@ -30,7 +30,7 @@ class FieldLabelText extends React.Component {
       //change Label of brick
       //then notify parent
       //Update birck Label
-      var record = self.props.model.find({ id: self.props.brickId });
+      var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
       record.labelText = changeToValue;
       //notify parent
       self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
@@ -57,7 +57,7 @@ class FieldLabelText extends React.Component {
               ref={this.refName}
               key={this.refName}
               name={this.refName}
-              defaultValue={this.props.model.find({ id: this.props.brickId }).labelText}
+              defaultValue={this.props.model.find({ id: this.props.brickId }, this.props.treeName).labelText}
               className="form-control"
               placeholder="Label"
               onInput={this.handleChange}

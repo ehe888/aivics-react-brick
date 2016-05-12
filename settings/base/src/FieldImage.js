@@ -30,7 +30,7 @@ class FieldImage extends React.Component {
       //change Label of brick
       //then notify parent
       //Update birck Label
-      var record = self.props.model.find({ id: self.props.brickId });
+      var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
       record.imageUrl = changeToValue;
       //notify parent
       self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
@@ -39,7 +39,7 @@ class FieldImage extends React.Component {
   }
 
   render() {
-    var record = this.props.model.find({ id: this.props.brickId });
+    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName);
     var defaultValue = record.imageUrl
     // console.log(record.pageImage)
     return (

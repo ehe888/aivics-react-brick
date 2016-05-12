@@ -31,7 +31,7 @@ class FieldHeight extends React.Component {
       //then notify parent
       if(!_.isNaN(changeToValue)){
         //Update birck Height
-        var record = self.props.model.find({ id: self.props.brickId });
+        var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
         record.offset.height = changeToValue;
         //notify parent
         self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
@@ -51,7 +51,7 @@ class FieldHeight extends React.Component {
   }
 
   render() {
-    var record = this.props.model.find({ id: this.props.brickId });
+    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName);
     var defaultValue = record.offset.height;
     return (
       <div className="form-group">

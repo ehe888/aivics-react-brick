@@ -12,6 +12,7 @@ $.Bricks = Bricks;
 
 let Transition = Bricks.Transition;
 let PagePreview = Bricks.PagePreview;
+let Page = Bricks.Page;
 
 import DataStorage from './DataStorage'
 
@@ -148,6 +149,7 @@ class Preview extends React.Component {
             id={page.id} key={page.id}
             dataStorage={DataStorage}
             preview= {true}
+            treeName = {Page.treeName.referenceTree}
             onBrickSelect={(e, id, position)=>self.onBrickSelect(e, id, position)}
           />
         )

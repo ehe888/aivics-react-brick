@@ -22,7 +22,7 @@ class FieldBgColor extends React.Component {
     var fieldName = $this.attr("name");
     console.log(fieldName + " changed to ==> " + changeToValue);
 
-    var record = this.props.model.find({ id: this.props.brickId });
+    var record = this.props.model.find({ id: this.props.brickId }, self.props.treeName);
     record.backgroundColor = changeToValue;
     this.props.onBrickSettingChange(record.id, fieldName, changeToValue);
 
@@ -47,7 +47,7 @@ class FieldBgColor extends React.Component {
   }
 
   render() {
-    var record = this.props.model.find({ id: this.props.brickId });
+    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName);
     var defaultValue = record.backgroundColor || "#000000";
     return (
       <div className="form-group">

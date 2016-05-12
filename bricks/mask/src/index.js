@@ -318,7 +318,7 @@ class MaskBox extends React.Component {
   contextMenu(event) {
     event.preventDefault();
     event.stopPropagation();
-    var record = this.props.dataStorage.model("Bricks").find({id: this.props.activeBrickId});
+    var record = this.props.dataStorage.model("Bricks").find({id: this.props.activeBrickId}, this.props.treeName);
     if (record.brickType == "Page") {
       var position = {
         left: event.pageX,

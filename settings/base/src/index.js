@@ -53,6 +53,7 @@ var renderField = function(name){
   return (
     <FieldName model={this.model} key={uuid.v4()}
           brickId={this.props.activeBrickId}
+          treeName = {this.props.treeName}
           onBrickSettingChange={this.props.onBrickSettingChange} />
   )
 }
@@ -96,6 +97,7 @@ var renderPageReference = function(){
     <PageAddReference model={this.model} key={uuid.v4()}
           brickId={this.props.activeBrickId}
           onPageAddReference={this.props.onPageAddReference}
+          treeName = {this.props.treeName}
           onBrickSettingChange={this.props.onBrickSettingChange} />
   )
 }
@@ -140,18 +142,18 @@ class BrickSettingPanel extends React.Component {
   }
 
   componentDidMount(){
-    var record = this.model.find({ id: this.props.activeBrickId });
+    var record = this.model.find({ id: this.props.activeBrickId }, this.props.treeName);
   }
 
   componentDidUpdate(prevProps, prevState){
     this.model = this.dataStorage.model(this.props.brickType);
-    var record = this.model.find({ id: this.props.activeBrickId });
+    var record = this.model.find({ id: this.props.activeBrickId }, this.props.treeName);
   }
 
   renderFields(){
     if (this.props.activeBrickId) {
 
-      var record = this.model.find({ id: this.props.activeBrickId });
+      var record = this.model.find({ id: this.props.activeBrickId }, this.props.treeName);
       var settingFields = _.union(this.baseSettings, record.settings);
       console.log(record.settings)
       var self = this;

@@ -23,7 +23,7 @@ class PagePreview extends React.Component {
 
 
   componentDidMount(){
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
     var offset = record.offset;
     var height = offset.height;
     height -= 64;
@@ -36,7 +36,8 @@ class PagePreview extends React.Component {
 
 
   componentDidUpdate(){
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    console.info(this.props.treeName)
     $(this.refs[this.refName]).css(record);
   }
 
@@ -67,9 +68,9 @@ class PagePreview extends React.Component {
   renderNest(){
     var self = this;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id });
-    if(!_.isEmpty(record.bricks)){
-      return record.bricks.map(function(b){
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    if(!_.isEmpty(record[this.props.treeName])){
+      return record[this.props.treeName].map(function(b){
         var bid = parentId + "/" + b.id;
 
         var TagName = $.Bricks[b.brickType];
@@ -94,7 +95,7 @@ class PagePreview extends React.Component {
   }
 
   render() {
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }, this.props.treeName);
     var subContent = this.renderContent(record);
 
     return (

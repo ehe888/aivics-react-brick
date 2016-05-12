@@ -54,7 +54,7 @@ class ContextMenu extends React.Component {
         width = 200,
         height = 50;
 
-    var parent = this.props.dataStorage.model("Bricks").find({ id: this.props.activeBrickId });
+    var parent = this.props.dataStorage.model("Bricks").find({ id: this.props.activeBrickId }, this.props.treeName);
     var offset = parent.offset;
     top -= offset.top;
     left -= offset.left;

@@ -26,7 +26,7 @@ var Model = function(name){
   this.collections = [];
 }
 
-Model.prototype.findByPath = function(path, collection){
+Model.prototype.findByPath = function(path, collection, treeName){
     console.log("path", path);
     var ids = _.split(path, '/');
 
@@ -44,19 +44,19 @@ Model.prototype.findByPath = function(path, collection){
       if (!collect) {
         return [];
       }
-      console.log("collection", collect.bricks);
-      return this.findByPath(p, collect.bricks);
+      console.log("collection", collect[treeName]);
+      return this.findByPath(p, collect[treeName]);
     }
 }
 
-Model.prototype.find = function(filter){
+Model.prototype.find = function(filter, treeName="engineeringTree"){
 
 
   var results = [];
   if(!filter)
     results = this.collections;
   else{
-    results = this.findByPath(filter.id, this.collections);
+    results = this.findByPath(filter.id, this.collections, treeName);
   }
 
 
