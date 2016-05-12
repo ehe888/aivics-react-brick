@@ -81,6 +81,7 @@ class Preview extends React.Component {
   }
 
   onBrickSelect(e, id, position) {
+    console.info("click: " + id)
     var self = this;
     var toPageId, fromPageTransition, toPageTransition;
     var transitions = DataStorage.model("Transitions").find();
@@ -94,7 +95,7 @@ class Preview extends React.Component {
         }
       })
       if (toPageId && toPageId.length > 0) {
-        this.prepareTransition(self.state.pageId, toPageId, fromPageTransition, toPageTransition)
+        this.prepareTransition(id, toPageId, fromPageTransition, toPageTransition)
       }
     }
   }
@@ -105,14 +106,10 @@ class Preview extends React.Component {
     var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
       var $page = $(pages[i]);
-      console.info("attr: ", $page.attr('data-preview-id'))
-      console.info("from Page: ", fromPageId);
-      console.info("to Page: ", toPageId)
+
       if ($page.attr('data-preview-id') == fromPageId) {
-        console.info("from page success")
         $fromPage = $page;
       }else if ($page.attr('data-preview-id') == toPageId) {
-        console.info("to page success")
         $toPage = $page;
       }
     }
@@ -127,7 +124,8 @@ class Preview extends React.Component {
       $toPage.addClass("animated "+toPageTransition);
       setTimeout(function(){
         self.clearAnimate($toPage)
-      },1000)
+        $fromPage.hide();
+      },1200)
     }
 
   }

@@ -551,7 +551,6 @@ class Story extends React.Component {
           onPageAdd = {this.onPageAdd}
           onPageDelete = {this.onPageDelete}
           brickType = {brickType}
-
         />
         <BrickSetting
             activeBrickId={this.state.activeBrickId}

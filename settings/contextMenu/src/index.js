@@ -51,12 +51,14 @@ class ContextMenu extends React.Component {
         left = this.props.position.left,
         width = 200,
         height = 50;
-
+    console.info(top+", "+left);
     var parent = this.props.dataStorage.model("Pages").find({ id: this.props.activeBrickId });
     var offset = parent.offset;
     top -= offset.top;
     left -= offset.left;
     top -= (64 + height/2);
+    console.info("parent left: " + offset.left)
+    console.info(top+", "+left)
     this.props.onPageAddReference(this.props.activeBrickId, top, left);
     $(this.refs.AivicsPageContextMenu).hide();
   }
