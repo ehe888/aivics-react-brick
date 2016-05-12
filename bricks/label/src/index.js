@@ -14,8 +14,11 @@ class LabelText extends React.Component {
 
   render() {
     return (
-      <p className="aivcis-brick-label-paragraph"
-        dangerouslySetInnerHTML={ { __html: this.props.labelText } } ></p>
+      <div className="aivics-brick-label-wrapper">
+        <p className="aivcis-brick-label-paragraph"
+          dangerouslySetInnerHTML={ { __html: this.props.labelText } } ></p>
+      </div>
+
     )
   }
 }
@@ -31,17 +34,17 @@ class LabelBrick extends React.Component  {
   }
 
   updateContentView() {
-    var $brick = $("#" + this.props.id);
-    var height = $brick.outerHeight();
-    var para = $brick.find("p.aivcis-brick-label-paragraph");
-    var pHeight = para.outerHeight();
-
-    console.log(height, pHeight);
-    console.log((100 * ((height - pHeight)/height) / 2.0) + "%");
-
-    para.css({
-      "top": (100 * ((height - pHeight)/height) / 2.0) + "%"
-    });
+    // var $brick = $("#" + this.props.id);
+    // var height = $brick.outerHeight();
+    // var para = $brick.find("p.aivcis-brick-label-paragraph");
+    // var pHeight = para.outerHeight();
+    //
+    // console.log(height, pHeight);
+    // console.log((100 * ((height - pHeight)/height) / 2.0) + "%");
+    //
+    // para.css({
+    //   "top": (100 * ((height - pHeight)/height) / 2.0) + "%"
+    // });
 
   }
 

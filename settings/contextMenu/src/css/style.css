@@ -7,8 +7,11 @@
     display: inline-block;
     vertical-align: top;
     width: 250px; }
-  .pageContextMenu div.pages {
+  .pageContextMenu div.PageAddTranstionList {
     margin-top: 40px;
+    display: none; }
+  .pageContextMenu div.AddBricksListMenu {
+    margin-top: 0px;
     display: none; }
 
 /*# sourceMappingURL=style.css.map */

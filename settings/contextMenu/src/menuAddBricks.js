@@ -1,6 +1,6 @@
 "use strict"
 
-class AddBricksContextMenu extends React.Component {
+class AddBricksMenu extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -12,5 +12,28 @@ class AddBricksContextMenu extends React.Component {
     )
   }
 }
+
+class AddBricksListMenu extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    var self = this;
+
+    return (
+      <div className="list-group pages AddBricksListMenu">
+        <button type="button" className="list-group-item"
+          onClick={(event)=>this.props.onAddNewBrick("Base")}>Base</button>
+        <button type="button" className="list-group-item"
+          onClick={(event)=>this.props.onAddNewBrick("Label", ["labelText"])}>Label</button>
+      </div>
+    )
+  }
+}
+
+var AddBricksContextMenu = {};
+AddBricksContextMenu.AddBricksMenu = AddBricksMenu;
+AddBricksContextMenu.AddBricksListMenu = AddBricksListMenu;
 
 module.exports = AddBricksContextMenu;

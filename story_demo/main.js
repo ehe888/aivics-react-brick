@@ -227,10 +227,11 @@ class Story extends React.Component {
     $(".aivics-brick-setting-panel").show();
   }
 
-  onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
+  onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
+        , width = 200, height = 50, brickType = "Base", settings=[]) {
 
-    if (this.state.activeBrickType == "Page") {
-      var page = DataStorage.model("Bricks").find({id: id});
+    // if (this.state.activeBrickType == "Page") {
+      var page = DataStorage.model("Bricks").find({id: id}, this.props.treeName);
       if (!page.engineeringTree) {
         page.engineeringTree = [];
       }
@@ -238,7 +239,7 @@ class Story extends React.Component {
       var newBrick = {
         id: uuid.v4(),
         name: "brick",
-        brickType: "Base",
+        brickType: brickType,
         offset: {
           top: top,
           left: left,
@@ -248,7 +249,7 @@ class Story extends React.Component {
         "zIndex": 100,
         "backgroundColor": "#FFFFFF",
         "backgroundOpacity": 1,
-        "settings": []
+        "settings": settings
       };
       page.engineeringTree.push(newBrick)
       this.setState({
@@ -260,7 +261,7 @@ class Story extends React.Component {
       });
       $(".transitionSettings").hide();
       $(".aivics-brick-setting-panel").show();
-    }
+    // }
   }
 
 
