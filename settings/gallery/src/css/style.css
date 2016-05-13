@@ -1,0 +1,12 @@
+.galleryMenu {
+  z-index: 100000; }
+  .galleryMenu .gallery-image {
+    display: inline-block;
+    width: 194px;
+    margin: 0px 10px 10px 10px;
+    background-color: #ff0000;
+    cursor: pointer; }
+    .galleryMenu .gallery-image img {
+      max-width: 100%; }
+
+/*# sourceMappingURL=style.css.map */

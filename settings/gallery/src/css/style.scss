@@ -1,0 +1,16 @@
+
+.galleryMenu{
+  z-index: 100000;
+  .gallery-image {
+    display: inline-block;
+    width: 194px;
+    margin: 0px 10px 10px 10px;
+    // height: 150px;
+    background-color: #ff0000;
+    cursor: pointer;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}

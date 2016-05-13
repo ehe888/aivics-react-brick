@@ -27,9 +27,6 @@ class FieldImage extends React.Component {
       var fieldName = $field.attr("name");
       // console.log({ fieldName: fieldName });
 
-      //change Label of brick
-      //then notify parent
-      //Update birck Label
       var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
       record.imageUrl = changeToValue;
       //notify parent
@@ -39,6 +36,7 @@ class FieldImage extends React.Component {
   }
 
   render() {
+    
     var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName);
     var defaultValue = record.imageUrl
     // console.log(record.pageImage)
@@ -46,15 +44,9 @@ class FieldImage extends React.Component {
       <div className="form-group">
         <div className="input-group">
           <div className="input-group-addon">Image</div>
-            <input type="textarea"
-              ref={this.refName}
-              key={this.refName}
-              name={this.refName}
-              defaultValue={defaultValue}
-              className="form-control"
-              placeholder="ImageUrl"
-              onInput={this.handleChange}
-              />
+            <button className="btn btn-default imageGallery"
+                    type="submit" data-toggle="modal" data-target="#galleryMenu"
+                    >Gallery</button>
         </div>
       </div>
     )

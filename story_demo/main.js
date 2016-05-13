@@ -11,6 +11,7 @@ import PageSettingPanel from '../settings/pageTools/src'
 import PageTransitionSettings from '../settings/pageTransitionSettings/src'
 import PageContextMenu from '../settings/contextMenu/src'
 import TransitionSettings from '../settings/transitionSettings/src'
+import GalleryMenu from '../settings/gallery/src'
 
 $.Bricks = Bricks;
 
@@ -124,7 +125,7 @@ class Story extends React.Component {
   onBrickSelect(e, brickId, position) {
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
                       .find({id: brickId}, this.props.treeName);
-    console.info(brickId)
+    // console.info(brickId)
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -141,7 +142,7 @@ class Story extends React.Component {
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
     var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
-    console.info(brickId);
+    // console.info(brickId);
     let position = this.state.activeBrickPosition,
         brickType = this.state.activeBrickType;
 
@@ -630,6 +631,12 @@ class Story extends React.Component {
           transitionId={this.state.activeTransitionId}
           onTransitionDeleteClick={this.onTransitionDeleteClick}
           onTransitionChanged={this.onTransitionChanged}
+        />
+        <GalleryMenu
+          dataStorage={DataStorage}
+          treeName = {this.props.treeName}
+          activeBrickId={this.state.activeBrickId}
+          onBrickSettingChange={this.onBrickSettingChange}
         />
       </div>
 
