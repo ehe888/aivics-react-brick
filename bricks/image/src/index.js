@@ -28,11 +28,12 @@ class ImageBrick extends React.Component {
 
   componentDidUpdate() {
 
+    //lock width/height ratio
+
     var $brick = $(this.refs[this.refName].getDOMElement())
     var currentUrl = $brick.find($("img"))[0].src;
     if (currentUrl == this.lastUrl) {
 
-      //lock width/height ratio
       var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
       if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.001) {
         imageBrick.offset.height = imageBrick.offset.width / this.size.ratio;

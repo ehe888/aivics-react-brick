@@ -116,7 +116,8 @@ class Page extends React.Component  {
             onBrickSelect:self.props.onBrickSelect,
             parentId: parentId,
             title: b.title,
-            position: b.offset
+            position: b.offset,
+            onPageContextMenu: self.props.onPageContextMenu
         });
       })
     }

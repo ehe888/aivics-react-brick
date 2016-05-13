@@ -265,6 +265,33 @@ class Story extends React.Component {
     // }
   }
 
+  onBrickDelete() {
+    var parents = this.state.activeBrickId.split("/");
+    if (parents.length > 1) {
+      var parentId = parents[parents.length-2],
+          activeBrickId = parents[parents.length-1]
+
+      var parent = DataStorage.model("Bricks").find({id: parentId}, this.props.treeName);
+      var index = -1;
+      if (parent) {
+
+        _.remove(parent[this.props.treeName], function(brick){
+          return brick.id == activeBrickId;
+        })
+
+        console.info(parent[this.props.treeName])
+        this.setState({
+          activeBrickId: parent.id,
+          activeBrickPosition: parent.offset,
+          activeBrickType: parent.brickType,
+          settingChangeName: null,
+          settingChangeValue: null
+        });
+      }
+
+
+    }
+  }
 
   onPageAdd(top = 10, left = 400){
     var currentPages = DataStorage.model("Bricks").find();
@@ -604,6 +631,7 @@ class Story extends React.Component {
             onNewTransitionSubmit = {this.onNewTransitionSubmit}
             onPageAdd = {this.onPageAdd}
             onBrickAdd = {this.onBrickAdd}
+            onBrickDelete = {this.onBrickDelete.bind(this)}
             onPageDelete = {this.onPageDelete}
             brickType = {brickType}
             treeName = {this.props.treeName}

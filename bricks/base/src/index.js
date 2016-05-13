@@ -100,6 +100,20 @@ class Brick extends React.Component {
     this.reload(record);
   }
 
+  contextMenu(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.props.preview) {
+      var position = {
+        left: event.pageX,
+        top: event.pageY
+      }
+      this.props.onPageContextMenu(this.props.id, position);
+
+      return false;
+    }
+  }
+
   renderNest(){
     var self = this;
     var parentId = this.props.id;
@@ -141,7 +155,8 @@ class Brick extends React.Component {
           </div>
           <div ref="brickContentOverlay"
               className="aivics-brick-content-overlay"
-              onClick={this.handleOverlayClick} >
+              onClick={this.handleOverlayClick}
+              onContextMenu={(event)=>this.contextMenu(event)}>
           </div>
       </div>
     )

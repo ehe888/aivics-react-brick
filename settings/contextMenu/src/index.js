@@ -78,14 +78,14 @@ class ContextMenu extends React.Component {
     var top = this.props.position.top,
         left = this.props.position.left,
         width = 200,
-        height = 50;
+        height = 200;
 
     var parent = this.props.dataStorage.model("Bricks").find({ id: this.props.activeBrickId }, this.props.treeName);
     var offset = parent.offset;
     top -= offset.top;
     left -= offset.left;
     top -= (64 + height/2);
-    this.props.onBrickAdd(this.props.activeBrickId, top, left, 200, 50, brickType, settings)
+    this.props.onBrickAdd(this.props.activeBrickId, top, left, width, height, brickType, settings)
     $(".AddBricksListMenu").hide();
   }
 
@@ -124,7 +124,13 @@ class ContextMenu extends React.Component {
   }
 
   onDeleteBrick() {
-    this.props.onPageDelete();
+    var bricks = this.props.activeBrickId.split("/");
+    if (bricks.length > 1) {
+      this.props.onBrickDelete();
+    }else {
+      this.props.onPageDelete();
+    }
+
     $(this.refs.AivicsPageContextMenu).hide();
   }
 
@@ -147,6 +153,16 @@ class ContextMenu extends React.Component {
     )
   }
 
+  renderBricksContextMenuItems() {
+    return (
+      <div>
+        <DeleteContextMenu
+          onPageDelete={this.onDeleteBrick}
+        />
+      </div>
+    )
+  }
+
   renderStoryContextMenuItems() {
     return (
       <PageAddContextMenu
@@ -157,11 +173,17 @@ class ContextMenu extends React.Component {
 
   render() {
     var content = "";
+    // console.info(this.props.activeBrickId)
     if (this.props.activeBrickId) {
       //From now, we only have page context menu
       //TODO: support other brickType
+      var bricks = this.props.activeBrickId.split("/");
+      if (bricks.length > 1) {
+        content = this.renderBricksContextMenuItems();
+      }else{
+        content = this.renderPageContextMenuItems();
+      }
 
-      content = this.renderPageContextMenuItems();
 
     }else {
       //click in storyboard
