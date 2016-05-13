@@ -563,7 +563,7 @@ class Story extends React.Component {
             onTransitionSelected={self.onTransitionSelected}
           />
         )
-      });
+      })
     }
     var brickType = this.mapBrickTypeToModelType(this.state.activeBrickType);
     return (

@@ -114,6 +114,7 @@ class Page extends React.Component  {
           id:bid, key:bid, containerId: parentId,
             dataStorage:self.props.dataStorage,
             onBrickSelect:self.props.onBrickSelect,
+            parentId: parentId,
             title: b.title,
             position: b.offset
         });

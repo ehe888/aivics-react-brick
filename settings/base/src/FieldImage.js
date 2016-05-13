@@ -6,7 +6,7 @@ class FieldImage extends React.Component {
     super(props);
 
 
-    this.refName = "aivicsBrickSettingsLabelText"
+    this.refName = "aivicsBrickSettingsImageUrl"
     this.getDOMElement = function(){
       return this.refs[this.refName];
     };

@@ -113,6 +113,7 @@ class Brick extends React.Component {
         return React.createElement(TagName, {
           id:bid, key:bid, containerId: parentId,
             dataStorage:self.props.dataStorage,
+            parentId: parentId,
             onBrickSelect:self.props.onBrickSelect
         });
       })
