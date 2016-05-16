@@ -84,19 +84,24 @@ class Preview extends React.Component {
   onBrickSelect(e, id, position) {
     console.info("click: " + id)
     var self = this;
-    var toPageId, fromPageTransition, toPageTransition;
-    var transitions = DataStorage.model("Transitions").find();
-    if (transitions && transitions.length > 0) {
-      transitions.map(function(transition){
-        if (transition.fromPageId == id) {
-          toPageId = transition.toPageId;
-          fromPageTransition = transition.fromPageTransition;
-          toPageTransition = transition.toPageTransition;
-          return;
-        }
-      })
+    var transitionId, fromPageId, toPageId, fromPageTransition, toPageTransition;
+    var events = DataStorage.model("Events").find();
+    for (var i = 0; i < events.length; i++) {
+      var event = events[i];
+      if (event.targetId == id) {
+        transitionId = event.transitionId
+        break;
+      }
+    }
+
+    var transition = DataStorage.model("Transitions").find({id: transitionId}, this.props.treeName);
+    if (transition) {
+      fromPageId = transition.fromPageId
+      toPageId = transition.toPageId;
+      fromPageTransition = transition.fromPageTransition;
+      toPageTransition = transition.toPageTransition;
       if (toPageId && toPageId.length > 0) {
-        this.prepareTransition(id, toPageId, fromPageTransition, toPageTransition)
+        this.prepareTransition(fromPageId, toPageId, fromPageTransition, toPageTransition)
       }
     }
   }

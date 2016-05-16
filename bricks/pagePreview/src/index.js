@@ -37,9 +37,9 @@ class PagePreview extends React.Component {
 
 
   componentDidUpdate(){
-    
+
     var record = this.model.find({ id: this.props.id }, this.props.treeName);
-    console.info(this.props.treeName)
+    // console.info(this.props.treeName)
     $(this.refs[this.refName]).css(record);
   }
 

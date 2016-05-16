@@ -36,7 +36,7 @@ class Workspace extends React.Component {
   }
 
   render() {
-    console.info(this.state.treeName)
+    // console.info(this.state.treeName)
     return (
       <div>
         <Story ref="AivicsStory"
