@@ -149,7 +149,7 @@ class Preview extends React.Component {
             id={page.id} key={page.id}
             dataStorage={DataStorage}
             preview= {true}
-            treeName = {Page.treeName.referenceTree}
+            treeName = {self.props.treeName}
             onBrickSelect={(e, id, position)=>self.onBrickSelect(e, id, position)}
           />
         )

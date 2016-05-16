@@ -6,12 +6,16 @@ import PageAddContextMenu from './menuStoryAddPage.js'
 import PageAddTransitionContextMenu from './menuPageAddTransition.js'
 import DeleteContextMenu from './menuDelete.js'
 import AddBricksContextMenu from './menuAddBricks'
+import BrickAddEventMenu from './menuBrickAddEvent'
 
 var AddBricksMenu = AddBricksContextMenu.AddBricksMenu;
 var AddBricksListMenu = AddBricksContextMenu.AddBricksListMenu;
 
 var PageAddTransitionMenu = PageAddTransitionContextMenu.PageAddTransitionMenu;
 var PageAddTranstionList = PageAddTransitionContextMenu.PageAddTranstionList;
+
+var BrickAddEventList = BrickAddEventMenu.BrickAddEventList;
+var BrickAddEventMenuItem = BrickAddEventMenu.BrickAddEventMenuItem;
 
 class ContextMenu extends React.Component {
 
@@ -93,6 +97,7 @@ class ContextMenu extends React.Component {
     $(this.refs.AivicsPageContextMenu).hide();
     $(".PageAddTranstionList").hide();
     $(".AddBricksListMenu").hide();
+    $(".BrickAddEventList").hide();
   }
 
   onContextTransitionMenu(show) {
@@ -109,6 +114,7 @@ class ContextMenu extends React.Component {
     this.props.onNewTransitionSubmit(this.props.activeBrickId, selectedToPageId, "")
     $(this.refs.AivicsPageContextMenu).hide();
     $(".PageAddTranstionList").hide();
+
   }
 
   onPageAdd(event) {
@@ -134,6 +140,21 @@ class ContextMenu extends React.Component {
     $(this.refs.AivicsPageContextMenu).hide();
   }
 
+  //Purpose: Show Transition List which relative to the page
+  //Arguments: none
+  //Return: none
+  onShowBrickAddEventList() {
+    $(".BrickAddEventList").css('display', 'inline-block');
+    $(this.refs.AivicsPageContextMenu).show();
+  }
+
+  onBrickAddEvent(event) {
+    var $item = $(event.target),
+        transitionId = $item.attr("id");
+    console.info("onBrickAddEvent");
+    this.props.onEventAdd(transitionId);
+  }
+
   renderPageContextMenuItems() {
     //Pages context menu item: [AddReference, AddTransition, Delete]
     return (
@@ -156,6 +177,9 @@ class ContextMenu extends React.Component {
   renderBricksContextMenuItems() {
     return (
       <div>
+        <BrickAddEventMenuItem
+          onShowBrickAddEventList={this.onShowBrickAddEventList.bind(this)}
+        />
         <DeleteContextMenu
           onPageDelete={this.onDeleteBrick}
         />
@@ -202,11 +226,17 @@ class ContextMenu extends React.Component {
           onNewTransitionSubmit={this.onNewTransitionSubmit}
         />
         <AddBricksListMenu
-          ref = "AivicsContextTransitionPages"
+          ref = "AivicsContextAddBricks"
           dataStorage={this.props.dataStorage}
           activeBrickId={this.props.activeBrickId}
           onAddNewBrick={this.onAddNewBrick}
           onNewTransitionSubmit={this.onNewTransitionSubmit}
+        />
+        <BrickAddEventList
+          ref = "AivicsContextAddEvents"
+          dataStorage={this.props.dataStorage}
+          activeBrickId={this.props.activeBrickId}
+          onBrickAddEvent={this.onBrickAddEvent.bind(this)}
         />
 
       </div>

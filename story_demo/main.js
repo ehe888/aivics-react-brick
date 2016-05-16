@@ -464,6 +464,36 @@ class Story extends React.Component {
     this.setState(this.state)
   }
 
+
+  //Begin event method /onEventAdd/
+  //Purpose: success to add event into the active brick
+  //Arguments:
+  //  * transitionId
+  //Returns: none
+  onEventAdd(transitionId) {
+    var activeBrickId = this.state.activeBrickId
+
+    //ignore the same event
+    var events = DataStorage.model("Events").find();
+    if (events && events.length > 1) {
+      for (var i = 0; i<events.length; i++) {
+        var event = events[i]
+        if (event.targetId == activeBrickId && event.transitionId == transitionId) {
+          return;
+        }
+      }
+    }
+
+    //insert the event
+    DataStorage.model("Events").upsert({
+        "transitionId": transitionId,
+        "targetId": activeBrickId
+    })
+
+    console.info("onEventAdd success");
+  }
+  //End event method /onEventAdd/
+
   onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
 
     if (this.state.activeBrickType == "Page") {
@@ -633,6 +663,7 @@ class Story extends React.Component {
             onBrickAdd = {this.onBrickAdd}
             onBrickDelete = {this.onBrickDelete.bind(this)}
             onPageDelete = {this.onPageDelete}
+            onEventAdd = {this.onEventAdd.bind(this)}
             brickType = {brickType}
             treeName = {this.props.treeName}
             config = {this.props.config}
