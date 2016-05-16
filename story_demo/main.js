@@ -7,6 +7,7 @@ import uuid from 'uuid'
 import React from "react"
 import ReactDOM from "react-dom"
 import Bricks from '../src'
+import SettingPanel from '../settings'
 import PageSettingPanel from '../settings/pageTools/src'
 import PageTransitionSettings from '../settings/pageTransitionSettings/src'
 import PageContextMenu from '../settings/contextMenu/src'
@@ -32,7 +33,9 @@ const _pageReferenceModelType = 'Bricks';
 const _transitionBrickType = 'Transition';
 const _transitionModelType = 'Transitions';
 
+//--------------BEGIN CREATE TEST BRICKS---------------------
 var data = DataStorage.model("Bricks").upsert({
+    id: "1",
     name: "a brick",
     brickType: "Page",
     offset: {
@@ -47,10 +50,25 @@ var data = DataStorage.model("Bricks").upsert({
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 0",
     settings: ["pageTitle", "imageUrl"],
-    bricks: []
+    engineeringTree: [{
+      id: '5',
+      name: "brick",
+      brickType: "Base",
+      offset: {
+        top: 20,
+        left: 100,
+        width: 200,
+        height: 200
+      },
+      "zIndex": 100,
+      "backgroundColor": "#FFFFFF",
+      "backgroundOpacity": 1,
+      "settings": []
+    }]
 });
 
 var data2 = DataStorage.model("Bricks").upsert({
+    id: "2",
     name: "a brick",
     brickType: "Page",
     offset: {
@@ -68,6 +86,7 @@ var data2 = DataStorage.model("Bricks").upsert({
 });
 
 var data3 = DataStorage.model("Bricks").upsert({
+    id:"3",
     name: "a brick",
     brickType: "Page",
     offset: {
@@ -81,9 +100,22 @@ var data3 = DataStorage.model("Bricks").upsert({
     "backgroundOpacity": 1,
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 2",
-    settings: ["pageTitle", "imageUrl"]
+    settings: ["pageTitle", "imageUrl"],
+    engineeringTree: []
 });
 
+var newTransition = DataStorage.model('Transitions').upsert({
+    name: "Transition",
+    brickType: "Transition",
+    "zIndex": 1,
+    "fromPageId": "1",
+    "toPageId": "2",
+    "remark": "",
+    "fromPageTransition": "fadeOut",
+    "toPageTransition": "fadeIn",
+    "background": "black"
+})
+//--------------END CREATE TEST BRICKS---------------------
 
 class Story extends React.Component {
   constructor(props) {
@@ -119,13 +151,12 @@ class Story extends React.Component {
         contextMenuPosition: {left: 0, top: 0},
         activeTransitionId: null
     }
-
   }
 
   onBrickSelect(e, brickId, position) {
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
                       .find({id: brickId}, this.props.treeName);
-    // console.info(brickId)
+
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -135,8 +166,8 @@ class Story extends React.Component {
       activeTransitionId: null
     });
 
-    $(".transitionSettings").hide();
-    $(".aivics-brick-setting-panel").show();
+    // $(".transitionSettings").hide();
+    // $(".aivics-brick-setting-panel").show();
 
   }
 
@@ -279,7 +310,7 @@ class Story extends React.Component {
           return brick.id == activeBrickId;
         })
 
-        console.info(parent[this.props.treeName])
+        // console.info(parent[this.props.treeName])
         this.setState({
           activeBrickId: parent.id,
           activeBrickPosition: parent.offset,
@@ -628,6 +659,7 @@ class Story extends React.Component {
       <div className="story-content">
         <div ref="header" className="header">
           <PageSettingPanel
+            activeBrickId = {this.state.activeBrickId}
             onPageAdd = {this.onPageAdd}
             onPageDelete = {this.onPageDelete}
             onPageSettingsClick = {this.onPageSettingsClick}
@@ -636,7 +668,7 @@ class Story extends React.Component {
             onPageScaleSmall = {this.onPageScaleSmall}
             onPreview = {this.onPreview}
             dataStorage={DataStorage}
-
+            treeName = {this.props.treeName}
           />
         </div>
         <div ref="story" className="story" onContextMenu={(event)=>this.contextMenu(event)}>
@@ -669,28 +701,22 @@ class Story extends React.Component {
             config = {this.props.config}
           />
         </div>
-
-        <BrickSetting
-            activeBrickId={this.state.activeBrickId}
-            dataStorage={DataStorage}
-            brickType={brickType}
-            onPageAddReference={this.onPageAddReference}
-            settingChangeName={this.state.settingChangeName}
-            settingChangeValue={this.state.settingChangeValue}
-            treeName = {this.props.treeName}
-            onBrickSettingChange={this.onBrickSettingChange} />
-        <PageTransitionSettings
+        <SettingPanel
           activeBrickId={this.state.activeBrickId}
+          activeTransitionId = {this.state.activeTransitionId}
           dataStorage={DataStorage}
+          brickType={brickType}
+          onPageAddReference={this.onPageAddReference}
+          settingChangeName={this.state.settingChangeName}
+          settingChangeValue={this.state.settingChangeValue}
+          treeName = {this.props.treeName}
+          onBrickSettingChange={this.onBrickSettingChange}
           onTransitionDeleteClick = {this.onTransitionDeleteClick}
           onNewTransitionSubmit={this.onNewTransitionSubmit}
-        />
-        <TransitionSettings
-          dataStorage={DataStorage}
-          transitionId={this.state.activeTransitionId}
           onTransitionDeleteClick={this.onTransitionDeleteClick}
           onTransitionChanged={this.onTransitionChanged}
         />
+
         <GalleryMenu
           dataStorage={DataStorage}
           treeName = {this.props.treeName}

@@ -40,10 +40,7 @@ class PageSettingPanel extends React.Component {
           onPageScaleLarge = {this.props.onPageScaleLarge}
           onPageScaleSmall = {this.props.onPageScaleSmall}
         />
-        <SettingsTab
-          onPageSettingsClick = {this.props.onPageSettingsClick}
-          onPageTransitionClick = {this.props.onPageTransitionClick}
-          />
+        
       </div>
     )
   }

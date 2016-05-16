@@ -29,17 +29,23 @@ class BrickAddEventList extends React.Component {
       if (transitions && transitions.length > 0) {
         contents = transitions.map(function(transition){
 
-          if (transition.fromPageId == pageId) {
-            var id = transition.id,
-                title = "To " + transition.toPageId
-            return (
-              <button id={id} key={id} type="button" className="list-group-item"
-                onClick={(event)=>self.props.onBrickAddEvent(event)}>{title}</button>
-            )
+          try {
+            if (transition.fromPageId == pageId) {
+              var id = transition.id,
+                  toPageId = transition.toPageId;
+              var page = self.props.dataStorage.model("Bricks").find({id: toPageId}, self.props.treeName);
+
+              var title = "Transit to " + page.title
+              return (
+                <button id={id} key={id} type="button" className="list-group-item"
+                  onClick={(event)=>self.props.onBrickAddEvent(event)}>{title}</button>
+              )
+            }
+            return "";
+          } catch (e) {
+            console.error(e);
+            return "";
           }
-
-          return "";
-
         })
       }
     }

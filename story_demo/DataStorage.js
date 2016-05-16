@@ -106,6 +106,7 @@ Model.prototype.upsert = function(data) {
       if(!record){
         //insert
         this.collections.push(data);
+        record = data;
       }else{
         //update
         _.merge(record, data);
