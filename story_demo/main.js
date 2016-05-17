@@ -163,6 +163,7 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null,
       activeBrickType: activeBrick.brickType,
+      activeTransitionId: null,
       activeTransitionId: null
     });
 
@@ -182,7 +183,8 @@ class Story extends React.Component {
       settingChangeName: fieldName,
       settingChangeValue: changeToValue,
       activeBrickPosition: position,
-      activeBrickType: brickType
+      activeBrickType: brickType,
+      activeTransitionId: null
     })
 
   }
@@ -252,11 +254,12 @@ class Story extends React.Component {
       activeBrickId: activeBrickId,
       activeBrickPosition: position,
       settingChangeName: null,
-      settingChangeValue: null
+      settingChangeValue: null,
+      activeTransitionId: null
     });
 
-    $(".transitionSettings").hide();
-    $(".aivics-brick-setting-panel").show();
+    // $(".transitionSettings").hide();
+    // $(".aivics-brick-setting-panel").show();
   }
 
   onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
@@ -289,10 +292,11 @@ class Story extends React.Component {
         activeBrickPosition: newBrick.offset,
         activeBrickType: newBrick.brickType,
         settingChangeName: null,
-        settingChangeValue: null
+        settingChangeValue: null,
+        activeTransitionId: null
       });
-      $(".transitionSettings").hide();
-      $(".aivics-brick-setting-panel").show();
+      // $(".transitionSettings").hide();
+      // $(".aivics-brick-setting-panel").show();
     // }
   }
 
@@ -316,7 +320,8 @@ class Story extends React.Component {
           activeBrickPosition: parent.offset,
           activeBrickType: parent.brickType,
           settingChangeName: null,
-          settingChangeValue: null
+          settingChangeValue: null,
+          activeTransitionId: null
         });
       }
 
@@ -348,11 +353,12 @@ class Story extends React.Component {
       activeBrickPosition: newPage.offset,
       activeBrickType: newPage.brickType,
       settingChangeName: null,
-      settingChangeValue: null
+      settingChangeValue: null,
+      activeTransitionId: null
     });
 
-    $(".transitionSettings").hide();
-    $(".aivics-brick-setting-panel").show();
+    // $(".transitionSettings").hide();
+    // $(".aivics-brick-setting-panel").show();
   }
 
   onPageDelete(){
@@ -381,11 +387,12 @@ class Story extends React.Component {
         activeBrickPosition: lastPage.offset,
         activeBrickType: lastPage.brickType,
         settingChangeName: null,
-        settingChangeValue: null
+        settingChangeValue: null,
+        activeTransitionId: null
       });
     }
-    $(".transitionSettings").hide();
-    $(".aivics-brick-setting-panel").show();
+    // $(".transitionSettings").hide();
+    // $(".aivics-brick-setting-panel").show();
   }
 
   onPageContextMenu(brickId, position) {
@@ -410,6 +417,7 @@ class Story extends React.Component {
         settingChangeName: null,
         settingChangeValue: null,
         storyScale: this.state.storyScale,
+        activeTransitionId: null,
         contextMenuPosition: position
     })
   }
@@ -483,9 +491,9 @@ class Story extends React.Component {
       activeTransitionId: transitionId
     });
 
-    $(".transitionSettings").show();
-    $(".aivics-page-transition-panel").hide();
-    $(".aivics-brick-setting-panel").hide();
+    // $(".transitionSettings").show();
+    // $(".aivics-page-transition-panel").hide();
+    // $(".aivics-brick-setting-panel").hide();
 
   }
 

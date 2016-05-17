@@ -2,6 +2,8 @@
 
 require("./css/style.css")
 
+import ReactDOM from 'react-dom'
+
 import PageAddContextMenu from './menuStoryAddPage.js'
 import PageAddTransitionContextMenu from './menuPageAddTransition.js'
 import DeleteContextMenu from './menuDelete.js'
@@ -30,22 +32,32 @@ class ContextMenu extends React.Component {
   }
 
   componentDidMount() {
+
+    this.jqueryMap = {
+      $AddBricksListMenu: $(ReactDOM.findDOMNode(this.refs.AivicsContextAddBricks)),
+      $BrickAddEventList: $(ReactDOM.findDOMNode(this.refs.AivicsContextAddEvents)),
+      $PageAddTranstionList: $(ReactDOM.findDOMNode(this.refs.AivicsContextTransitionPages)),
+      $AivicsPageContextMenu: $(this.refs.AivicsPageContextMenu)
+    }
+    console.info(this.jqueryMap.$AivicsPageContextMenu)
     this.componentPositionReload();
     var self = this;
-    $(this.refs.AivicsPageContextMenu).hide();
+    this.jqueryMap.$AivicsPageContextMenu.hide();
     $(".story").click(function(event){
       self.onContextMenuClose();
     })
   }
 
   componentDidUpdate() {
+
+
     this.componentPositionReload();
   }
 
   componentPositionReload() {
     var position = this.props.position;
-    console.log(position)
-    var $this = $(this.refs.AivicsPageContextMenu)
+
+    var $this = this.jqueryMap.$AivicsPageContextMenu
     $this.css({
       'top': position.top,
       'left': position.left
@@ -68,11 +80,10 @@ class ContextMenu extends React.Component {
       left -= offset.left;
       top -= (64 + height/2);
       this.props.onPageAddReference(this.props.activeBrickId, top, left);
-      $(this.refs.AivicsPageContextMenu).hide();
+      this.jqueryMap.$AivicsPageContextMenu.hide();
     }else {
-      $(this.refs.AivicsPageContextMenu).show();
-      $(".AddBricksListMenu").css('display', 'inline-block');
-      // this.props.onBrickAdd(this.props.activeBrickId, top, left);
+      this.jqueryMap.$AivicsPageContextMenu.show();
+      this.jqueryMap.$AddBricksListMenu.css('display', 'inline-block');
     }
 
   }
@@ -90,30 +101,30 @@ class ContextMenu extends React.Component {
     left -= offset.left;
     top -= (64 + height/2);
     this.props.onBrickAdd(this.props.activeBrickId, top, left, width, height, brickType, settings)
-    $(".AddBricksListMenu").hide();
+    this.jqueryMap.$AddBricksListMenu.hide();
   }
 
   onContextMenuClose(event) {
-    $(this.refs.AivicsPageContextMenu).hide();
-    $(".PageAddTranstionList").hide();
-    $(".AddBricksListMenu").hide();
-    $(".BrickAddEventList").hide();
+    this.jqueryMap.$AivicsPageContextMenu.hide();
+    this.jqueryMap.$PageAddTranstionList.hide();
+    this.jqueryMap.$AddBricksListMenu.hide();
+    this.jqueryMap.$BrickAddEventList.hide();
   }
 
   onContextTransitionMenu(show) {
     var self = this;
-    $(this.refs.AivicsPageContextMenu).show();
+    this.jqueryMap.$AivicsPageContextMenu.show();
     if (show) {
-      $(".PageAddTranstionList").css('display', 'inline-block');
+      this.jqueryMap.$PageAddTranstionList.css('display', 'inline-block');
     }else {
-      $(".PageAddTranstionList").hide();
+      this.jqueryMap.$PageAddTranstionList.hide();
     }
   }
 
   onNewTransitionSubmit(selectedToPageId) {
     this.props.onNewTransitionSubmit(this.props.activeBrickId, selectedToPageId, "")
-    $(this.refs.AivicsPageContextMenu).hide();
-    $(".PageAddTranstionList").hide();
+    this.jqueryMap.$AivicsPageContextMenu.hide();
+    this.jqueryMap.$PageAddTranstionList.hide();
 
   }
 
@@ -126,7 +137,7 @@ class ContextMenu extends React.Component {
         height = 667;
 
     this.props.onPageAdd(top, left);
-    $(this.refs.AivicsPageContextMenu).hide();
+    this.jqueryMap.$AivicsPageContextMenu.hide();
   }
 
   onDeleteBrick() {
@@ -137,21 +148,21 @@ class ContextMenu extends React.Component {
       this.props.onPageDelete();
     }
 
-    $(this.refs.AivicsPageContextMenu).hide();
+    this.jqueryMap.$AivicsPageContextMenu.hide();
   }
 
   //Purpose: Show Transition List which relative to the page
   //Arguments: none
   //Return: none
   onShowBrickAddEventList() {
-    $(".BrickAddEventList").css('display', 'inline-block');
-    $(this.refs.AivicsPageContextMenu).show();
+    this.jqueryMap.$BrickAddEventList.css('display', 'inline-block');
+    this.jqueryMap.$AivicsPageContextMenu.show();
   }
 
   onBrickAddEvent(event) {
     var $item = $(event.target),
         transitionId = $item.attr("id");
-    console.info("onBrickAddEvent");
+
     this.props.onEventAdd(transitionId);
   }
 
