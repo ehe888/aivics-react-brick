@@ -31,26 +31,39 @@ class Page extends React.Component  {
     return this.refs[this.refName];
   }
 
-  updateContentView() {
+  updateContentView(record) {
 
     var $brick = $("#" + this.props.id);
     var height = $brick.outerHeight();
     var para = $brick.find("h3.aivcis-page-title-paragraph");
     var pHeight = para.outerHeight();
 
-    console.log(height, pHeight);
-    console.log((100 * ((height - pHeight)/height) / 2.0) + "%");
+    // console.log(height, pHeight);
+    // console.log((100 * ((height - pHeight)/height) / 2.0) + "%");
 
     para.css({
       "top": (100 * ((height - pHeight)/height) / 2.0) + "%"
     });
 
+    console.info(record)
+    if (!record.barMode || record.barMode == 0) {
+      this.jqueryMap.$TabBar.hide();
+    }else {
+      this.jqueryMap.$TabBar.show();
+    }
+
+
   }
 
   componentDidMount(){
+
+    this.jqueryMap = {
+      $TabBar: $(this.refs.brickContentTarBar)
+    }
+
     var record = this.model.find({ id: this.props.id });
     this.reload(record);
-    this.updateContentView();
+    this.updateContentView(record);
 
     var height = record.offset.height;
     $(this.refs.brickContentWrapper).height(height-64);
@@ -60,7 +73,7 @@ class Page extends React.Component  {
   componentDidUpdate(){
     var record = this.model.find({ id: this.props.id });
     this.reload(record);
-    this.updateContentView();
+    this.updateContentView(record);
   }
 
   handleOverlayClick(e) {
@@ -151,6 +164,9 @@ class Page extends React.Component  {
               className="aivics-page-content-wrapper">
             {this.renderNest()}
             {subContent}
+          </div>
+          <div ref="brickContentTarBar"
+               className="brickContentTarBar">
           </div>
           <div ref="brickContentForegrond"
               className="aivics-brick-content-foreground">

@@ -63,58 +63,61 @@ var data = DataStorage.model("Bricks").upsert({
       "zIndex": 100,
       "backgroundColor": "#Fda231",
       "backgroundOpacity": 1,
+      "barMode": 0,
       "settings": []
     }]
 });
-
-var data2 = DataStorage.model("Bricks").upsert({
-    id: "2",
-    name: "a brick",
-    brickType: "Page",
-    offset: {
-      top: 100,
-      left: 600,
-      width: 375,
-      height: 667
-    },
-    "zIndex": 100,
-    "backgroundColor": "#66E243",
-    "backgroundOpacity": 1,
-    classNames: [ 'aClass', 'bClass' ],
-    title: "new page 1",
-    settings: ["pageTitle", "imageUrl"]
-});
-
-var data3 = DataStorage.model("Bricks").upsert({
-    id:"3",
-    name: "a brick",
-    brickType: "Page",
-    offset: {
-      top: 50,
-      left: 1150,
-      width: 375,
-      height: 667
-    },
-    "zIndex": 100,
-    "backgroundColor": "#33f0a1",
-    "backgroundOpacity": 1,
-    classNames: [ 'aClass', 'bClass' ],
-    title: "new page 2",
-    settings: ["pageTitle", "imageUrl"],
-    engineeringTree: []
-});
-
-var newTransition = DataStorage.model('Transitions').upsert({
-    name: "Transition",
-    brickType: "Transition",
-    "zIndex": 1,
-    "fromPageId": "1",
-    "toPageId": "2",
-    "remark": "",
-    "fromPageTransition": "fadeOut",
-    "toPageTransition": "fadeIn",
-    "background": "black"
-})
+//
+// var data2 = DataStorage.model("Bricks").upsert({
+//     id: "2",
+//     name: "a brick",
+//     brickType: "Page",
+//     offset: {
+//       top: 100,
+//       left: 600,
+//       width: 375,
+//       height: 667
+//     },
+//     "zIndex": 100,
+//     "backgroundColor": "#66E243",
+//     "backgroundOpacity": 1,
+//     classNames: [ 'aClass', 'bClass' ],
+//     title: "new page 1",
+//     "barMode": 0,
+//     settings: ["pageTitle", "imageUrl"]
+// });
+//
+// var data3 = DataStorage.model("Bricks").upsert({
+//     id:"3",
+//     name: "a brick",
+//     brickType: "Page",
+//     offset: {
+//       top: 50,
+//       left: 1150,
+//       width: 375,
+//       height: 667
+//     },
+//     "zIndex": 100,
+//     "backgroundColor": "#33f0a1",
+//     "backgroundOpacity": 1,
+//     classNames: [ 'aClass', 'bClass' ],
+//     title: "new page 2",
+//     settings: ["pageTitle", "imageUrl"],
+//     "barMode": 0,
+//     engineeringTree: []
+// });
+//
+// var newTransition = DataStorage.model('Transitions').upsert({
+//     name: "Transition",
+//     brickType: "Transition",
+//     "zIndex": 1,
+//     "fromPageId": "1",
+//     "toPageId": "2",
+//     "remark": "",
+//     "fromPageTransition": "fadeOut",
+//     "toPageTransition": "fadeIn",
+//     "background": "black"
+// })
 //--------------END CREATE TEST BRICKS---------------------
 
 class Story extends React.Component {
@@ -347,6 +350,7 @@ class Story extends React.Component {
         "backgroundColor": "#d3f9dd",
         "backgroundOpacity": 1,
         "title": title,
+        "barMode": this.props.barMode,
         classNames: [ 'aClass', 'bClass' ],
         settings: ["pageTitle", "imageUrl"]
     })
@@ -444,6 +448,14 @@ class Story extends React.Component {
         'transform-origin': '0 0'
       })
     }
+  }
+
+  onPageBarModeChange(barMode) {
+    var pages = DataStorage.model("Bricks").find();
+    pages.map(function(page){
+      page.barMode = barMode;
+    });
+    this.props.onPageBarModeChange(barMode)
   }
 
   onNewTransitionSubmit(fromPageId, toPageId ,remark) {
@@ -679,6 +691,7 @@ class Story extends React.Component {
             onPageTransitionClick = {this.onPageTransitionClick}
             onPageScaleLarge = {this.onPageScaleLarge}
             onPageScaleSmall = {this.onPageScaleSmall}
+            onPageBarModeChange = {this.onPageBarModeChange.bind(this)}
             onPreview = {this.onPreview}
             dataStorage={DataStorage}
             treeName = {this.props.treeName}

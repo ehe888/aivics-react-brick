@@ -6,6 +6,11 @@
   vertical-align: center;
   margin: auto 10px; }
 
+.PageBarMode {
+  display: inline-block;
+  vertical-align: center;
+  margin: auto 10px; }
+
 .preview {
   float: left; }
 

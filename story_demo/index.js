@@ -15,7 +15,8 @@ class Workspace extends React.Component {
 
     this.state = {
       preview: false,
-      treeName: Config.mode.engineeringTree
+      treeName: Config.mode.engineeringTree,
+      barMode: 0
     }
   }
 
@@ -35,6 +36,12 @@ class Workspace extends React.Component {
     }
   }
 
+  onPageBarModeChange(barMode) {
+    this.setState({
+      barMode: barMode
+    })
+  }
+
   render() {
     // console.info(this.state.treeName)
     return (
@@ -43,11 +50,14 @@ class Workspace extends React.Component {
                showPreview={(event)=>this.showPreview(true)}
                treeName={this.state.treeName}
                config = {Config}
+               barMode = {this.state.barMode}
+               onPageBarModeChange = {this.onPageBarModeChange.bind(this)}
                 />
         <Preview
           ref="AivicsPreview"
           showStory={(event=>this.showPreview(false))}
           treeName={this.state.treeName}
+          barMode = {this.state.barMode}
           config = {Config}/>
       </div>
     )

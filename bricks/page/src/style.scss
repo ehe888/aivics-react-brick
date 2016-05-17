@@ -35,10 +35,24 @@
 
 }
 
+.aivics-page{
+  border: 1px solid black;
+}
+
 .aivics-brick {
   div.aivics-page-content-wrapper {
     position: relative;
     top: 0;left: 0;width: 100%;
     overflow: hidden;
+  }
+
+  div.brickContentTarBar {
+    position: absolute;
+    width: 100%;
+    height: 46px;
+    background-color: white;
+    bottom: 0;
+    display: none;
+    z-index: 100000;
   }
 }

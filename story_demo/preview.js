@@ -65,6 +65,13 @@ class Preview extends React.Component {
         $page.hide();
       }
     }
+
+    var barMode = this.props.barMode;
+    if (!barMode || barMode == 0) {
+      $(this.refs.footer).hide();
+    }else {
+      $(this.refs.footer).show();
+    }
   }
 
   showStory() {
@@ -86,22 +93,24 @@ class Preview extends React.Component {
     var self = this;
     var transitionId, fromPageId, toPageId, fromPageTransition, toPageTransition;
     var events = DataStorage.model("Events").find();
-    for (var i = 0; i < events.length; i++) {
-      var event = events[i];
-      if (event.targetId == id) {
-        transitionId = event.transitionId
-        break;
+    if (events) {
+      for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        if (event.targetId == id) {
+          transitionId = event.transitionId
+          break;
+        }
       }
-    }
 
-    var transition = DataStorage.model("Transitions").find({id: transitionId}, this.props.treeName);
-    if (transition) {
-      fromPageId = transition.fromPageId
-      toPageId = transition.toPageId;
-      fromPageTransition = transition.fromPageTransition;
-      toPageTransition = transition.toPageTransition;
-      if (toPageId && toPageId.length > 0) {
-        this.prepareTransition(fromPageId, toPageId, fromPageTransition, toPageTransition)
+      var transition = DataStorage.model("Transitions").find({id: transitionId}, this.props.treeName);
+      if (transition) {
+        fromPageId = transition.fromPageId
+        toPageId = transition.toPageId;
+        fromPageTransition = transition.fromPageTransition;
+        toPageTransition = transition.toPageTransition;
+        if (toPageId && toPageId.length > 0) {
+          this.prepareTransition(fromPageId, toPageId, fromPageTransition, toPageTransition)
+        }
       }
     }
   }
@@ -186,8 +195,10 @@ class Preview extends React.Component {
               <p className="title">title</p>
             </div>
             {pageContent}
+            <div ref="footer" className="footer"></div>
           </div>
         </div>
+
       </div>
     )
   }

@@ -8,6 +8,7 @@ import uuid from "uuid"
 import PageAddDelete from "./PageAddDelete"
 import PageScale from "./PageScale"
 import SettingsTab from "./SettingsTab"
+import PageBarMode from "./PageBarMode"
 
 class PageSettingPanel extends React.Component {
 
@@ -40,7 +41,10 @@ class PageSettingPanel extends React.Component {
           onPageScaleLarge = {this.props.onPageScaleLarge}
           onPageScaleSmall = {this.props.onPageScaleSmall}
         />
-        
+        <PageBarMode
+          onPageBarModeChange = {this.props.onPageBarModeChange}
+        />
+
       </div>
     )
   }
