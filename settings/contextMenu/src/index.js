@@ -1,3 +1,7 @@
+/**
+ * contextMenu/index.js
+ */
+
 "use strict"
 
 require("./css/style.css")
@@ -39,7 +43,7 @@ class ContextMenu extends React.Component {
       $PageAddTranstionList: $(ReactDOM.findDOMNode(this.refs.AivicsContextTransitionPages)),
       $AivicsPageContextMenu: $(this.refs.AivicsPageContextMenu)
     }
-    console.info(this.jqueryMap.$AivicsPageContextMenu)
+    // console.info(this.jqueryMap.$AivicsPageContextMenu)
     this.componentPositionReload();
     var self = this;
     this.jqueryMap.$AivicsPageContextMenu.hide();
@@ -90,16 +94,19 @@ class ContextMenu extends React.Component {
 
   onAddNewBrick(brickType, settings=[]) {
     var self = this;
-    var top = this.props.position.top,
-        left = this.props.position.left,
-        width = 200,
-        height = 200;
 
     var parent = this.props.dataStorage.model("Bricks").find({ id: this.props.activeBrickId }, this.props.treeName);
     var offset = parent.offset;
+    var top = this.props.position.top,
+        left = this.props.position.left,
+        width = offset.width/2,
+        height = width;
+
     top -= offset.top;
     left -= offset.left;
-    top -= (64 + height/2);
+    if (this.props.activeBrickId && this.props.activeBrickId.split("/").length <= 1) {
+      top -= (64 + height/2);
+    }
     this.props.onBrickAdd(this.props.activeBrickId, top, left, width, height, brickType, settings)
     this.jqueryMap.$AddBricksListMenu.hide();
   }
@@ -178,6 +185,9 @@ class ContextMenu extends React.Component {
           onContextTransitionMenu = {this.onContextTransitionMenu}
           ref = "AivicsContextTransition"
         />
+        <BrickAddEventMenuItem
+          onShowBrickAddEventList={this.onShowBrickAddEventList.bind(this)}
+        />
         <DeleteContextMenu
           onPageDelete={this.onDeleteBrick}
         />
@@ -210,8 +220,7 @@ class ContextMenu extends React.Component {
     var content = "";
     // console.info(this.props.activeBrickId)
     if (this.props.activeBrickId) {
-      //From now, we only have page context menu
-      //TODO: support other brickType
+
       var bricks = this.props.activeBrickId.split("/");
       if (bricks.length > 1) {
         content = this.renderBricksContextMenuItems();

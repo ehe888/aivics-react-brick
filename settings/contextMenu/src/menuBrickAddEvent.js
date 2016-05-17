@@ -1,3 +1,7 @@
+/**
+ * settings/contextMenu/menuBrickAddEvent.js
+ */
+
 "use strict"
 
 class BrickAddEventMenuItem extends React.Component {
@@ -22,8 +26,8 @@ class BrickAddEventList extends React.Component {
 
     var contents = "";
     var self = this;
-    var ids = this.props.activeBrickId.split("/");
-    if (ids.length > 1) {
+    var ids = this.props.activeBrickId?this.props.activeBrickId.split("/"): [];
+    if (ids.length > 0) {
       var pageId = ids[0];
       var transitions = this.props.dataStorage.model("Transitions").find();
       if (transitions && transitions.length > 0) {

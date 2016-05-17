@@ -116,11 +116,13 @@ class Brick extends React.Component {
 
   renderNest(){
     var self = this;
+    var treeName = this.props.treeName;
     var parentId = this.props.id;
     var record = this.model.find({ id: this.props.id }, this.props.treeName);
 
-    if(!_.isEmpty(record.bricks)){
-      return record.bricks.map(function(b){
+    if(!_.isEmpty(record[treeName])){
+
+      return record[treeName].map(function(b){
         var bid = parentId + "/" + b.id;
 
         var TagName = $.Bricks[b.brickType];
@@ -128,6 +130,7 @@ class Brick extends React.Component {
           id:bid, key:bid, containerId: parentId,
             dataStorage:self.props.dataStorage,
             parentId: parentId,
+            treeName: self.props.treeName,
             onBrickSelect:self.props.onBrickSelect
         });
       })

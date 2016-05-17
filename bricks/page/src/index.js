@@ -117,6 +117,7 @@ class Page extends React.Component  {
             parentId: parentId,
             title: b.title,
             position: b.offset,
+            treeName: self.props.treeName,
             onPageContextMenu: self.props.onPageContextMenu
         });
       })

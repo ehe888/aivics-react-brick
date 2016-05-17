@@ -61,7 +61,7 @@ var data = DataStorage.model("Bricks").upsert({
         height: 200
       },
       "zIndex": 100,
-      "backgroundColor": "#FFFFFF",
+      "backgroundColor": "#Fda231",
       "backgroundOpacity": 1,
       "settings": []
     }]
@@ -286,6 +286,7 @@ class Story extends React.Component {
         "backgroundOpacity": 1,
         "settings": settings
       };
+      newBrick[this.props.treeName] = [];
       page.engineeringTree.push(newBrick)
       this.setState({
         activeBrickId: page.id+"/"+newBrick.id,
@@ -295,6 +296,7 @@ class Story extends React.Component {
         settingChangeValue: null,
         activeTransitionId: null
       });
+      // console.info("onBrickAdd: ", page)
       // $(".transitionSettings").hide();
       // $(".aivics-brick-setting-panel").show();
     // }
@@ -620,9 +622,12 @@ class Story extends React.Component {
             return;
           }
           var component = DataStorage.model("Bricks").find({id: id}, self.props.treeName);
-          var position = component.offset;
-          brickPosition.top += position.top;
-          brickPosition.left += position.left;
+
+          if (component) {
+            var position = component.offset;
+            brickPosition.top += position.top;
+            brickPosition.left += position.left;
+          }
         })
         brickPosition.top += 64;
       }
