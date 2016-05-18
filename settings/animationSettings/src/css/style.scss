@@ -1,5 +1,5 @@
 .animationSettings {
-  .animationName{
+  .animationName, .animationDelaySettings, .animationDurationSettings{
     margin: 10px;
 
     >div{
@@ -13,7 +13,7 @@
       button{
         width: 150px;
       }
-      
+
     }
 
   }

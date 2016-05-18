@@ -15,9 +15,9 @@ class AnimationNameSettings extends React.Component {
     }
   }
 
-  handleAnimationSelected(effect) {
+  handleAnimationSelected(name, effect) {
     this.jqueryMap.$animationName.html(effect);
-    this.props.handleAnimationSelected(effect)
+    this.props.handleAnimationSelected(name, effect)
   }
 
   render() {
@@ -30,9 +30,9 @@ class AnimationNameSettings extends React.Component {
             <span className="caret"></span>
           </button>
           <ul className="dropdown-menu" aria-labelledby="animationSettingsMenu">
-            <li><a onClick={(event)=>this.handleAnimationSelected('fadeIn')}>fadeIn</a></li>
-            <li><a onClick={(event)=>this.handleAnimationSelected('bounceIn')}>bounceIn</a></li>
-            <li><a onClick={(event)=>this.handleAnimationSelected('slideIn')}>slideIn</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('name', 'fadeIn')}>fadeIn</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('name', 'bounceIn')}>bounceIn</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('name', 'slideIn')}>slideIn</a></li>
           </ul>
         </div>
       </div>

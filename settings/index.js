@@ -105,7 +105,7 @@ class Settings extends React.Component {
     this.jqueryMap.$lineTransitionSettings.hide();
     this.jqueryMap.$animationSettings.show();
     this.jqueryMap.$eventSettings.hide();
-    this.activeSettingMenu = this.jqueryMap.$eventSettings
+    this.activeSettingMenu = this.jqueryMap.$animationSettings
   }
 
   render() {

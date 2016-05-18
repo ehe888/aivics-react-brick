@@ -1,11 +1,11 @@
-.animationSettings .animationName {
+.animationSettings .animationName, .animationSettings .animationDelaySettings, .animationSettings .animationDurationSettings {
   margin: 10px; }
-  .animationSettings .animationName > div {
+  .animationSettings .animationName > div, .animationSettings .animationDelaySettings > div, .animationSettings .animationDurationSettings > div {
     display: inline-block;
     vertical-align: middle; }
-  .animationSettings .animationName .dropdown {
+  .animationSettings .animationName .dropdown, .animationSettings .animationDelaySettings .dropdown, .animationSettings .animationDurationSettings .dropdown {
     margin-left: 10px; }
-    .animationSettings .animationName .dropdown button {
+    .animationSettings .animationName .dropdown button, .animationSettings .animationDelaySettings .dropdown button, .animationSettings .animationDurationSettings .dropdown button {
       width: 150px; }
 
 /*# sourceMappingURL=style.css.map */

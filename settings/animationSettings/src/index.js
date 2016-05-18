@@ -7,6 +7,8 @@
 require('./css/style.css')
 
 import AnimationNameSettings from './animationNameSettings'
+import AnimationDurationSettings from './animationDurationSettings'
+import AnimationDelaySettings from './animationDelaySettings'
 
 class AnimationSettings extends React.Component {
 
@@ -20,7 +22,7 @@ class AnimationSettings extends React.Component {
     }
   }
 
-  handleAnimationSelected(effect) {
+  handleAnimationSelected(key, value) {
 
     var brick = this.props.dataStorage.model("Bricks")
               .find({id: this.props.activeBrickId}, this.props.treeName);
@@ -29,7 +31,7 @@ class AnimationSettings extends React.Component {
       duration: "",
       delay: ""
     };
-    animation.name = effect;
+    animation[key] = value;
     brick.animation = animation;
   }
 
@@ -52,6 +54,14 @@ class AnimationSettings extends React.Component {
         <AnimationNameSettings
           animationName={animationName}
           handleAnimationSelected={this.handleAnimationSelected.bind(this)}
+        />
+        <AnimationDurationSettings
+          animationDuration={animationDuration}
+          handleAnimationDuration={this.handleAnimationSelected.bind(this)}
+        />
+        <AnimationDelaySettings
+          animationDelay={animationDelay}
+          handleAnimationDuration={this.handleAnimationSelected.bind(this)}
         />
       </div>
     )
