@@ -20,16 +20,23 @@ class Workspace extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.jqueryMap = {
+      $storyContent: $(ReactDOM.findDOMNode(this.refs.AivicsStory)),
+      $previewContent: $(ReactDOM.findDOMNode(this.refs.AivicsPreview))
+    }
+  }
+
   showPreview(show) {
     if (!show) {
-      $(".story-content").show();
-      $(".preview-content").hide();
+      this.jqueryMap.$storyContent.show();
+      this.jqueryMap.$previewContent.hide();
       this.setState({
         preview: false
       })
     }else {
-      $(".story-content").hide();
-      $(".preview-content").show();
+      this.jqueryMap.$storyContent.hide();
+      this.jqueryMap.$previewContent.show();
       this.setState({
         preview: true
       })

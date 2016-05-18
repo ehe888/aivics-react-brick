@@ -33,4 +33,9 @@
     @extend .aivics-brick-setting-panel;
     display: none;
   }
+
+  .animationSettings {
+    @extend .aivics-brick-setting-panel;
+    display: none;
+  }
 }

@@ -45,7 +45,6 @@ class Page extends React.Component  {
       "top": (100 * ((height - pHeight)/height) / 2.0) + "%"
     });
 
-    console.info(record)
     if (!record.barMode || record.barMode == 0) {
       this.jqueryMap.$TabBar.hide();
     }else {

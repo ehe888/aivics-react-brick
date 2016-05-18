@@ -14,6 +14,7 @@ import PageContextMenu from './contextMenu/src'
 import TransitionSettings from './transitionSettings/src'
 import GalleryMenu from './gallery/src'
 import EventSettings from './eventSettings/src'
+import AnimationSettings from './animationSettings/src'
 
 $.Bricks = Bricks;
 let BrickSetting = Bricks.settings.Base;
@@ -28,12 +29,14 @@ class Settings extends React.Component {
     var self = this;
     this.jqueryMap = {
       $brickSetting: $(ReactDOM.findDOMNode(this.refs.BrickSetting)),
+      $animationSettings: $(ReactDOM.findDOMNode(this.refs.AnimationSettings)),
       $pageTransitionSettings: $(ReactDOM.findDOMNode(this.refs.PageTransitionSettings)),
       $lineTransitionSettings: $(ReactDOM.findDOMNode(this.refs.LineTransitionSettings)),
       $eventSettings: $(ReactDOM.findDOMNode(this.refs.EventSettings)),
       $brickSettingBtn: $(ReactDOM.findDOMNode(this.refs.brickSettingBtn)),
       $pageTransitionBtn: $(ReactDOM.findDOMNode(this.refs.pageTransitionBtn)),
-      $eventBtn: $(ReactDOM.findDOMNode(this.refs.eventBtn))
+      $eventBtn: $(ReactDOM.findDOMNode(this.refs.eventBtn)),
+      $animationBtn: $(ReactDOM.findDOMNode(this.refs.animationBtn))
     }
 
     this.activeSettingMenu = this.jqueryMap.$brickSetting
@@ -51,6 +54,7 @@ class Settings extends React.Component {
     }else {
       this.jqueryMap.$brickSetting.hide();
       this.jqueryMap.$pageTransitionSettings.hide();
+      this.jqueryMap.$animationSettings.hide();
       this.jqueryMap.$lineTransitionSettings.hide();
       this.jqueryMap.$eventSettings.hide();
       this.activeSettingMenu.show();
@@ -62,6 +66,7 @@ class Settings extends React.Component {
     this.jqueryMap.$brickSetting.show();
     this.jqueryMap.$pageTransitionSettings.hide();
     this.jqueryMap.$lineTransitionSettings.hide();
+    this.jqueryMap.$animationSettings.hide();
     this.jqueryMap.$eventSettings.hide();
     this.activeSettingMenu = this.jqueryMap.$brickSetting
 
@@ -71,6 +76,7 @@ class Settings extends React.Component {
     this.jqueryMap.$brickSetting.hide();
     this.jqueryMap.$pageTransitionSettings.show();
     this.jqueryMap.$lineTransitionSettings.hide();
+    this.jqueryMap.$animationSettings.hide();
     this.jqueryMap.$eventSettings.hide();
     this.activeSettingMenu = this.jqueryMap.$pageTransitionSettings;
   }
@@ -79,6 +85,7 @@ class Settings extends React.Component {
     this.jqueryMap.$brickSetting.hide();
     this.jqueryMap.$pageTransitionSettings.hide();
     this.jqueryMap.$lineTransitionSettings.show();
+    this.jqueryMap.$animationSettings.hide();
     this.jqueryMap.$eventSettings.hide();
   }
 
@@ -86,9 +93,19 @@ class Settings extends React.Component {
     this.jqueryMap.$brickSetting.hide();
     this.jqueryMap.$pageTransitionSettings.hide();
     this.jqueryMap.$lineTransitionSettings.hide();
+    this.jqueryMap.$animationSettings.hide();
     this.jqueryMap.$eventSettings.show();
     this.activeSettingMenu = this.jqueryMap.$eventSettings
 
+  }
+
+  onAnimationClick() {
+    this.jqueryMap.$brickSetting.hide();
+    this.jqueryMap.$pageTransitionSettings.hide();
+    this.jqueryMap.$lineTransitionSettings.hide();
+    this.jqueryMap.$animationSettings.show();
+    this.jqueryMap.$eventSettings.hide();
+    this.activeSettingMenu = this.jqueryMap.$eventSettings
   }
 
   render() {
@@ -99,6 +116,10 @@ class Settings extends React.Component {
                   className="btn btn-default"
                   ref = "brickSettingBtn"
                   onClick={(event)=>this.onPageSettingsClick()}>P</button>
+          <button type="button"
+                  className="btn btn-default"
+                  ref = "animationBtn"
+                  onClick={(event)=>this.onAnimationClick()}>A</button>
           <button type="button"
                   className="btn btn-default"
                   ref = "pageTransitionBtn"
@@ -118,6 +139,12 @@ class Settings extends React.Component {
             settingChangeValue={this.props.settingChangeValue}
             treeName = {this.props.treeName}
             onBrickSettingChange={this.props.onBrickSettingChange} />
+        <AnimationSettings
+          ref = "AnimationSettings"
+          activeBrickId={this.props.activeBrickId}
+          dataStorage={this.props.dataStorage}
+          treeName = {this.props.treeName}
+        />
         <PageTransitionSettings
           ref = "PageTransitionSettings"
           activeBrickId={this.props.activeBrickId}

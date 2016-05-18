@@ -1,0 +1,21 @@
+.animationSettings {
+  .animationName{
+    margin: 10px;
+
+    >div{
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .dropdown{
+      margin-left: 10px;
+
+      button{
+        width: 150px;
+      }
+      
+    }
+
+  }
+
+}

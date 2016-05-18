@@ -156,6 +156,8 @@ class Story extends React.Component {
     }
   }
 
+
+  //===================BEGIN BRICK METHOD========================================
   onBrickSelect(e, brickId, position) {
     var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
                       .find({id: brickId}, this.props.treeName);
@@ -169,15 +171,11 @@ class Story extends React.Component {
       activeTransitionId: null,
       activeTransitionId: null
     });
-
-    // $(".transitionSettings").hide();
-    // $(".aivics-brick-setting-panel").show();
-
   }
 
   onBrickSettingChange(brickId, fieldName, changeToValue) {
     var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
-    // console.info(brickId);
+
     let position = this.state.activeBrickPosition,
         brickType = this.state.activeBrickType;
 
@@ -265,6 +263,11 @@ class Story extends React.Component {
     // $(".aivics-brick-setting-panel").show();
   }
 
+  onBrickAnimationChange(brickId, animation) {
+    var brick = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
+    brick.animation = animation;
+  }
+
   onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
         , width = 200, height = 50, brickType = "Base", settings=[]) {
 
@@ -285,6 +288,11 @@ class Story extends React.Component {
           height: height
         },
         "zIndex": 100,
+        "animation": {
+          name: "",
+          duration: "",
+          delay: ""
+        },
         "backgroundColor": "#FFFFFF",
         "backgroundOpacity": 1,
         "settings": settings
@@ -334,6 +342,9 @@ class Story extends React.Component {
     }
   }
 
+  //===================END BRICK METHOD=========================================
+
+  //===================BEGIN PAGE METHOD==========================================
   onPageAdd(top = 10, left = 400){
     var currentPages = DataStorage.model("Bricks").find();
     var title = "new page " + currentPages.length;
@@ -450,6 +461,43 @@ class Story extends React.Component {
     }
   }
 
+  onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
+
+    if (this.state.activeBrickType == "Page") {
+      var page = DataStorage.model("Bricks").find({id: id});
+      if (!page.referenceTree) {
+        page.referenceTree = [];
+      }
+
+      var newReference = {
+        id: uuid.v4(),
+        name: "reference",
+        brickType: "PageReference",
+        offset: {
+          top: top,
+          left: left,
+          width: width,
+          height: height
+        },
+        "zIndex": 100,
+        "backgroundColor": "#FFFFFF",
+        "backgroundOpacity": 1,
+        "title": "reference",
+        "settings": ["pageTitle"]
+      };
+      page.referenceTree.push(newReference)
+      this.setState({
+        activeBrickId: page.id+"/"+newReference.id,
+        activeBrickPosition: newReference.offset,
+        activeBrickType: newReference.brickType,
+        settingChangeName: null,
+        settingChangeValue: null
+      });
+      $(".transitionSettings").hide();
+      $(".aivics-brick-setting-panel").show();
+    }
+  }
+
   onPageBarModeChange(barMode) {
     var pages = DataStorage.model("Bricks").find();
     pages.map(function(page){
@@ -458,6 +506,9 @@ class Story extends React.Component {
     this.props.onPageBarModeChange(barMode)
   }
 
+  //===================END PAGE METHOD==========================================
+
+  //===================BEGIN TRANSITION METHOD=================================
   onNewTransitionSubmit(fromPageId, toPageId ,remark) {
     var transitions = DataStorage.model('Transitions').find();
     var hasTransition = false;
@@ -516,8 +567,10 @@ class Story extends React.Component {
     transition.remark = remark;
     this.setState(this.state)
   }
+  //==================END TRANSITION METHOD====================================
 
 
+  //===================BEGIN EVENT METHOD============================================
   //Begin event method /onEventAdd/
   //Purpose: success to add event into the active brick
   //Arguments:
@@ -547,57 +600,10 @@ class Story extends React.Component {
   }
   //End event method /onEventAdd/
 
-  onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
-
-    if (this.state.activeBrickType == "Page") {
-      var page = DataStorage.model("Bricks").find({id: id});
-      if (!page.referenceTree) {
-        page.referenceTree = [];
-      }
-
-      var newReference = {
-        id: uuid.v4(),
-        name: "reference",
-        brickType: "PageReference",
-        offset: {
-          top: top,
-          left: left,
-          width: width,
-          height: height
-        },
-        "zIndex": 100,
-        "backgroundColor": "#FFFFFF",
-        "backgroundOpacity": 1,
-        "title": "reference",
-        "settings": ["pageTitle"]
-      };
-      page.referenceTree.push(newReference)
-      this.setState({
-        activeBrickId: page.id+"/"+newReference.id,
-        activeBrickPosition: newReference.offset,
-        activeBrickType: newReference.brickType,
-        settingChangeName: null,
-        settingChangeValue: null
-      });
-      $(".transitionSettings").hide();
-      $(".aivics-brick-setting-panel").show();
-    }
-  }
+  //====================END EVENT METHOD=======================================
 
 
-  mapBrickTypeToModelType(brickType){
-    switch (brickType) {
-      case 'Page':
-        return 'Bricks';break;
-      case 'PageReference':
-        return 'Bricks';break;
-      case 'Transition':
-        return 'Transitions';break;
-      default:
-        return 'Bricks';
-    }
-  }
-
+  //======================BEGIN STORYBOARD METHOD===============================
   onPreview() {
     this.props.showPreview();
   }
@@ -614,8 +620,25 @@ class Story extends React.Component {
 
     return false;
   }
+  //======================END STORYBOARD METHOD=================================
 
+  //==========================BEGIN UTILITY METHOD==============================
+  mapBrickTypeToModelType(brickType){
+    switch (brickType) {
+      case 'Page':
+        return 'Bricks';break;
+      case 'PageReference':
+        return 'Bricks';break;
+      case 'Transition':
+        return 'Transitions';break;
+      default:
+        return 'Bricks';
+    }
+  }
 
+  //==========================END UTILITY METHOD================================
+
+  //===========================BEGIN RENDER METHOD==============================
   render() {
 
     var self = this;
@@ -753,5 +776,6 @@ class Story extends React.Component {
 
     )
   }
+  //===========================BEGIN RENDER METHOD==============================
 }
 module.exports = Story;

@@ -10,7 +10,7 @@
   border-left: 1px solid black;
   z-index: 1001;
   background-color: #343d46; }
-  .Settings .aivics-brick-setting-panel, .Settings .aivics-page-transition-panel, .Settings .aivics-page-event-panel, .Settings .transitionSettings {
+  .Settings .aivics-brick-setting-panel, .Settings .aivics-page-transition-panel, .Settings .aivics-page-event-panel, .Settings .transitionSettings, .Settings .animationSettings {
     position: absolute;
     top: 40px;
     width: 100%;
@@ -21,6 +21,8 @@
   .Settings .aivics-page-event-panel {
     display: none; }
   .Settings .transitionSettings {
+    display: none; }
+  .Settings .animationSettings {
     display: none; }
 
 /*# sourceMappingURL=style.css.map */

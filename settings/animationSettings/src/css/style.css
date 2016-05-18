@@ -1,0 +1,11 @@
+.animationSettings .animationName {
+  margin: 10px; }
+  .animationSettings .animationName > div {
+    display: inline-block;
+    vertical-align: middle; }
+  .animationSettings .animationName .dropdown {
+    margin-left: 10px; }
+    .animationSettings .animationName .dropdown button {
+      width: 150px; }
+
+/*# sourceMappingURL=style.css.map */
