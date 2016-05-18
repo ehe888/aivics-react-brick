@@ -1,14 +1,14 @@
 .animationSettings {
   .animationName, .animationDelaySettings, .animationDurationSettings{
     margin: 10px;
-
+    height: 40px;
     >div{
       display: inline-block;
       vertical-align: middle;
     }
 
     .dropdown{
-      margin-left: 10px;
+      float: right;
 
       button{
         width: 150px;

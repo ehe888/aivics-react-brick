@@ -91,7 +91,6 @@ class PagePreview extends React.Component {
     return (
       <div>
         <img className="aivics-page-image" src={record.imageUrl}/>
-
       </div>
     )
   }

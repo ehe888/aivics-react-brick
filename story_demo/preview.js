@@ -50,6 +50,38 @@ class Preview extends React.Component {
       left: "0px"
     })
 
+    var barMode = this.props.barMode;
+    if (!barMode || barMode == 0) {
+      $(this.refs.footer).hide();
+    }else {
+      $(this.refs.footer).show();
+    }
+
+    var $bricks = $(".preview .aivics-brick");
+    var model = DataStorage.model("Bricks");
+    var treeName = this.props.treeName;
+    for (var i = 0; i < $bricks.length; i++) {
+      var $brick = $($bricks[i]);
+      console.info($brick)
+      var id = $brick.attr('id');
+      var brick = model.find({id: id}, treeName);
+      if (brick) {
+        var animation = brick.animation;
+        if (animation) {
+
+          var animationName = animation.name;
+          var animationDelay = 'f-ad';
+          var delay = parseInt(animation.delay);
+          if (!isNaN(delay)) {
+            animationDelay+= delay*3;
+          }
+          var animationDuration = "animated";
+
+          $brick.addClass(animationName+" " + animationDuration+" " +animationDelay)
+        }
+      }
+    }
+
     var pageId = id?pageId:this.state.pageId;
     if (!pageId || pageId.length <= 0) {
       pageId = DataStorage.model("Bricks").find()[0].id;
@@ -58,20 +90,16 @@ class Preview extends React.Component {
     var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
       var $page = $(pages[i]);
-      this.clearAnimate($page)
+      this.clearAnimate($page, true)
       if ($page.attr('data-preview-id') == pageId) {
+        $page.removeClass('f-ann')
+        $page.find(".animated").removeClass('f-ann')
         $page.show();
       }else{
         $page.hide();
       }
     }
 
-    var barMode = this.props.barMode;
-    if (!barMode || barMode == 0) {
-      $(this.refs.footer).hide();
-    }else {
-      $(this.refs.footer).show();
-    }
   }
 
   showStory() {
@@ -130,27 +158,34 @@ class Preview extends React.Component {
     }
 
     if ($fromPage && $toPage && fromPageTransition && toPageTransition) {
+      //when begin transiting
+      //clear fromPage's animate, add fromPageTransition to fromPage;
+      //show toPage, add toPageTransition to toPage;
+      //when end transiting
+      //hide fromPage, stop animation of fromPage's bricks
+      //start animation of toPage's bricks
       this.clearAnimate($fromPage);
-      $fromPage.hide();
-
+      $fromPage.removeClass("f-ann")
       $fromPage.addClass("animated "+fromPageTransition);
-      $fromPage.show();
+      $toPage.find('.animated').addClass('f-ann')
       $toPage.show();
+      $toPage.removeClass("f-ann")
       $toPage.addClass("animated "+toPageTransition);
       setTimeout(function(){
-        self.clearAnimate($toPage)
         $fromPage.hide();
+        $fromPage.removeClass(fromPageTransition);
+        $fromPage.find('.animated').addClass('f-ann')
+        $toPage.find('.animated').removeClass('f-ann')
       },1200)
     }
-
   }
 
-  clearAnimate($obj) {
-    // $obj.removeClass("animated");
-    var effects = TransitionSettings.effects;
-    for (var i = 0; i < effects.length; i++) {
-      $obj.removeClass(effects[i]);
+
+  clearAnimate($obj, removeAnimated) {
+    if (removeAnimated) {
+      $obj.removeClass("animated");
     }
+    $obj.addClass('f-ann')
   }
 
   renderPages() {
