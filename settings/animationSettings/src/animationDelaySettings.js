@@ -30,9 +30,14 @@ class AnimationDelaySettings extends React.Component {
             <span className="caret"></span>
           </button>
           <ul className="dropdown-menu" aria-labelledby="animationSettingsMenu">
+            <li><a onClick={(event)=>this.handleAnimationSelected('delay', '0')}>0</a></li>
             <li><a onClick={(event)=>this.handleAnimationSelected('delay', '1')}>1</a></li>
             <li><a onClick={(event)=>this.handleAnimationSelected('delay', '2')}>2</a></li>
             <li><a onClick={(event)=>this.handleAnimationSelected('delay', '3')}>3</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('delay', '4')}>4</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('delay', '5')}>5</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('delay', '6')}>6</a></li>
+            <li><a onClick={(event)=>this.handleAnimationSelected('delay', '7')}>7</a></li>
           </ul>
         </div>
       </div>

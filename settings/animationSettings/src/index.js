@@ -66,7 +66,6 @@ class AnimationSettings extends React.Component {
       </div>
     )
   }
-
 }
 
 module.exports = AnimationSettings;

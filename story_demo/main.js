@@ -678,6 +678,7 @@ class Story extends React.Component {
       height: this.state.activeBrickPosition.height
     };
 
+    //brick offset add its parents' offset
     if (this.state.activeBrickId) {
       var ids = this.state.activeBrickId.split("/");
       if (ids.length > 1) {
@@ -697,9 +698,8 @@ class Story extends React.Component {
       }
     }
 
-
+    //create page bricks
     var components = DataStorage.model("Bricks").find();
-
     var contents = components.map(function(comp){
       var DynaBrick = Bricks[comp.brickType];
 
@@ -713,11 +713,11 @@ class Story extends React.Component {
       )
     });
 
+    //create transitions
     var transitionModels = DataStorage.model("Transitions").find();
     var transition = "";
     if (transitionModels) {
       transition = transitionModels.map(function(transition){
-        console.log(transition)
         return (
           <Transition
             id={transition.id}
@@ -731,7 +731,7 @@ class Story extends React.Component {
         )
       })
     }
-    var brickType = this.mapBrickTypeToModelType(this.state.activeBrickType);
+
     return (
       <div className="story-content">
         <div ref="header" className="header">
@@ -758,7 +758,6 @@ class Story extends React.Component {
               activeBrickPosition={brickPosition}
               storyScale = {this.state.storyScale}
               dataStorage = {DataStorage}
-              brickType = {brickType}
               treeName = {this.props.treeName}
               onPageContextMenu = {self.onPageContextMenu}
               onBrickResize={this.onBrickResize} />
@@ -774,7 +773,6 @@ class Story extends React.Component {
             onBrickDelete = {this.onBrickDelete.bind(this)}
             onPageDelete = {this.onPageDelete}
             onEventAdd = {this.onEventAdd.bind(this)}
-            brickType = {brickType}
             treeName = {this.props.treeName}
             config = {this.props.config}
           />
@@ -783,7 +781,6 @@ class Story extends React.Component {
           activeBrickId={this.state.activeBrickId}
           activeTransitionId = {this.state.activeTransitionId}
           dataStorage={DataStorage}
-          brickType={brickType}
           onPageAddReference={this.onPageAddReference}
           settingChangeName={this.state.settingChangeName}
           settingChangeValue={this.state.settingChangeValue}

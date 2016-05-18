@@ -300,7 +300,7 @@ class MaskBox extends React.Component {
     }else {
       $(this.refs.aivicsBrickMask).css("display", "none");
     }
-    var model = this.props.dataStorage.model(this.props.brickType);
+    var model = this.props.dataStorage.model("Bricks");
     var activeBrickPosition = this.props.activeBrickPosition;
 
     var maskPosition = {

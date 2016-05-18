@@ -35,7 +35,6 @@ class Preview extends React.Component {
       'width': page.offset.width,
       'height': page.offset.height
     })
-
     this.pageViewUpdate();
   }
 
@@ -44,12 +43,36 @@ class Preview extends React.Component {
     this.pageViewUpdate(pageId);
   }
 
+  //Begin /pageViewUpdate/
+  //Purpose: update pages, include page style, animation, transition.
+  //Actions: clear deeply animation of pages; reset barMode; add animation stlye to bricks
+  //Arguments:
+  //  * id - the first page
   pageViewUpdate(id) {
     $(".preview .aivics-page-preview").css({
       top: "64px",
       left: "0px"
     })
 
+    //show the page of pageId as home page
+    var pageId = id?pageId:this.state.pageId,
+        $firstPage;
+    if (!pageId || pageId.length <= 0) {
+      pageId = DataStorage.model("Bricks").find()[0].id;
+    }
+    var pages = $(".preview").find($(".aivics-page-preview"));
+    for (var i = 0; i < pages.length; i++) {
+      var $page = $(pages[i]);
+      this.clearAnimate($page, true, true)
+      if ($page.attr('data-preview-id') == pageId) {
+        $page.show();
+        $firstPage = $page;
+      }else{
+        $page.hide();
+      }
+    }
+
+    //reset bar mode
     var barMode = this.props.barMode;
     if (!barMode || barMode == 0) {
       $(this.refs.footer).hide();
@@ -57,12 +80,12 @@ class Preview extends React.Component {
       $(this.refs.footer).show();
     }
 
+    //add animation to bricks
     var $bricks = $(".preview .aivics-brick");
     var model = DataStorage.model("Bricks");
     var treeName = this.props.treeName;
     for (var i = 0; i < $bricks.length; i++) {
       var $brick = $($bricks[i]);
-      console.info($brick)
       var id = $brick.attr('id');
       var brick = model.find({id: id}, treeName);
       if (brick) {
@@ -73,7 +96,7 @@ class Preview extends React.Component {
           var animationDelay = 'f-ad';
           var delay = parseInt(animation.delay);
           if (!isNaN(delay)) {
-            animationDelay+= delay*3;
+            animationDelay+= delay*2;
           }
           var animationDuration = "animated";
 
@@ -81,45 +104,41 @@ class Preview extends React.Component {
         }
       }
     }
+    $firstPage.removeClass('f-ann')
+    $firstPage.find(".animated").removeClass('f-ann')
 
-    var pageId = id?pageId:this.state.pageId;
-    if (!pageId || pageId.length <= 0) {
-      pageId = DataStorage.model("Bricks").find()[0].id;
-    }
-
-    var pages = $(".preview").find($(".aivics-page-preview"));
-    for (var i = 0; i < pages.length; i++) {
-      var $page = $(pages[i]);
-      this.clearAnimate($page, true)
-      if ($page.attr('data-preview-id') == pageId) {
-        $page.removeClass('f-ann')
-        $page.find(".animated").removeClass('f-ann')
-        $page.show();
-      }else{
-        $page.hide();
-      }
-    }
 
   }
+  //End /pageViewUpdate/
+
 
   showStory() {
     this.props.showStory();
-    // this.refreshPreview();
   }
 
+  //Begin refresh button event handler /refreshPreview/
+  //Purpose: reset the preview; enter the home page
   refreshPreview() {
-
     var pageId = DataStorage.model("Bricks").find()[0].id;
     this.setState({
       'pageId': pageId
     })
     this.pageViewUpdate();
   }
+  //End refresh button event handler /refreshPreview/
 
-  onBrickSelect(e, id, position) {
-    console.info("click: " + id)
+
+  //Begin brick click event handler /onBrickClick/
+  //Purpose: click brick, check if brick has event, then trigger it
+  //Arguments:
+  //  * event - jquery event object
+  //  * id - brickId
+  onBrickClick(event, id) {
+
     var self = this;
     var transitionId, fromPageId, toPageId, fromPageTransition, toPageTransition;
+
+    //check if brick has its own event
     var events = DataStorage.model("Events").find();
     if (events) {
       for (var i = 0; i < events.length; i++) {
@@ -129,7 +148,10 @@ class Preview extends React.Component {
           break;
         }
       }
-
+      if (!transitionId) {
+        return;
+      }
+      //if has event and transition, trigger it;
       var transition = DataStorage.model("Transitions").find({id: transitionId}, this.props.treeName);
       if (transition) {
         fromPageId = transition.fromPageId
@@ -142,7 +164,19 @@ class Preview extends React.Component {
       }
     }
   }
+  //End brick click event handler /onBrickClick/
 
+
+  //Begin transition method /prepareTransition/
+  //Purpose: transit from fromPage to toPage
+  //Actions: query fromPage and toPage by fromPageId and toPageId; clear animation
+  //        of fromPage, show toPage, add transition animation to fromPage and toPage,
+  //        when transition end, hide from page and start animation in toPage's bricks
+  //Arguments:
+  //  * fromPageId - id of fromPage
+  //  * toPageId - id of toPage
+  //  * fromPageTransition - animation of from page transition
+  //  * toPageTransition - animation of to page transition
   prepareTransition(fromPageId, toPageId, fromPageTransition, toPageTransition) {
     var self = this;
     var $fromPage, $toPage;
@@ -176,18 +210,39 @@ class Preview extends React.Component {
         $fromPage.removeClass(fromPageTransition);
         $fromPage.find('.animated').addClass('f-ann')
         $toPage.find('.animated').removeClass('f-ann')
-      },1200)
+      },1000)
     }
   }
+  //End transition method /prepareTransition/
 
 
-  clearAnimate($obj, removeAnimated) {
+  //Begin /clearAnimate/
+  //Purpose: remove or reset animation of $obj
+  //Arguments:
+  //  * $obj - jquery object which we want to remove animate
+  //  * removeAnimated - remove 'animated' class if true
+  //  * clearDeep - remove $obj and its chidren's animated-relate class
+  clearAnimate($obj, removeAnimated, clearDeep) {
+    $obj.addClass('f-ann')
     if (removeAnimated) {
       $obj.removeClass("animated");
     }
-    $obj.addClass('f-ann')
-  }
 
+    if (clearDeep) {
+      var children = $obj.find('.animated');
+      for (var i = 0; i < children.length; i++) {
+        var $child = $(children[i]);
+        var classes = $child.attr('class');
+        $child.removeClass(classes);
+        $child.addClass('animated')
+        $child.addClass('aivics-brick')
+      }
+    }
+  }
+  //End /clearAnimate/
+
+  //Begin render page method /renderPages/
+  //Purpose: render pages saved in DataStorage
   renderPages() {
     var self = this;
     var pages = DataStorage.model("Bricks").find();
@@ -199,13 +254,14 @@ class Preview extends React.Component {
             dataStorage={DataStorage}
             preview= {true}
             treeName = {self.props.treeName}
-            onBrickSelect={(e, id, position)=>self.onBrickSelect(e, id, position)}
+            onBrickSelect={(e, id, position)=>self.onBrickClick(e, id)}
           />
         )
       })
 
     return content;
   }
+  //End render page method /renderPages/
 
   render() {
 
