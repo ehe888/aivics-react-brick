@@ -18,7 +18,7 @@ class FieldWidth extends React.Component {
     var changeToValue = _.toNumber(e.target.value);
     var self = this;
     var $this = $(this.getDOMElement());
-    var delay = 300; //800ms
+    var delay = 800; //800ms
     var $field = $(e.target);
 
     clearTimeout($this.data('timer'));

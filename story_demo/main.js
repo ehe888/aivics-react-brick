@@ -25,13 +25,6 @@ let Transition = Bricks.Transition;
 
 import DataStorage from './DataStorage'
 
-//defin BrickType and ModelType name
-const _pageBrickType = 'Page';
-const _pageModelType = 'Bricks';
-const _pageReferenceBrickType = 'PageReference';
-const _pageReferenceModelType = 'Bricks';
-const _transitionBrickType = 'Transition';
-const _transitionModelType = 'Transitions';
 
 //--------------BEGIN CREATE TEST BRICKS---------------------
 var data = DataStorage.model("Bricks").upsert({
@@ -154,7 +147,6 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null,
       activeBrickType: activeBrick.brickType,
-      activeTransitionId: null,
       activeTransitionId: null
     });
   }
@@ -279,6 +271,7 @@ class Story extends React.Component {
   }
   //End brick animation method /onBrickAnimationChange/
 
+
   //Begin brick add method /onBrickAdd/
   //Purpose: add new brick in selected brick
   //Arguments:
@@ -329,6 +322,7 @@ class Story extends React.Component {
       });
   }
   //End brick add method /onBrickAdd/
+
 
   //Begin brick delete method /onBrickDelete/
   //Purpose: delete the actived brick and relatived events
@@ -413,6 +407,7 @@ class Story extends React.Component {
   }
   //End add new page method /onPageAdd/
 
+
   //Begin delete the selected page method /onPageDelete/
   //Purpose: delete the selected page if count of pages over 2, relatived transitions and events.
   //          Then select the last page as active page
@@ -459,6 +454,7 @@ class Story extends React.Component {
   }
   //End delete the selected page method /onPageDelete/
 
+
   //Begin page context menu method /onPageContextMenu/
   //Purpose: show the context menu.
   //        this method is also used in brick context menu
@@ -493,6 +489,7 @@ class Story extends React.Component {
   }
   //End page context menu method /onPageContextMenu/
 
+
   //Begin page scale method /onPageScaleLarge/
   //Purpose: page scale large.default scale value is 1. max value is 2
   onPageScaleLarge() {
@@ -521,6 +518,7 @@ class Story extends React.Component {
     }
   }
   //End page scale method /onPageScaleLarge/
+
 
   //Begin add new page reference method /onPageAddReference/
   //Purpose: add new page reference in page when mode is reference mode
@@ -567,6 +565,7 @@ class Story extends React.Component {
     }
   }
   //End add new page reference method /onPageAddReference/
+
 
   //Begin change page bar mode method /onPageBarModeChange/
   //Purpose: change page bar mode, navigation bar only or both navigation bar and tab bar
@@ -621,6 +620,7 @@ class Story extends React.Component {
   }
   //End add new transition method /onNewTransitionSubmit/
 
+
   //Begin delete transition method /onTransitionDeleteClick/
   //Purpose: delete the selected transition
   //Arguments:
@@ -631,24 +631,18 @@ class Story extends React.Component {
   }
   //End delete transition method /onTransitionDeleteClick/
 
+
   //Begin click transition method /onTransitionSelected/
   //Purpose: set the clicked transition as activeTransition, change its color to red
   //Arguments:
   //  * transitionId - the id of clicked transition
   onTransitionSelected(transitionId) {
-    var transitions = DataStorage.model("Transitions").find();
-    transitions.map(function(transition, i){
-      if (transition.id == transitionId) {
-        transition.background = "red"
-      }else {
-        transition.background = "black"
-      }
-    })
     this.setState({
       activeTransitionId: transitionId
     });
   }
   //End click transition method /onTransitionSelected/
+
 
   //Begin transition settings change method /onTransitionChanged/
   //Purpose: change transition remark when input transition remark settings
@@ -689,6 +683,8 @@ class Story extends React.Component {
         "transitionId": transitionId,
         "targetId": activeBrickId
     })
+    
+    this.setState(this.state)
 
   }
   //End event method /onEventAdd/
@@ -697,10 +693,19 @@ class Story extends React.Component {
 
 
   //======================BEGIN STORYBOARD METHOD===============================
+
+  //Begin show preview method /onPreview/
+  //Purpose: show preview when click preview button
   onPreview() {
     this.props.showPreview();
   }
+  //End show preview method /onPreview/
 
+  //Begin show contextMenu method /contextMenu/
+  //Purpose: click empty storyboard
+  //         , then show contextMenu with storyboard contextMenu items
+  //Arguments:
+  //  * event - jquery event object
   contextMenu(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -713,6 +718,8 @@ class Story extends React.Component {
 
     return false;
   }
+  //End show contextMenu method /contextMenu/
+
   //======================END STORYBOARD METHOD=================================
 
   //==========================BEGIN UTILITY METHOD==============================
@@ -779,6 +786,7 @@ class Story extends React.Component {
             fromPageId={transition.fromPageId}
             toPageId={transition.toPageId}
             remark={transition.remark}
+            activeTransitionId = {self.state.activeTransitionId}
             onTransitionSelected={self.onTransitionSelected}
           />
         )

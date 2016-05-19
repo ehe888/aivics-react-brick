@@ -59,6 +59,7 @@ class Transition extends React.Component {
   }
 
   render() {
+    var self = this;
 
     var transition = this.props.dataStorage.model("Transitions").find({id: this.props.id});
 
@@ -84,6 +85,21 @@ class Transition extends React.Component {
 
     var points = startX+","+startY+" " + middle0X+","+middle0Y+" " + middle1X+","+middle1Y+" "+endX+","+endY;
 
+    var color = transition.background;
+
+    if (this.props.id == this.props.activeTransitionId) {
+      color = "red"
+    }else {
+      var events = this.props.dataStorage.model("Events").find();
+      if (events) {
+        events.map(function(event){
+          if (self.props.id == event.transitionId) {
+            color = "blue"
+          }
+        })
+      }
+    }
+
     return(
       <div className="transition">
         <TransitionRemark
@@ -107,7 +123,7 @@ class Transition extends React.Component {
                   <path d="M 0 0 L 10 5 L 0 10 z" />
             </marker>
           </defs>
-          <polyline points={points} fill="none" stroke={transition.background}
+          <polyline points={points} fill="none" stroke={color}
                 markerEnd="url(#Triangle)"
                 strokeWidth="3"
                 />
