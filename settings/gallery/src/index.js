@@ -30,7 +30,7 @@ class GalleryMenu extends React.Component {
   }
 
   handleGalleryItemClick(imageUrl) {
-    console.info("handleGalleryItemClick")
+    // console.info("handleGalleryItemClick")
     var imageBrick = this.props.dataStorage.model("Bricks")
                       .find({id: this.props.activeBrickId}, this.props.treeName)
     if (imageBrick) {
@@ -38,7 +38,7 @@ class GalleryMenu extends React.Component {
     }
 
     this.props.onBrickSettingChange(this.props.activeBrickId, "image", imageUrl);
-    console.info(this.refs["AivicsImageGallery"])
+    // console.info(this.refs["AivicsImageGallery"])
     $(this.refs["AivicsImageGallery"]).modal("hide");
   }
 
@@ -56,7 +56,7 @@ class GalleryMenu extends React.Component {
   }
 
   render() {
-    
+
     var items = this.renderItems();
     return(
       <div className="modal fade galleryMenu" id="galleryMenu" ref="AivicsImageGallery">

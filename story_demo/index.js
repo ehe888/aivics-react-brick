@@ -31,6 +31,7 @@ class Workspace extends React.Component {
     if (!show) {
       this.jqueryMap.$storyContent.show();
       this.jqueryMap.$previewContent.hide();
+      
       this.setState({
         preview: false
       })

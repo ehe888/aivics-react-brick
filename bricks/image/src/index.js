@@ -29,13 +29,13 @@ class ImageBrick extends React.Component {
   componentDidUpdate() {
 
     //lock width/height ratio
-
+    // console.info("componentDidUpdate")
     var $brick = $(this.refs[this.refName].getDOMElement())
     var currentUrl = $brick.find($("img"))[0].src;
     if (currentUrl == this.lastUrl) {
-
       var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
-      if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.001) {
+      // console.info(imageBrick.offset)
+      if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.01) {
         imageBrick.offset.height = imageBrick.offset.width / this.size.ratio;
         this.props.onBrickSelect("", this.props.id, imageBrick.offset);
       }
@@ -44,6 +44,7 @@ class ImageBrick extends React.Component {
   }
 
   handleImageLoad(event) {
+    // console.info("handleImageLoad")
     var currentUrl = event.target.src;
     var parent = this.props.dataStorage.model("Bricks").find({id: this.props.parentId}, this.props.treeName);
     var $img = $(event.target);
@@ -52,7 +53,7 @@ class ImageBrick extends React.Component {
     // }
     this.lastUrl = currentUrl;
     var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
-
+    // console.info("handleImageLoad", imageBrick.offset)
     if ($img.width() > parent.offset.width) {
       $img.width(parent.offset.width);
       parent.offset.left = 0;
@@ -85,6 +86,7 @@ class ImageBrick extends React.Component {
   }
 
   render() {
+    // console.info("render")
     return(
       <Brick id={this.props.id}
             ref={this.refName}

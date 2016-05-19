@@ -107,12 +107,12 @@ class Preview extends React.Component {
     $firstPage.removeClass('f-ann')
     $firstPage.find(".animated").removeClass('f-ann')
 
-
   }
   //End /pageViewUpdate/
 
 
   showStory() {
+
     this.props.showStory();
   }
 
@@ -247,7 +247,7 @@ class Preview extends React.Component {
     var self = this;
     var pages = DataStorage.model("Bricks").find();
     var content = pages.map(function(page, i){
-
+        console.info("render", page[self.props.treeName])
         return (
           <PagePreview
             id={page.id} key={page.id}

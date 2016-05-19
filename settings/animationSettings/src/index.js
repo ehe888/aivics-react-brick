@@ -38,14 +38,16 @@ class AnimationSettings extends React.Component {
   render() {
     var animationName="None", animationDuration="", animationDelay="";
     var activeBrickId = this.props.activeBrickId;
-    if (activeBrickId.split("/").length > 1) {
-      var brick = this.props.dataStorage.model("Bricks").find({id: activeBrickId}, this.props.treeName);
-      var animation = brick.animation;
-      console.info(animation)
-      if (animation) {
-        animationName = animation.name;
-        animationDuration = animation.duration;
-        animationDelay = animation.delay;
+    if (activeBrickId) {
+      if (activeBrickId.split("/").length > 1) {
+        var brick = this.props.dataStorage.model("Bricks").find({id: activeBrickId}, this.props.treeName);
+        var animation = brick.animation;
+        // console.info(animation)
+        if (animation) {
+          animationName = animation.name;
+          animationDuration = animation.duration;
+          animationDelay = animation.delay;
+        }
       }
     }
 

@@ -74,10 +74,11 @@ class PagePreview extends React.Component {
     if(!_.isEmpty(record[this.props.treeName])){
       return record[this.props.treeName].map(function(b){
         var bid = parentId + "/" + b.id;
-
+        console.info("preview", b)
         var TagName = $.Bricks[b.brickType];
         return React.createElement(TagName, {
           id:bid, key:bid, containerId: parentId,
+            parentId: parentId,
             dataStorage:self.props.dataStorage,
             onBrickSelect:self.props.onBrickSelect,
             title: b.title,

@@ -70,68 +70,9 @@ var data2 = DataStorage.model("Bricks").upsert({
     title: "new page 1",
     "barMode": 0,
     settings: ["pageTitle", "imageUrl"],
-    engineeringTree: [{
-      id: '5',
-      name: "brick",
-      brickType: "Base",
-      offset: {
-        top: 20,
-        left: 100,
-        width: 200,
-        height: 200
-      },
-      "zIndex": 100,
-      "backgroundColor": "#Fda231",
-      "backgroundOpacity": 1,
-      "barMode": 0,
-      "animation": {
-        "name": 'fadeIn',
-        "duration": "normal",
-        "delay": 1
-      },
-      "settings": []
-    },{
-      id: '6',
-      name: "brick",
-      brickType: "Base",
-      offset: {
-        top: 300,
-        left: 50,
-        width: 150,
-        height: 30
-      },
-      "zIndex": 100,
-      "backgroundColor": "#a4a4a4",
-      "backgroundOpacity": 1,
-      "barMode": 0,
-      "animation": {
-        "name": 'bounceIn',
-        "duration": "normal",
-        "delay": 2
-      },
-      "settings": []
-    }]
-});
-
-var data3 = DataStorage.model("Bricks").upsert({
-    id:"3",
-    name: "a brick",
-    brickType: "Page",
-    offset: {
-      top: 50,
-      left: 1150,
-      width: 375,
-      height: 667
-    },
-    "zIndex": 100,
-    "backgroundColor": "#33f0a1",
-    "backgroundOpacity": 1,
-    classNames: [ 'aClass', 'bClass' ],
-    title: "new page 2",
-    settings: ["pageTitle", "imageUrl"],
-    "barMode": 0,
     engineeringTree: []
 });
+
 
 var newTransition = DataStorage.model('Transitions').upsert({
     id: 'transition1',
@@ -702,7 +643,6 @@ class Story extends React.Component {
     var components = DataStorage.model("Bricks").find();
     var contents = components.map(function(comp){
       var DynaBrick = Bricks[comp.brickType];
-
       return (
         <DynaBrick id={comp.id} key={comp.id}
           dataStorage={DataStorage}
