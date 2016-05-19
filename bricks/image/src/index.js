@@ -29,18 +29,15 @@ class ImageBrick extends React.Component {
   componentDidUpdate() {
 
     //lock width/height ratio
-    // console.info("componentDidUpdate")
+    console.info("componentDidUpdate")
     var $brick = $(this.refs[this.refName].getDOMElement())
     var currentUrl = $brick.find($("img"))[0].src;
-    if (currentUrl == this.lastUrl) {
-      var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
-      // console.info(imageBrick.offset)
-      if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.01) {
-        imageBrick.offset.height = imageBrick.offset.width / this.size.ratio;
-        this.props.onBrickSelect("", this.props.id, imageBrick.offset);
-      }
+    var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
+    // console.info(imageBrick)
+    if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.01) {
+      imageBrick.offset.height = imageBrick.offset.width / this.size.ratio;
+      this.props.onBrickSelect("", this.props.id, imageBrick.offset);
     }
-
   }
 
   handleImageLoad(event) {
@@ -48,12 +45,10 @@ class ImageBrick extends React.Component {
     var currentUrl = event.target.src;
     var parent = this.props.dataStorage.model("Bricks").find({id: this.props.parentId}, this.props.treeName);
     var $img = $(event.target);
-    // if (currentUrl == this.lastUrl && $img.width() == parent.offset.width && $img.height == parent.offset.height) {
-    //   return;
-    // }
+
     this.lastUrl = currentUrl;
     var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
-    // console.info("handleImageLoad", imageBrick.offset)
+
     if ($img.width() > parent.offset.width) {
       $img.width(parent.offset.width);
       parent.offset.left = 0;
@@ -74,8 +69,6 @@ class ImageBrick extends React.Component {
 
   renderContent() {
 
-    // test
-    // http://cc.cocimg.com/api/uploads/20160512/1463023394508339.jpg
     var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName)
     return(
       <div  ref={this.refName} className="aivics-brick-image-wrapper">
