@@ -82,7 +82,8 @@ class PagePreview extends React.Component {
             dataStorage:self.props.dataStorage,
             onBrickSelect:self.props.onBrickSelect,
             title: b.title,
-            position: b.offset
+            position: b.offset,
+            preview: {true}
         });
       })
     }

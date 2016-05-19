@@ -126,10 +126,26 @@ class Story extends React.Component {
     }
   }
 
+  //======================BEGIN STORY LIFE CYCLE METHOD=========================
+
+  componentDidMount() {
+    //define jquery object map
+    this.jqueryMap = {
+      $story : $(this.refs.story)
+    }
+  }
+  //======================END STORY LIFE CYCLE METHOD===========================
+
 
   //===================BEGIN BRICK METHOD========================================
+  //Begin brick select method /onBrickSelect/
+  //Purpose: click brick and show mask on it
+  //Arguments:
+  //  * e - jquery event object
+  //  * brickId - the id of brick which has been clicked
+  //  * position - offset of the brick
   onBrickSelect(e, brickId, position) {
-    var activeBrick = DataStorage.model(this.mapBrickTypeToModelType(this.state.activeBrickType))
+    var activeBrick = DataStorage.model("Bricks")
                       .find({id: brickId}, this.props.treeName);
 
     this.setState({
@@ -142,7 +158,15 @@ class Story extends React.Component {
       activeTransitionId: null
     });
   }
+  //End brick select method /onBrickSelect/
 
+
+  //Begin brick base setting change method /onBrickSettingChange/
+  //Purpose: change brick style or offset when we input base settings
+  //Arguments:
+  //  * brickId - the id of brick which has been selected
+  //  * fieldName - name of setting
+  //  * changeToValue - value of setting
   onBrickSettingChange(brickId, fieldName, changeToValue) {
     var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
 
@@ -157,14 +181,22 @@ class Story extends React.Component {
       activeBrickType: brickType,
       activeTransitionId: null
     })
-
   }
+  //End brick base setting change method /onBrickSettingChange/
 
+
+  //Begin brick resize by mask method /onBrickResize/
+  //Purpose: change brick size or position.
+  //         if brickType is not page, delete its parent's offset
+  //         else if brickType is page, lock its size
+  //Arguments:
+  //   * activeBrickId - the id of brick which has been selected
+  //   * position - the current offset of selected brick
   onBrickResize(activeBrickId, position) {
-    var editorLeft = $(this.refs.story).position().left;
-    var editorTop = $(this.refs.story).position().top;
-    var editorWidth = $(this.refs.story).width();
-    var editorHeight = $(this.refs.story).height();
+    var editorLeft = this.jqueryMap.$story.position().left;
+    var editorTop = this.jqueryMap.$story.position().top;
+    var editorWidth = this.jqueryMap.$story.width();
+    var editorHeight = this.jqueryMap.$story.height();
 
     var self = this;
     //Constrain the component inside the container
@@ -228,20 +260,38 @@ class Story extends React.Component {
       settingChangeValue: null,
       activeTransitionId: null
     });
-
-    // $(".transitionSettings").hide();
-    // $(".aivics-brick-setting-panel").show();
   }
+  //End brick resize by mask method /onBrickResize/
 
+  //Begin brick animation method /onBrickAnimationChange/
+  //Purpose: change animation of bricks.
+  //Arguments:
+  //  * brickId: the id of brick which has been selected
+  //  * animation: animation object which the brick need to change
+  //               animation object: {
+  //                "name": animationName,
+  //                "duration": animationDuration
+  //                "delay": animationDelay
+  //               }
   onBrickAnimationChange(brickId, animation) {
     var brick = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
     brick.animation = animation;
   }
+  //End brick animation method /onBrickAnimationChange/
 
+  //Begin brick add method /onBrickAdd/
+  //Purpose: add new brick in selected brick
+  //Arguments:
+  //  * id: the id of brick which has been selected
+  //  * top: the top value of new brick. default value is 50
+  //  * left: the left value of new brick. default value is 120
+  //  * width: the width value of new brick. default value is 200
+  //  * height: the height value of new brick. default value is 50
+  //  * brickType: the brickType of new brick. default is "Base"
+  //  * settings: the special setting fileds of new brick. default is empty
   onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
         , width = 200, height = 50, brickType = "Base", settings=[]) {
 
-    // if (this.state.activeBrickType == "Page") {
       var page = DataStorage.model("Bricks").find({id: id}, this.props.treeName);
       if (!page.engineeringTree) {
         page.engineeringTree = [];
@@ -277,12 +327,11 @@ class Story extends React.Component {
         settingChangeValue: null,
         activeTransitionId: null
       });
-      // console.info("onBrickAdd: ", page)
-      // $(".transitionSettings").hide();
-      // $(".aivics-brick-setting-panel").show();
-    // }
   }
+  //End brick add method /onBrickAdd/
 
+  //Begin brick delete method /onBrickDelete/
+  //Purpose: delete the actived brick and relatived events
   onBrickDelete() {
     var parents = this.state.activeBrickId.split("/");
     if (parents.length > 1) {
@@ -296,6 +345,16 @@ class Story extends React.Component {
         _.remove(parent[this.props.treeName], function(brick){
           return brick.id == activeBrickId;
         })
+
+        var events = DataStorage.model("Events").find();
+        if (events) {
+          for (var i = 0; i < events.length; i++) {
+            var event = events[i];
+            if (event.targetId == activeBrickId) {
+              DataStorage.model("Events").delete({id: event.id})
+            }
+          }
+        }
 
         // console.info(parent[this.props.treeName])
         this.setState({
@@ -311,10 +370,18 @@ class Story extends React.Component {
 
     }
   }
+  //End brick delete method /onBrickDelete/
 
   //===================END BRICK METHOD=========================================
 
+
   //===================BEGIN PAGE METHOD==========================================
+
+  //Begin add new page method /onPageAdd/
+  //Purpose: add new page
+  //Arguments:
+  //  * top - the top value of new page , default value is 10
+  //  * left - the left value of new page, default value is 400
   onPageAdd(top = 10, left = 400){
     var currentPages = DataStorage.model("Bricks").find();
     var title = "new page " + currentPages.length;
@@ -343,11 +410,13 @@ class Story extends React.Component {
       settingChangeValue: null,
       activeTransitionId: null
     });
-
-    // $(".transitionSettings").hide();
-    // $(".aivics-brick-setting-panel").show();
   }
+  //End add new page method /onPageAdd/
 
+  //Begin delete the selected page method /onPageDelete/
+  //Purpose: delete the selected page if count of pages over 2, relatived transitions and events.
+  //          Then select the last page as active page
+  //Arguments: none
   onPageDelete(){
     var activeBrickId = this.state.activeBrickId
 
@@ -357,7 +426,7 @@ class Story extends React.Component {
     if (pages.length > 1) {
       model.delete({id: activeBrickId});
 
-      //also delete related transitions
+      //also delete related transitions and events
       var transitions = DataStorage.model('Transitions').find();
       if (transitions) {
         transitions.map(function(transition){
@@ -366,9 +435,18 @@ class Story extends React.Component {
           }
         })
       }
+
+      var events = DataStorage.model("Events").find();
+      if (events) {
+        events.map(function(event){
+          if (event.targetId == activeBrickId) {
+            DataStorage.model("Events").delete({id: event.id})
+          }
+        })
+      }
+
       pages = model.find();
       var lastPage = _.last(pages)
-
       this.setState({
         activeBrickId: lastPage.id,
         activeBrickPosition: lastPage.offset,
@@ -378,17 +456,22 @@ class Story extends React.Component {
         activeTransitionId: null
       });
     }
-    // $(".transitionSettings").hide();
-    // $(".aivics-brick-setting-panel").show();
   }
+  //End delete the selected page method /onPageDelete/
 
+  //Begin page context menu method /onPageContextMenu/
+  //Purpose: show the context menu.
+  //        this method is also used in brick context menu
+  //Arguments:
+  //  * brickId - the id of selected brick
+  //  * position - the position of selected brick
   onPageContextMenu(brickId, position) {
     var record = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
     $(".pageContextMenu").show();
 
     var scroll = {
-      left: $(".story")[0].scrollLeft,
-      top: $(".story")[0].scrollTop
+      left: this.jqueryMap.$story[0].scrollLeft,
+      top: this.jqueryMap.$story[0].scrollTop
     }
 
     position.left += scroll.left;
@@ -408,29 +491,45 @@ class Story extends React.Component {
         contextMenuPosition: position
     })
   }
+  //End page context menu method /onPageContextMenu/
 
+  //Begin page scale method /onPageScaleLarge/
+  //Purpose: page scale large.default scale value is 1. max value is 2
   onPageScaleLarge() {
     if (this.state.storyScale < 2) {
       this.state.storyScale += 0.2;
       var width = 200 * this.state.storyScale;
-      $(".story").css({
+      this.jqueryMap.$story.css({
         'transform': 'scale('+this.state.storyScale+')',
         'transform-origin': '0 0'
       })
     }
   }
+  //End page scale method /onPageScaleLarge/
 
+
+  //Begin page scale method /onPageScaleLarge/
+  //Purpose: page scale large.default scale value is 1. min value is 0.4
   onPageScaleSmall() {
     if (this.state.storyScale > 0.4) {
       this.state.storyScale -= 0.2;
       var width = 200 * this.state.storyScale;
-      $(".story").css({
+      this.jqueryMap.$story.css({
         'transform': 'scale('+this.state.storyScale+')',
         'transform-origin': '0 0'
       })
     }
   }
+  //End page scale method /onPageScaleLarge/
 
+  //Begin add new page reference method /onPageAddReference/
+  //Purpose: add new page reference in page when mode is reference mode
+  //Arguments:
+  //  * id - the id of selected page
+  //  * top - the top value of reference, default is 50
+  //  * left - the left value of reference, default is 120
+  //  * width - the width value of reference, default is 200
+  //  * height - the height value of reference, default is 50
   onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
 
     if (this.state.activeBrickType == "Page") {
@@ -467,7 +566,12 @@ class Story extends React.Component {
       $(".aivics-brick-setting-panel").show();
     }
   }
+  //End add new page reference method /onPageAddReference/
 
+  //Begin change page bar mode method /onPageBarModeChange/
+  //Purpose: change page bar mode, navigation bar only or both navigation bar and tab bar
+  //Arguments:
+  //  * barMode - 0:navigationBar only, 1: Both navigation bar and tab bar
   onPageBarModeChange(barMode) {
     var pages = DataStorage.model("Bricks").find();
     pages.map(function(page){
@@ -475,10 +579,18 @@ class Story extends React.Component {
     });
     this.props.onPageBarModeChange(barMode)
   }
+  //End change page bar mode method /onPageBarModeChange/
 
   //===================END PAGE METHOD==========================================
 
-  //===================BEGIN TRANSITION METHOD=================================
+  //===================BEGIN TRANSITION METHOD==================================
+
+  //Begin add new transition method /onNewTransitionSubmit/
+  //Purpose: add new transition from 2 page. ignore if transition exits
+  //Arguments:
+  //  * fromPageId: the id of page as source page
+  //  * toPageId: the id of page as destination page
+  //  * remark: the remark of transition
   onNewTransitionSubmit(fromPageId, toPageId ,remark) {
     var transitions = DataStorage.model('Transitions').find();
     var hasTransition = false;
@@ -507,12 +619,22 @@ class Story extends React.Component {
     })
     this.setState(this.state)
   }
+  //End add new transition method /onNewTransitionSubmit/
 
+  //Begin delete transition method /onTransitionDeleteClick/
+  //Purpose: delete the selected transition
+  //Arguments:
+  //  * transitionId: the id of transition which need to delete
   onTransitionDeleteClick(transitionId) {
     DataStorage.model('Transitions').delete({id: transitionId});
     this.setState(this.state)
   }
+  //End delete transition method /onTransitionDeleteClick/
 
+  //Begin click transition method /onTransitionSelected/
+  //Purpose: set the clicked transition as activeTransition, change its color to red
+  //Arguments:
+  //  * transitionId - the id of clicked transition
   onTransitionSelected(transitionId) {
     var transitions = DataStorage.model("Transitions").find();
     transitions.map(function(transition, i){
@@ -525,18 +647,21 @@ class Story extends React.Component {
     this.setState({
       activeTransitionId: transitionId
     });
-
-    // $(".transitionSettings").show();
-    // $(".aivics-page-transition-panel").hide();
-    // $(".aivics-brick-setting-panel").hide();
-
   }
+  //End click transition method /onTransitionSelected/
 
+  //Begin transition settings change method /onTransitionChanged/
+  //Purpose: change transition remark when input transition remark settings
+  //Arguments:
+  //  * transitionId - the id of selected transitionId
+  //  * remark - remark of transition
   onTransitionChanged(transitionId, remark) {
     var transition = DataStorage.model("Transitions").find({id: transitionId});
     transition.remark = remark;
     this.setState(this.state)
   }
+  //End transition settings change method /onTransitionChanged/
+
   //==================END TRANSITION METHOD====================================
 
 
@@ -559,14 +684,12 @@ class Story extends React.Component {
         }
       }
     }
-
     //insert the event
     DataStorage.model("Events").upsert({
         "transitionId": transitionId,
         "targetId": activeBrickId
     })
 
-    console.info("onEventAdd success");
   }
   //End event method /onEventAdd/
 
@@ -593,22 +716,12 @@ class Story extends React.Component {
   //======================END STORYBOARD METHOD=================================
 
   //==========================BEGIN UTILITY METHOD==============================
-  mapBrickTypeToModelType(brickType){
-    switch (brickType) {
-      case 'Page':
-        return 'Bricks';break;
-      case 'PageReference':
-        return 'Bricks';break;
-      case 'Transition':
-        return 'Transitions';break;
-      default:
-        return 'Bricks';
-    }
-  }
 
   //==========================END UTILITY METHOD================================
 
   //===========================BEGIN RENDER METHOD==============================
+  //Begin render method /render/
+  //Purpose: render page tools bar, pages, mask, transitions, settings panels
   render() {
 
     var self = this;
@@ -742,6 +855,7 @@ class Story extends React.Component {
 
     )
   }
+  //End render method /render/
   //===========================BEGIN RENDER METHOD==============================
 }
 module.exports = Story;

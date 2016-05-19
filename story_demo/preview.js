@@ -90,7 +90,7 @@ class Preview extends React.Component {
       var brick = model.find({id: id}, treeName);
       if (brick) {
         var animation = brick.animation;
-        if (animation) {
+        if (animation && animation.name && animation.name.length > 0) {
 
           var animationName = animation.name;
           var animationDelay = 'f-ad';

@@ -29,11 +29,13 @@ class ImageBrick extends React.Component {
   componentDidUpdate() {
 
     //lock width/height ratio
-    console.info("componentDidUpdate")
+    if (this.props.preview) {
+      return;
+    }
     var $brick = $(this.refs[this.refName].getDOMElement())
     var currentUrl = $brick.find($("img"))[0].src;
     var imageBrick = this.props.dataStorage.model("Bricks").find({id: this.props.id}, this.props.treeName);
-    // console.info(imageBrick)
+
     if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.01) {
       imageBrick.offset.height = imageBrick.offset.width / this.size.ratio;
       this.props.onBrickSelect("", this.props.id, imageBrick.offset);
@@ -41,7 +43,11 @@ class ImageBrick extends React.Component {
   }
 
   handleImageLoad(event) {
-    // console.info("handleImageLoad")
+
+    if (this.props.preview) {
+      return;
+    }
+
     var currentUrl = event.target.src;
     var parent = this.props.dataStorage.model("Bricks").find({id: this.props.parentId}, this.props.treeName);
     var $img = $(event.target);
@@ -58,7 +64,7 @@ class ImageBrick extends React.Component {
     $brick.height($img.height())
     imageBrick.offset.width = $img.width();
     imageBrick.offset.height = $img.height();
-
+    console.info(imageBrick)
     this.size.width = imageBrick.offset.width;
     this.size.height = imageBrick.offset.height;
     this.size.ratio = parseFloat(this.size.width / this.size.height);
