@@ -165,7 +165,8 @@ class Page extends React.Component  {
             {subContent}
           </div>
           <div ref="brickContentTarBar"
-               className="brickContentTarBar">
+               className="brickContentTarBar"
+               onContextMenu={(event)=>this.contextMenu(event)}>
           </div>
           <div ref="brickContentForegrond"
               className="aivics-brick-content-foreground">
