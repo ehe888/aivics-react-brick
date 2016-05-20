@@ -82,7 +82,8 @@ class PagePreview extends React.Component {
             onBrickSelect:self.props.onBrickSelect,
             title: b.title,
             position: b.offset,
-            preview: {true}
+            preview: {true},
+            treeName: self.props.treeName
         });
       })
     }

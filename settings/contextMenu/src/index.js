@@ -106,7 +106,7 @@ class ContextMenu extends React.Component {
         lastBrickId = brickId;
         var parent = this.props.dataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
         var offset = parent.offset;
-        if (i == 0) {
+        if (i == brickIds.length-1) {
           width = offset.width/2;
           height = width;
         }
@@ -114,7 +114,7 @@ class ContextMenu extends React.Component {
         left -= offset.left;
       }
 
-      if (this.props.activeBrickId.split("/").length < 1) {
+      if (this.props.activeBrickId.split("/").length <= 1) {
         top -= (64 + height/2);
       }
 
