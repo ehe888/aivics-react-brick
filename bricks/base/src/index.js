@@ -119,12 +119,10 @@ class Brick extends React.Component {
     var treeName = this.props.treeName;
     var parentId = this.props.id;
     var record = this.model.find({ id: this.props.id }, this.props.treeName);
-
     if(!_.isEmpty(record[treeName])){
 
       return record[treeName].map(function(b){
         var bid = parentId + "/" + b.id;
-
         var TagName = $.Bricks[b.brickType];
         return React.createElement(TagName, {
           id:bid, key:bid, containerId: parentId,

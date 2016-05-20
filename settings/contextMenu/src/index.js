@@ -94,20 +94,33 @@ class ContextMenu extends React.Component {
 
   onAddNewBrick(brickType, settings=[]) {
     var self = this;
+    if (this.props.activeBrickId) {
+      var top = this.props.position.top,
+          left = this.props.position.left,
+          width,
+          height,
+          lastBrickId = "";
+      var brickIds = this.props.activeBrickId.split("/");
+      for (var i = 0; i < brickIds.length; i++) {
+        var brickId = lastBrickId.length > 0?lastBrickId+"/"+brickIds[i]:brickIds[i];
+        lastBrickId = brickId;
+        var parent = this.props.dataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
+        var offset = parent.offset;
+        if (i == 0) {
+          width = offset.width/2;
+          height = width;
+        }
+        top -= offset.top;
+        left -= offset.left;
+      }
 
-    var parent = this.props.dataStorage.model("Bricks").find({ id: this.props.activeBrickId }, this.props.treeName);
-    var offset = parent.offset;
-    var top = this.props.position.top,
-        left = this.props.position.left,
-        width = offset.width/2,
-        height = width;
+      if (this.props.activeBrickId.split("/").length < 1) {
+        top -= (64 + height/2);
+      }
 
-    top -= offset.top;
-    left -= offset.left;
-    if (this.props.activeBrickId && this.props.activeBrickId.split("/").length <= 1) {
-      top -= (64 + height/2);
+      this.props.onBrickAdd(this.props.activeBrickId, top, left, width, height, brickType, settings)
     }
-    this.props.onBrickAdd(this.props.activeBrickId, top, left, width, height, brickType, settings)
+
     this.jqueryMap.$AddBricksListMenu.hide();
   }
 
@@ -198,6 +211,10 @@ class ContextMenu extends React.Component {
   renderBricksContextMenuItems() {
     return (
       <div>
+        <AddBricksMenu
+          onAddBricksContextMenu = {this.onAddBricksContextMenu}
+          ref = "AivicsContextAddBricksContextMenu"
+        />
         <BrickAddEventMenuItem
           onShowBrickAddEventList={this.onShowBrickAddEventList.bind(this)}
         />

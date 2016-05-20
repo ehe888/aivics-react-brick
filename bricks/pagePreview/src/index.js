@@ -39,7 +39,6 @@ class PagePreview extends React.Component {
   componentDidUpdate(){
 
     var record = this.model.find({ id: this.props.id }, this.props.treeName);
-    // console.info(this.props.treeName)
     $(this.refs[this.refName]).css(record);
   }
 
@@ -74,7 +73,7 @@ class PagePreview extends React.Component {
     if(!_.isEmpty(record[this.props.treeName])){
       return record[this.props.treeName].map(function(b){
         var bid = parentId + "/" + b.id;
-        console.info("preview", b)
+
         var TagName = $.Bricks[b.brickType];
         return React.createElement(TagName, {
           id:bid, key:bid, containerId: parentId,

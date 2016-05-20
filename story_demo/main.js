@@ -32,8 +32,8 @@ var data = DataStorage.model("Bricks").upsert({
     name: "a brick",
     brickType: "Page",
     offset: {
-      top: 10,
-      left: 100,
+      top: 80,
+      left: 500,
       width: 375,
       height: 667
     },
@@ -43,42 +43,61 @@ var data = DataStorage.model("Bricks").upsert({
     classNames: [ 'aClass', 'bClass' ],
     title: "new page 0",
     settings: ["pageTitle", "imageUrl"],
-    engineeringTree: []
+    engineeringTree: [{
+      id: "2",
+      name: "brick",
+      brickType: "Base",
+      offset: {
+        top: 0,
+        left: 0,
+        width: 375,
+        height: 375
+      },
+      "zIndex": 100,
+      "animation": {
+        name: "",
+        duration: "",
+        delay: ""
+      },
+      "backgroundColor": "#FFFF00",
+      "backgroundOpacity": 1,
+      "settings": []
+    }]
 });
 //
-var data2 = DataStorage.model("Bricks").upsert({
-    id: "2",
-    name: "a brick",
-    brickType: "Page",
-    offset: {
-      top: 100,
-      left: 600,
-      width: 375,
-      height: 667
-    },
-    "zIndex": 100,
-    "backgroundColor": "#66E243",
-    "backgroundOpacity": 1,
-    classNames: [ 'aClass', 'bClass' ],
-    title: "new page 1",
-    "barMode": 0,
-    settings: ["pageTitle", "imageUrl"],
-    engineeringTree: []
-});
+// var data2 = DataStorage.model("Bricks").upsert({
+//     id: "2",
+//     name: "a brick",
+//     brickType: "Page",
+//     offset: {
+//       top: 100,
+//       left: 600,
+//       width: 375,
+//       height: 667
+//     },
+//     "zIndex": 100,
+//     "backgroundColor": "#66E243",
+//     "backgroundOpacity": 1,
+//     classNames: [ 'aClass', 'bClass' ],
+//     title: "new page 1",
+//     "barMode": 0,
+//     settings: ["pageTitle", "imageUrl"],
+//     engineeringTree: []
+// });
 
 
-var newTransition = DataStorage.model('Transitions').upsert({
-    id: 'transition1',
-    name: "Transition",
-    brickType: "Transition",
-    "zIndex": 1,
-    "fromPageId": "1",
-    "toPageId": "2",
-    "remark": "",
-    "fromPageTransition": "fadeOut",
-    "toPageTransition": "fadeIn",
-    "background": "black"
-})
+// var newTransition = DataStorage.model('Transitions').upsert({
+//     id: 'transition1',
+//     name: "Transition",
+//     brickType: "Transition",
+//     "zIndex": 1,
+//     "fromPageId": "1",
+//     "toPageId": "2",
+//     "remark": "",
+//     "fromPageTransition": "fadeOut",
+//     "toPageTransition": "fadeIn",
+//     "background": "black"
+// })
 
 
 //--------------END CREATE TEST BRICKS---------------------
@@ -127,10 +146,66 @@ class Story extends React.Component {
       $story : $(this.refs.story)
     }
   }
+
   //======================END STORY LIFE CYCLE METHOD===========================
 
 
   //===================BEGIN BRICK METHOD========================================
+
+
+  //Begin brick add method /onBrickAdd/
+  //Purpose: add new brick in selected brick
+  //Arguments:
+  //  * id: the id of brick which has been selected
+  //  * top: the top value of new brick. default value is 50
+  //  * left: the left value of new brick. default value is 120
+  //  * width: the width value of new brick. default value is 200
+  //  * height: the height value of new brick. default value is 50
+  //  * brickType: the brickType of new brick. default is "Base"
+  //  * settings: the special setting fileds of new brick. default is empty
+  onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
+        , width = 200, height = 50, brickType = "Base", settings=[]) {
+
+      var page = DataStorage.model("Bricks").find({id: id}, this.props.treeName);
+      if (!page.engineeringTree) {
+        page.engineeringTree = [];
+      }
+
+      var newBrick = {
+        id: uuid.v4(),
+        name: "brick",
+        brickType: brickType,
+        offset: {
+          top: top,
+          left: left,
+          width: width,
+          height: height
+        },
+        "zIndex": 100,
+        "animation": {
+          name: "",
+          duration: "",
+          delay: ""
+        },
+        "backgroundColor": "#FFFFFF",
+        "backgroundOpacity": 1,
+        "settings": settings
+      };
+      newBrick[this.props.treeName] = [];
+      page.engineeringTree.push(newBrick)
+      this.setState({
+        activeBrickId: id+"/"+newBrick.id,
+        activeBrickPosition: newBrick.offset,
+        activeBrickType: newBrick.brickType,
+        settingChangeName: null,
+        settingChangeValue: null,
+        activeTransitionId: null
+      });
+
+  }
+  //End brick add method /onBrickAdd/
+
+
   //Begin brick select method /onBrickSelect/
   //Purpose: click brick and show mask on it
   //Arguments:
@@ -138,9 +213,9 @@ class Story extends React.Component {
   //  * brickId - the id of brick which has been clicked
   //  * position - offset of the brick
   onBrickSelect(e, brickId, position) {
+
     var activeBrick = DataStorage.model("Bricks")
                       .find({id: brickId}, this.props.treeName);
-
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -230,12 +305,15 @@ class Story extends React.Component {
 
     //delte parents' offset
     var ids = activeBrickId.split("/");
+    var lastBrickId = "";
     if (ids.length > 1) {
       ids.map(function(id, i){
         if (i == ids.length-1) {
           return;
         }
-        var parent = DataStorage.model("Bricks").find({ id: id }, self.props.treeName);
+        var brickId = i==0?id: lastBrickId+"/"+id;
+        lastBrickId = brickId;
+        var parent = DataStorage.model("Bricks").find({ id: lastBrickId }, self.props.treeName);
         var offset = parent.offset;
         position.top -= offset.top;
         position.left -= offset.left;
@@ -272,65 +350,23 @@ class Story extends React.Component {
   //End brick animation method /onBrickAnimationChange/
 
 
-  //Begin brick add method /onBrickAdd/
-  //Purpose: add new brick in selected brick
-  //Arguments:
-  //  * id: the id of brick which has been selected
-  //  * top: the top value of new brick. default value is 50
-  //  * left: the left value of new brick. default value is 120
-  //  * width: the width value of new brick. default value is 200
-  //  * height: the height value of new brick. default value is 50
-  //  * brickType: the brickType of new brick. default is "Base"
-  //  * settings: the special setting fileds of new brick. default is empty
-  onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
-        , width = 200, height = 50, brickType = "Base", settings=[]) {
-
-      var page = DataStorage.model("Bricks").find({id: id}, this.props.treeName);
-      if (!page.engineeringTree) {
-        page.engineeringTree = [];
-      }
-
-      var newBrick = {
-        id: uuid.v4(),
-        name: "brick",
-        brickType: brickType,
-        offset: {
-          top: top,
-          left: left,
-          width: width,
-          height: height
-        },
-        "zIndex": 100,
-        "animation": {
-          name: "",
-          duration: "",
-          delay: ""
-        },
-        "backgroundColor": "#FFFFFF",
-        "backgroundOpacity": 1,
-        "settings": settings
-      };
-      newBrick[this.props.treeName] = [];
-      page.engineeringTree.push(newBrick)
-      this.setState({
-        activeBrickId: page.id+"/"+newBrick.id,
-        activeBrickPosition: newBrick.offset,
-        activeBrickType: newBrick.brickType,
-        settingChangeName: null,
-        settingChangeValue: null,
-        activeTransitionId: null
-      });
-  }
-  //End brick add method /onBrickAdd/
-
 
   //Begin brick delete method /onBrickDelete/
   //Purpose: delete the actived brick and relatived events
   onBrickDelete() {
     var parents = this.state.activeBrickId.split("/");
     if (parents.length > 1) {
-      var parentId = parents[parents.length-2],
+      var parentId = "",
           activeBrickId = parents[parents.length-1]
+      for (var i = 0; i < parents.length; i++) {
+        var id = parents[i];
+        if (i == 0) {
+          parentId = id;
+        }else if (i < parents.length-1) {
+          parentId = parentId + "/" + id
+        }
+      }
+      console.info(parentId)
 
       var parent = DataStorage.model("Bricks").find({id: parentId}, this.props.treeName);
       var index = -1;
@@ -349,10 +385,8 @@ class Story extends React.Component {
             }
           }
         }
-
-        // console.info(parent[this.props.treeName])
         this.setState({
-          activeBrickId: parent.id,
+          activeBrickId: parentId,
           activeBrickPosition: parent.offset,
           activeBrickType: parent.brickType,
           settingChangeName: null,
@@ -683,7 +717,7 @@ class Story extends React.Component {
         "transitionId": transitionId,
         "targetId": activeBrickId
     })
-    
+
     this.setState(this.state)
 
   }
@@ -740,14 +774,18 @@ class Story extends React.Component {
     };
 
     //brick offset add its parents' offset
+
     if (this.state.activeBrickId) {
       var ids = this.state.activeBrickId.split("/");
+      var lastBrickId = "";
       if (ids.length > 1) {
         ids.map(function(id, i){
           if (i == ids.length -1) {
             return;
           }
-          var component = DataStorage.model("Bricks").find({id: id}, self.props.treeName);
+          var brickId = i==0?id: lastBrickId+"/"+id;
+          lastBrickId = brickId;
+          var component = DataStorage.model("Bricks").find({id: lastBrickId}, self.props.treeName);
 
           if (component) {
             var position = component.offset;

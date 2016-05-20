@@ -45,7 +45,7 @@ Model.prototype.findByPath = function(path, collection, treeName){
         return [];
       }
       console.log("collection", collect[treeName]);
-      return this.findByPath(p, collect[treeName]);
+      return this.findByPath(p, collect[treeName], treeName);
     }
 }
 

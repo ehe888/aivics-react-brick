@@ -154,9 +154,7 @@ class BrickSettingPanel extends React.Component {
     if (this.props.activeBrickId) {
 
       var record = this.model.find({ id: this.props.activeBrickId }, this.props.treeName);
-
       var settingFields = _.union(this.baseSettings, record.settings);
-      console.log(record.settings)
       var self = this;
       return settingFields.map(function(result){
         var r = self.fields[result];
