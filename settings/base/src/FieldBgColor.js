@@ -22,8 +22,8 @@ class FieldBgColor extends React.Component {
     var fieldName = $this.attr("name");
     console.log(fieldName + " changed to ==> " + changeToValue);
 
-    var record = this.props.model.find({ id: this.props.brickId }, self.props.treeName).getValue();
-    record.backgroundColor = changeToValue;
+    var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
+    record.set("backgroundColor", changeToValue);
     this.props.onBrickSettingChange(self.props.brickId,  fieldName, changeToValue);
 
     this.setState({ currentColor: changeToValue });

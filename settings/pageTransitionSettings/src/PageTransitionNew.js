@@ -76,7 +76,8 @@ class PageTransitionNew extends React.Component {
 
   render() {
     var model = this.props.dataStorage.BrickCollections;
-    var activeBrick = model.find({id: this.props.activeBrickId}).getValue()
+    var activeBrick = model.find({id: this.props.activeBrickId})
+    activeBrick = activeBrick?activeBrick.getValue():null;
     var title = activeBrick?activeBrick.title: "";
 
     return (

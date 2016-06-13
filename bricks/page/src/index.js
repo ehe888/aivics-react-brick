@@ -129,6 +129,7 @@ class Page extends React.Component  {
     var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     if(!_.isEmpty(record[this.props.treeName])){
       return record[this.props.treeName].map(function(b){
+        var b = b.getValue()
         var bid = parentId + "/" + b.id;
 
         var TagName = $.Bricks[b.brickType];

@@ -33,7 +33,8 @@ class PageTransitionList extends React.Component {
     var transitions = this.props.dataStorage.TransitionCollections.find();
     var pageModels = this.props.dataStorage.BrickCollections;
     var activeBrickId = this.props.activeBrickId;
-    var activePage = pageModels.find({id: activeBrickId}).getValue();
+    var activePage = pageModels.find({id: activeBrickId});
+    activePage = activePage?activePage.getValue():null;
     var lists = "";
     if (transitions) {
       lists = transitions.map(function(transition){

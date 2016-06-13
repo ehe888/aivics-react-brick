@@ -105,7 +105,7 @@ class Story extends React.Component {
   onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
         , width = 200, height = 50, brickType = "Base", settings=[]) {
 
-      var page = DataStorage.model("Bricks").find({id: id}, this.props.treeName);
+      var page = Collections.BrickCollections.find({id: id}, this.props.treeName).getValue();
       if (!page.engineeringTree) {
         page.engineeringTree = [];
       }
@@ -121,7 +121,7 @@ class Story extends React.Component {
         "settings": settings
       });
       var newBrick = brickModel.getValue();
-      page.engineeringTree.push(newBrick)
+      page.engineeringTree.push(brickModel)
       this.setState({
         activeBrickId: id+"/"+newBrick.id,
         activeBrickPosition: newBrick.offset,
@@ -241,7 +241,7 @@ class Story extends React.Component {
         }
         var brickId = i==0?id: lastBrickId+"/"+id;
         lastBrickId = brickId;
-        var parent = DataStorage.model("Bricks").find({ id: lastBrickId }, self.props.treeName);
+        var parent = Collections.BrickCollections.find({ id: lastBrickId }, self.props.treeName).getValue();
         var offset = parent.offset;
         position.top -= offset.top;
         position.left -= offset.left;
@@ -295,7 +295,6 @@ class Story extends React.Component {
         }
       }
 
-
       var parent = Collections.BrickCollections.find({id: parentId}, this.props.treeName).getValue();
       var index = -1;
       if (parent) {
@@ -339,14 +338,15 @@ class Story extends React.Component {
   //  * top - the top value of new page , default value is 10
   //  * left - the left value of new page, default value is 400
   onPageAdd(top = 10, left = 400){
-    var currentPages = DataStorage.model("Bricks").find();
+    var currentPages = Collections.BrickCollections.find();
     var title = "new page " + currentPages.length;
     var newPageModel = new Models.PageModel({
       offset: {top: top, left: left, width: 375, height: 667},
       title: title,
       barMode: this.props.barMode
     });
-    var newPage = DataStorage.model("Bricks").upsert(newPageModel.getValue())
+    Collections.BrickCollections.add(newPageModel)
+    var newPage = newPageModel.getValue();
 
     this.setState({
       activeBrickId: newPage.id,
@@ -703,7 +703,7 @@ class Story extends React.Component {
           }
           var brickId = i==0?id: lastBrickId+"/"+id;
           lastBrickId = brickId;
-          var component = DataStorage.model("Bricks").find({id: lastBrickId}, self.props.treeName);
+          var component = Collections.BrickCollections.find({id: lastBrickId}, self.props.treeName).getValue();
 
           if (component) {
             var position = component.offset;

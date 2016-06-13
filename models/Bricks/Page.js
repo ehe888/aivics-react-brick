@@ -24,7 +24,7 @@ class PageModel extends BaseModel{
         brickType: "Page",
         offset: props.offset,
         "zIndex": 100,
-        "backgroundColor": "#d3f9dd",
+        "backgroundColor": props.backgroundColor || "#d3f9dd",
         "backgroundOpacity": 1,
         classNames: [ 'aClass', 'bClass' ],
         title: props.title || "new page 0",

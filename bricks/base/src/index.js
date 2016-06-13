@@ -31,7 +31,7 @@ class Brick extends React.Component {
       super(props);
 
       this.refName = "aivicsBrick";
-      this.model = this.props.dataStorage.model("Bricks");
+      this.model = this.props.dataStorage;
       this.handleOverlayClick = this.handleOverlayClick.bind(this);
       this.reload = this.reload.bind(this);
       this.getDOMElement = this.getDOMElement.bind(this);
@@ -51,7 +51,7 @@ class Brick extends React.Component {
 
   componentDidMount(){
     var record = this.model.find({ id: this.props.id }, this.props.treeName);
-    this.reload(record);
+    this.reload(record.getValue());
   }
 
   handleOverlayClick(e) {
@@ -97,7 +97,7 @@ class Brick extends React.Component {
     // _.merge(record, { dimension: moveToBrickPosition } );
     // console.log({ record: record });
     // this.model.upsert(record);
-    this.reload(record);
+    this.reload(record.getValue());
   }
 
   contextMenu(event) {
@@ -118,10 +118,11 @@ class Brick extends React.Component {
     var self = this;
     var treeName = this.props.treeName;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     if(!_.isEmpty(record[treeName])){
 
       return record[treeName].map(function(b){
+        var b = b.getValue();
         var bid = parentId + "/" + b.id;
         var TagName = $.Bricks[b.brickType];
         return React.createElement(TagName, {

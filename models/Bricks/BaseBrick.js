@@ -24,7 +24,7 @@ class BaseBrickModel extends BaseModel{
         brickType: props.brickType || "Base",
         offset: props.offset,
         "zIndex": 100,
-        "backgroundColor": "#ffffff",
+        "backgroundColor": props.backgroundColor || "#ffffff",
         "backgroundOpacity": 1,
         classNames: [ 'aClass', 'bClass' ],
         title: props.title || "new brick",
