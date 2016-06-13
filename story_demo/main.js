@@ -15,6 +15,8 @@ import TransitionSettings from '../settings/transitionSettings/src'
 import GalleryMenu from '../settings/gallery/src'
 import Models from '../models'
 
+import Collections from '../collections'
+
 $.Bricks = Bricks;
 
 let BrickMask = Bricks.Mask;
@@ -139,9 +141,7 @@ class Story extends React.Component {
         page.engineeringTree = [];
       }
 
-      var newBrick = {
-        id: uuid.v4(),
-        name: "brick",
+      var brickModel = new Models.BaseBrickModel({
         brickType: brickType,
         offset: {
           top: top,
@@ -149,17 +149,9 @@ class Story extends React.Component {
           width: width,
           height: height
         },
-        "zIndex": 100,
-        "animation": {
-          name: "",
-          duration: "",
-          delay: ""
-        },
-        "backgroundColor": "#FFFFFF",
-        "backgroundOpacity": 1,
         "settings": settings
-      };
-      newBrick[this.props.treeName] = [];
+      });
+      var newBrick = brickModel.getValue();
       page.engineeringTree.push(newBrick)
       this.setState({
         activeBrickId: id+"/"+newBrick.id,

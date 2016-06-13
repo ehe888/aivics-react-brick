@@ -1,8 +1,9 @@
 "use strick"
 
 import Backbone from 'backbone'
+import uuid from 'uuid'
+import BaseModel from './index.js'
 
-import BaseModel from './Base.js'
 
 class PageModel extends BaseModel{
 
@@ -18,6 +19,7 @@ class PageModel extends BaseModel{
     super(props)
 
     var defaults = {
+        id: props.id || uuid.v4(),
         name: "a brick",
         brickType: "Page",
         offset: props.offset,
