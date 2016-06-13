@@ -9,7 +9,7 @@ class Page extends React.Component  {
     super(props);
 
     this.refName = "aivicsPage";
-    this.model = this.props.dataStorage.model("Bricks");
+    this.model = this.props.dataStorage;
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     this.reload = this.reload.bind(this);
     this.getDOMElement = this.getDOMElement.bind(this);
@@ -20,7 +20,6 @@ class Page extends React.Component  {
   }
 
   reload(data){
-
     var offset = data.offset;
     $(this.refs[this.refName])
               .css(offset)
@@ -57,7 +56,7 @@ class Page extends React.Component  {
       $TabBar: $(this.refs.brickContentTarBar)
     }
 
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     this.reload(record);
     this.updateContentView(record);
 
@@ -67,7 +66,7 @@ class Page extends React.Component  {
 
 
   componentDidUpdate(){
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     this.reload(record);
     this.updateContentView(record);
   }
@@ -127,7 +126,7 @@ class Page extends React.Component  {
   renderNest(){
     var self = this;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     if(!_.isEmpty(record[this.props.treeName])){
       return record[this.props.treeName].map(function(b){
         var bid = parentId + "/" + b.id;
@@ -157,7 +156,7 @@ class Page extends React.Component  {
   }
 
   render() {
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     var subContent = this.renderContent(record);
 
     var previewId = this.props.preview?this.props.id:"";

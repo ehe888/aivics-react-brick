@@ -16,7 +16,7 @@ class TransitionSettings extends React.Component {
 
   onAnimationSelected(effectIn, effectOut) {
     console.info(this.props.transitionId)
-    var transition = this.props.dataStorage.model("Transitions").find({id: this.props.transitionId})
+    var transition = this.props.dataStorage.TransitionCollections.find({id: this.props.transitionId}).getValue()
     transition.toPageTransition = effectIn;
     transition.fromPageTransition = effectOut;
     $(".transitionEffectTitle").html(effectIn)
@@ -33,9 +33,9 @@ class TransitionSettings extends React.Component {
 
   render() {
 
-    var transition = this.props.dataStorage.model("Transitions").find({id: this.props.transitionId})
-    var title = transition?transition.toPageTransition || "Animation" : "Animation",
-        remark = transition?transition.remark : "";
+    var transition = this.props.dataStorage.TransitionCollections.find({id: this.props.transitionId});
+    var title = transition?transition.getValue().toPageTransition || "Animation" : "Animation",
+        remark = transition?transition.getValue().remark : "";
     if (transition) {
       console.info(transition.toPageTransition);
     }

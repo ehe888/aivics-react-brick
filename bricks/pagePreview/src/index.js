@@ -8,7 +8,7 @@ class PagePreview extends React.Component {
     super(props)
 
     this.refName = "aivicsPage";
-    this.model = this.props.dataStorage.model("Bricks");
+    this.model = this.props.dataStorage;
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     // this.reload = this.reload.bind(this);
     this.getDOMElement = this.getDOMElement.bind(this);
@@ -24,7 +24,7 @@ class PagePreview extends React.Component {
 
   componentDidMount(){
 
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     var offset = record.offset;
     var height = offset.height;
     height -= 64;
@@ -38,7 +38,7 @@ class PagePreview extends React.Component {
 
   componentDidUpdate(){
 
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     $(this.refs[this.refName]).css(record);
   }
 
@@ -69,7 +69,7 @@ class PagePreview extends React.Component {
   renderNest(){
     var self = this;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     if(!_.isEmpty(record[this.props.treeName])){
       return record[this.props.treeName].map(function(b){
         var bid = parentId + "/" + b.id;
@@ -98,7 +98,7 @@ class PagePreview extends React.Component {
   }
 
   render() {
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     var subContent = this.renderContent(record);
 
     return (

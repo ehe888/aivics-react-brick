@@ -13,10 +13,11 @@ class EventSettings extends React.Component {
 
   render() {
     var self = this;
-    var events = this.props.dataStorage.model("Events").find();
+    var events = this.props.dataStorage.EventCollections.find();
     var contents = "";
     if (events && events.length > 0) {
       contents = events.map(function(event){
+        var event = event.getValue();
         try {
           if (event.targetId == self.props.activeBrickId) {
             var transitionId = event.transitionId;

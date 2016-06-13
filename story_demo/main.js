@@ -32,42 +32,11 @@ import DataStorage from './DataStorage'
 //--------------BEGIN CREATE TEST BRICKS---------------------
 //
 var demoPage = new Models.PageModel();
+var data = demoPage.getValue()
+Collections.BrickCollections.add(demoPage)
+var brickCollections = Collections.BrickCollections;
+// var data = DataStorage.model("Bricks").upsert(demoPage.getValue());
 
-var data = DataStorage.model("Bricks").upsert(demoPage.getValue());
-//
-// var data2 = DataStorage.model("Bricks").upsert({
-//     id: "2",
-//     name: "a brick",
-//     brickType: "Page",
-//     offset: {
-//       top: 100,
-//       left: 600,
-//       width: 375,
-//       height: 667
-//     },
-//     "zIndex": 100,
-//     "backgroundColor": "#66E243",
-//     "backgroundOpacity": 1,
-//     classNames: [ 'aClass', 'bClass' ],
-//     title: "new page 1",
-//     "barMode": 0,
-//     settings: ["pageTitle", "imageUrl"],
-//     engineeringTree: []
-// });
-
-
-// var newTransition = DataStorage.model('Transitions').upsert({
-//     id: 'transition1',
-//     name: "Transition",
-//     brickType: "Transition",
-//     "zIndex": 1,
-//     "fromPageId": "1",
-//     "toPageId": "2",
-//     "remark": "",
-//     "fromPageTransition": "fadeOut",
-//     "toPageTransition": "fadeIn",
-//     "background": "black"
-// })
 
 
 //--------------END CREATE TEST BRICKS---------------------
@@ -748,12 +717,14 @@ class Story extends React.Component {
     }
 
     //create page bricks
-    var components = DataStorage.model("Bricks").find();
+    // var components = DataStorage.model("Bricks").find();
+    var components = brickCollections.find();
     var contents = components.map(function(comp){
-      var DynaBrick = Bricks[comp.brickType];
+      var data = comp.getValue();
+      var DynaBrick = Bricks[data.brickType];
       return (
-        <DynaBrick id={comp.id} key={comp.id}
-          dataStorage={DataStorage}
+        <DynaBrick id={data.id} key={data.id}
+          dataStorage={brickCollections}
           onPageContextMenu = {self.onPageContextMenu}
           preview={false}
           treeName={self.props.treeName}
@@ -811,11 +782,12 @@ class Story extends React.Component {
               onPageContextMenu = {self.onPageContextMenu}
               onBrickResize={this.onBrickResize} />
           {transition}
+
           <PageContextMenu
             activeBrickId={this.state.activeBrickId}
             position={this.state.contextMenuPosition}
             onPageAddReference={this.onPageAddReference}
-            dataStorage = {DataStorage}
+            dataStorage = {Collections}
             onNewTransitionSubmit = {this.onNewTransitionSubmit}
             onPageAdd = {this.onPageAdd}
             onBrickAdd = {this.onBrickAdd}
@@ -829,7 +801,7 @@ class Story extends React.Component {
         <SettingPanel
           activeBrickId={this.state.activeBrickId}
           activeTransitionId = {this.state.activeTransitionId}
-          dataStorage={DataStorage}
+          dataStorage={Collections}
           onPageAddReference={this.onPageAddReference}
           settingChangeName={this.state.settingChangeName}
           settingChangeValue={this.state.settingChangeValue}
@@ -841,12 +813,7 @@ class Story extends React.Component {
           onTransitionChanged={this.onTransitionChanged}
         />
 
-        <GalleryMenu
-          dataStorage={DataStorage}
-          treeName = {this.props.treeName}
-          activeBrickId={this.state.activeBrickId}
-          onBrickSettingChange={this.onBrickSettingChange}
-        />
+
       </div>
 
     )

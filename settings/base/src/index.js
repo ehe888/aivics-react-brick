@@ -113,7 +113,7 @@ class BrickSettingPanel extends React.Component {
       super(props);
       this.refName = "aivicsBrickSetting";
       this.dataStorage = this.props.dataStorage;
-      this.model = this.dataStorage.model("Bricks");
+      this.model = this.dataStorage.BrickCollections;
 
       this.getDOMElement = function(){
         return this.refs[this.refName];
@@ -146,7 +146,7 @@ class BrickSettingPanel extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    this.model = this.dataStorage.model("Bricks");
+    this.model = this.dataStorage.BrickCollections;
     var record = this.model.find({ id: this.props.activeBrickId }, this.props.treeName);
   }
 
