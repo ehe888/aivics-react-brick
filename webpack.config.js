@@ -19,7 +19,8 @@ var config = {
     "react-dom": "ReactDOM",
     "jquery": "jQuery",
     "jquery-ui": "jQuery",
-    "webpack": "Webpack"
+    "webpack": "Webpack",
+    "backbone": "Backbone"
   },
 
   output: {

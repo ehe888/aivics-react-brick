@@ -13,6 +13,7 @@ import PageTransitionSettings from '../settings/pageTransitionSettings/src'
 import PageContextMenu from '../settings/contextMenu/src'
 import TransitionSettings from '../settings/transitionSettings/src'
 import GalleryMenu from '../settings/gallery/src'
+import Models from '../models'
 
 $.Bricks = Bricks;
 
@@ -27,43 +28,10 @@ import DataStorage from './DataStorage'
 
 
 //--------------BEGIN CREATE TEST BRICKS---------------------
-var data = DataStorage.model("Bricks").upsert({
-    id: "1",
-    name: "a brick",
-    brickType: "Page",
-    offset: {
-      top: 80,
-      left: 500,
-      width: 375,
-      height: 667
-    },
-    "zIndex": 100,
-    "backgroundColor": "#d3f9dd",
-    "backgroundOpacity": 1,
-    classNames: [ 'aClass', 'bClass' ],
-    title: "new page 0",
-    settings: ["pageTitle", "imageUrl"],
-    engineeringTree: [{
-      id: "2",
-      name: "brick",
-      brickType: "Base",
-      offset: {
-        top: 0,
-        left: 0,
-        width: 375,
-        height: 375
-      },
-      "zIndex": 100,
-      "animation": {
-        name: "",
-        duration: "",
-        delay: ""
-      },
-      "backgroundColor": "#FFFF00",
-      "backgroundOpacity": 1,
-      "settings": []
-    }]
-});
+//
+var demoPage = new Models.PageModel();
+
+var data = DataStorage.model("Bricks").upsert(demoPage.getValue());
 //
 // var data2 = DataStorage.model("Bricks").upsert({
 //     id: "2",
@@ -366,7 +334,7 @@ class Story extends React.Component {
           parentId = parentId + "/" + id
         }
       }
-      console.info(parentId)
+
 
       var parent = DataStorage.model("Bricks").find({id: parentId}, this.props.treeName);
       var index = -1;
@@ -413,23 +381,13 @@ class Story extends React.Component {
   onPageAdd(top = 10, left = 400){
     var currentPages = DataStorage.model("Bricks").find();
     var title = "new page " + currentPages.length;
-    var newPage = DataStorage.model("Bricks").upsert({
-        name: "a brick",
-        brickType: "Page",
-        offset: {
-          top: top,
-          left: left,
-          width: 375,
-          height: 667
-        },
-        "zIndex": 100,
-        "backgroundColor": "#d3f9dd",
-        "backgroundOpacity": 1,
-        "title": title,
-        "barMode": this.props.barMode,
-        classNames: [ 'aClass', 'bClass' ],
-        settings: ["pageTitle", "imageUrl"]
-    })
+    var newPageModel = new Models.PageModel({
+      offset: {top: top, left: left, width: 375, height: 667},
+      title: title,
+      barMode: this.props.barMode
+    });
+    var newPage = DataStorage.model("Bricks").upsert(newPageModel.getValue())
+
     this.setState({
       activeBrickId: newPage.id,
       activeBrickPosition: newPage.offset,
@@ -437,7 +395,7 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null,
       activeTransitionId: null
-    });
+    })
   }
   //End add new page method /onPageAdd/
 

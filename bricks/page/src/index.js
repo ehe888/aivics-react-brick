@@ -38,9 +38,6 @@ class Page extends React.Component  {
     var para = $brick.find("h3.aivcis-page-title-paragraph");
     var pHeight = para.outerHeight();
 
-    // console.log(height, pHeight);
-    // console.log((100 * ((height - pHeight)/height) / 2.0) + "%");
-
     para.css({
       "top": (100 * ((height - pHeight)/height) / 2.0) + "%"
     });
@@ -103,10 +100,24 @@ class Page extends React.Component  {
     event.preventDefault();
     event.stopPropagation();
     if (!this.props.preview) {
+      var $this = $(this.getDOMElement());
+
+      var left = _.replace($this[0].style.left, 'px', '');
+      var top  = _.replace($this[0].style.top, 'px', '');
+      var width = $this.width();
+      var height = $this.height();
+
       var position = {
-        left: event.pageX,
-        top: event.pageY
-      }
+        left: left,
+        top: top,
+        width: width,
+        height: height
+      };
+      //
+      // var position = {
+      //   left: event.pageX,
+      //   top: event.pageY
+      // }
       this.props.onPageContextMenu(this.props.id, position);
 
       return false;

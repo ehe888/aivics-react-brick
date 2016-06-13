@@ -27,24 +27,24 @@ var Model = function(name){
 }
 
 Model.prototype.findByPath = function(path, collection, treeName){
-    console.log("path", path);
+    // console.log("path", path);
     var ids = _.split(path, '/');
 
     if(_.isEmpty(ids)) return null;
 
     if(ids.length === 1){
-      console.log(ids[0], collection);
+      // console.log(ids[0], collection);
       return _.find(collection, { id: ids[0] });
     }else{
       var id = ids[0];
       ids.shift();
       var p = ids.join( "/");
       var collect = _.find(collection, { id: id })
-      console.log("collection", collection)
+      // console.log("collection", collection)
       if (!collect) {
         return [];
       }
-      console.log("collection", collect[treeName]);
+      // console.log("collection", collect[treeName]);
       return this.findByPath(p, collect[treeName], treeName);
     }
 }
@@ -60,7 +60,7 @@ Model.prototype.find = function(filter, treeName="engineeringTree"){
   }
 
 
-  console.log(_.isArray(results));
+  // console.log(_.isArray(results));
 
   if(_.isEmpty(results)){
     return null;

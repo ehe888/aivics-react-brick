@@ -22,7 +22,8 @@ var config = {
     "jquery": "jQuery",
     "jquery-ui": "jQuery",
     "webpack": "Webpack",
-    "_": "lodash"
+    "_": "lodash",
+    "backbone": "Backbone"
   },
 
   output: {
