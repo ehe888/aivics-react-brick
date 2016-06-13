@@ -28,7 +28,7 @@ class LabelBrick extends React.Component  {
     super(props);
     //this.refName = "aivicsBrick"; //Class constant used to referece this component
     this.dataStorage = this.props.dataStorage;
-    this.model = this.dataStorage.model("Bricks");
+    this.model = this.dataStorage.BrickCollections;
     this.renderContent = this.renderContent.bind(this);
     this.updateContentView = this.updateContentView.bind(this);
   }
@@ -57,7 +57,7 @@ class LabelBrick extends React.Component  {
   }
 
   renderContent() {
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     return (
       <LabelText ref="aivicsLabelBrickContent"
                 labelText={record.labelText} />

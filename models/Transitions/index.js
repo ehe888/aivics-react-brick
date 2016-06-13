@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-var TransitionModel = Backbone.Model.extend({
+var BaseModel = Backbone.Model.extend({
 
   defaults: {
 
@@ -14,4 +14,4 @@ var TransitionModel = Backbone.Model.extend({
 
 })
 
-module.exports = TransitionModel;
+module.exports = BaseModel;

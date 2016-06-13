@@ -28,22 +28,6 @@ class FieldBgColor extends React.Component {
 
     this.setState({ currentColor: changeToValue });
 
-    // clearTimeout($this.data('timer'));
-    // $this.data('timer', setTimeout(function(){
-    //   $this.removeData('timer');
-    //   var fieldName = $field.attr("name");
-    //   console.log({ fieldName: fieldName });
-    //
-    //   //change BgColor of brick
-    //   //then notify parent
-    //   if(!_.isNaN(changeToValue)){
-    //     var record = self.props.model.find({ id: self.props.brickId });
-    //     record.bgColor = changeToValue;
-    //     //notify parent
-    //     self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
-    //   }
-    //
-    // }, delay ));
   }
 
   render() {

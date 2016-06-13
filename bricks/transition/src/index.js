@@ -61,13 +61,13 @@ class Transition extends React.Component {
   render() {
     var self = this;
 
-    var transition = this.props.dataStorage.model("Transitions").find({id: this.props.id});
+    var transition = this.props.dataStorage.TransitionCollections.find({id: this.props.id}).getValue();
 
     var fromPageId = this.props.fromPageId,
         toPageId = this.props.toPageId,
-        model = this.props.dataStorage.model("Bricks"),
-        fromPage = model.find({id: fromPageId}),
-        toPage = model.find({id: toPageId});
+        model = this.props.dataStorage.BrickCollections,
+        fromPage = model.find({id: fromPageId}).getValue(),
+        toPage = model.find({id: toPageId}).getValue();
 
     var fromLeft = fromPage.offset.left,
         toLeft = toPage.offset.left;
@@ -90,9 +90,10 @@ class Transition extends React.Component {
     if (this.props.id == this.props.activeTransitionId) {
       color = "red"
     }else {
-      var events = this.props.dataStorage.model("Events").find();
+      var events = this.props.dataStorage.EventCollections.find();
       if (events) {
         events.map(function(event){
+          var event = event.getValue();
           if (self.props.id == event.transitionId) {
             color = "blue"
           }

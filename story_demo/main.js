@@ -367,33 +367,33 @@ class Story extends React.Component {
   onPageDelete(){
     var activeBrickId = this.state.activeBrickId
 
-    var model = DataStorage.model("Bricks"),
+    var model = Collections.BrickCollections,
         pages = model.find();
 
     if (pages.length > 1) {
       model.delete({id: activeBrickId});
 
       //also delete related transitions and events
-      var transitions = DataStorage.model('Transitions').find();
+      var transitions = Collections.TransitionCollections.find();
       if (transitions) {
         transitions.map(function(transition){
           if (transition.fromPageId == activeBrickId || transition.toPageId == activeBrickId) {
-            DataStorage.model('Transitions').delete({id: transition.id})
+            Collections.TransitionCollections.delete({id: transition.id})
           }
         })
       }
 
-      var events = DataStorage.model("Events").find();
+      var events = Collections.EventCollections.find();
       if (events) {
         events.map(function(event){
           if (event.targetId == activeBrickId) {
-            DataStorage.model("Events").delete({id: event.id})
+            Collections.EventCollections.delete({id: event.id})
           }
         })
       }
 
       pages = model.find();
-      var lastPage = _.last(pages)
+      var lastPage = _.last(pages).getValue()
       this.setState({
         activeBrickId: lastPage.id,
         activeBrickPosition: lastPage.offset,
@@ -414,7 +414,8 @@ class Story extends React.Component {
   //  * brickId - the id of selected brick
   //  * position - the position of selected brick
   onPageContextMenu(brickId, position) {
-    var record = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
+    var record = Collections.BrickCollections.find({id: brickId}, this.props.treeName);
+    record = record?record.getValue():null
     $(".pageContextMenu").show();
 
     var scroll = {
@@ -483,7 +484,7 @@ class Story extends React.Component {
   onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
 
     if (this.state.activeBrickType == "Page") {
-      var page = DataStorage.model("Bricks").find({id: id});
+      var page = Collections.BrickCollections.find({id: id}).getValue();
       if (!page.referenceTree) {
         page.referenceTree = [];
       }
@@ -524,9 +525,9 @@ class Story extends React.Component {
   //Arguments:
   //  * barMode - 0:navigationBar only, 1: Both navigation bar and tab bar
   onPageBarModeChange(barMode) {
-    var pages = DataStorage.model("Bricks").find();
+    var pages = Collections.BrickCollections.find();
     pages.map(function(page){
-      page.barMode = barMode;
+      page.set("barMode", barMode);
     });
     this.props.onPageBarModeChange(barMode)
   }
@@ -543,11 +544,12 @@ class Story extends React.Component {
   //  * toPageId: the id of page as destination page
   //  * remark: the remark of transition
   onNewTransitionSubmit(fromPageId, toPageId ,remark) {
-    var transitions = DataStorage.model('Transitions').find();
+    var transitions = Collections.TransitionCollections.find();
     var hasTransition = false;
     if (transitions) {
       //ignore submit if transition exits
       transitions.map(function(transition){
+        var transition = transition.getValue();
         if (transition.fromPageId == fromPageId && transition.toPageId == toPageId) {
           hasTransition = true;
           return
@@ -557,17 +559,13 @@ class Story extends React.Component {
     if (hasTransition) {
       return;
     }
-    var newTransition = DataStorage.model('Transitions').upsert({
-        name: "Transition",
-        brickType: "Transition",
-        "zIndex": 1,
-        "fromPageId": fromPageId,
-        "toPageId": toPageId,
-        "remark": remark,
-        "fromPageTransition": "fadeOut",
-        "toPageTransition": "fadeIn",
-        "background": "black"
-    })
+    var transitionModel = new Models.TransitionModel({
+      fromPageId: fromPageId,
+      toPageId: toPageId,
+      remark: remark
+    });
+    Collections.TransitionCollections.add(transitionModel)
+    console.log(Collections)
     this.setState(this.state)
   }
   //End add new transition method /onNewTransitionSubmit/
