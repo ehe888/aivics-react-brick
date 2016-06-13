@@ -4,12 +4,13 @@ import Backbone from 'backbone'
 
 var BaseCollection = Backbone.Collection.extend({
 
-  find: function(filter) {
+  find: function(filter, treeName) {
     var results = [];
+    treeName = treeName?treeName:"engineeringTree"
     if (!filter) {
       results = this.models;
     }else {
-      results = this.findByPath(filter.id);
+      results = this.findByPath(filter.id, treeName);
     }
 
     return results;
@@ -33,7 +34,7 @@ var BaseCollection = Backbone.Collection.extend({
         return [];
       }
       // console.log("collection", collect[treeName]);
-      return this.findByPath(p);
+      return this.findByPath(p, treeName);
     }
   }
 

@@ -143,8 +143,7 @@ class Story extends React.Component {
   //  * position - offset of the brick
   onBrickSelect(e, brickId, position) {
 
-    var activeBrick = DataStorage.model("Bricks")
-                      .find({id: brickId}, this.props.treeName);
+    var activeBrick = Collections.BrickCollections.find({id: brickId}, this.props.treeName).getValue();
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -164,7 +163,7 @@ class Story extends React.Component {
   //  * fieldName - name of setting
   //  * changeToValue - value of setting
   onBrickSettingChange(brickId, fieldName, changeToValue) {
-    var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
+    var record = Collections.BrickCollections.find({ id: brickId }, this.props.treeName).getValue();
 
     let position = this.state.activeBrickPosition,
         brickType = this.state.activeBrickType;
@@ -221,7 +220,7 @@ class Story extends React.Component {
       //position.height = 1;
     }
 
-    var record = DataStorage.model("Bricks").find({ id: activeBrickId }, this.props.treeName);
+    var record = Collections.BrickCollections.find({ id: activeBrickId }, this.props.treeName).getValue();
     if(!record){
       return;
     }
@@ -273,7 +272,7 @@ class Story extends React.Component {
   //                "delay": animationDelay
   //               }
   onBrickAnimationChange(brickId, animation) {
-    var brick = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
+    var brick = Collections.BrickCollections.find({id: brickId}, this.props.treeName).getValue();
     brick.animation = animation;
   }
   //End brick animation method /onBrickAnimationChange/
@@ -297,7 +296,7 @@ class Story extends React.Component {
       }
 
 
-      var parent = DataStorage.model("Bricks").find({id: parentId}, this.props.treeName);
+      var parent = Collections.BrickCollections.find({id: parentId}, this.props.treeName).getValue();
       var index = -1;
       if (parent) {
 
@@ -305,12 +304,12 @@ class Story extends React.Component {
           return brick.id == activeBrickId;
         })
 
-        var events = DataStorage.model("Events").find();
+        var events = Collections.EventCollections.find();
         if (events) {
           for (var i = 0; i < events.length; i++) {
             var event = events[i];
             if (event.targetId == activeBrickId) {
-              DataStorage.model("Events").delete({id: event.id})
+              Collections.EventCollections.delete({id: event.id})
             }
           }
         }
