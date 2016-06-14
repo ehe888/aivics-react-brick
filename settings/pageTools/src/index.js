@@ -16,13 +16,18 @@ class PageSettingPanel extends React.Component {
     super(prop);
 
     this.refName = "PageSettingPanel";
-    this.dataStorage = this.props.dataStorage;
-    this.model = this.dataStorage.model("Bricks");
 
     this.getDOMElement = function(){
       return this.refs[this.refName];
     }
 
+  }
+
+  save() {
+    var collections = this.props.dataStorage;
+    collections.BrickCollections.save();
+    collections.TransitionCollections.save();
+    collections.EventCollections.save();
   }
 
   render() {
@@ -32,6 +37,9 @@ class PageSettingPanel extends React.Component {
           <button type="button"
                   className="btn btn-default"
                   onClick={this.props.onPreview}>PREVIEW</button>
+          <button type="button"
+                  className="btn btn-default"
+                  onClick={(event)=>this.save(event)}>Save</button>
         </div>
         <PageAddDelete
           onPageAdd = {this.props.onPageAdd}

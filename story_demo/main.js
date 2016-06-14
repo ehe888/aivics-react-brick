@@ -31,11 +31,10 @@ import DataStorage from './DataStorage'
 
 //--------------BEGIN CREATE TEST BRICKS---------------------
 //
-var demoPage = new Models.PageModel();
-var data = demoPage.getValue()
-Collections.BrickCollections.add(demoPage)
-var brickCollections = Collections.BrickCollections;
-// var data = DataStorage.model("Bricks").upsert(demoPage.getValue());
+// var demoPage = new Models.PageModel();
+// var data = demoPage.getValue()
+// Collections.BrickCollections.add(demoPage)
+
 
 
 
@@ -44,6 +43,9 @@ var brickCollections = Collections.BrickCollections;
 class Story extends React.Component {
   constructor(props) {
     super(props);
+
+    var self = this;
+
     this.onBrickSelect = this.onBrickSelect.bind(this);
     this.onBrickResize = this.onBrickResize.bind(this);
     this.onBrickSettingChange = this.onBrickSettingChange.bind(this);
@@ -66,15 +68,24 @@ class Story extends React.Component {
     this.inBricks = true;
 
     this.state = {
-        activeBrickId: data.id,
-        activeBrickPosition: data.offset,
-        activeBrickType: data.brickType,
+        activeBrickId: null,
+        activeBrickPosition: {left: 0, top: 0},
+        activeBrickType: null,
         settingChangeName: null,
         settingChangeValue: null,
         storyScale: 1.0,
         contextMenuPosition: {left: 0, top: 0},
         activeTransitionId: null
     }
+
+    Collections.BrickCollections.load(function() {
+      // self.setState(self.state)
+      Collections.TransitionCollections.load(function() {
+        Collections.EventCollections.load(function() {
+          self.setState(self.state)
+        })
+      })
+    });
   }
 
   //======================BEGIN STORY LIFE CYCLE METHOD=========================
@@ -636,7 +647,7 @@ class Story extends React.Component {
       "targetId": activeBrickId
     })
     Collections.EventCollections.add(eventModel)
-    
+
     this.setState(this.state)
 
   }
@@ -718,13 +729,13 @@ class Story extends React.Component {
 
     //create page bricks
     // var components = DataStorage.model("Bricks").find();
-    var components = brickCollections.find();
+    var components = Collections.BrickCollections.find();
     var contents = components.map(function(comp){
       var data = comp.getValue();
       var DynaBrick = Bricks[data.brickType];
       return (
         <DynaBrick id={data.id} key={data.id}
-          dataStorage={brickCollections}
+          dataStorage={Collections.BrickCollections}
           onPageContextMenu = {self.onPageContextMenu}
           preview={false}
           treeName={self.props.treeName}
@@ -766,7 +777,7 @@ class Story extends React.Component {
             onPageScaleSmall = {this.onPageScaleSmall}
             onPageBarModeChange = {this.onPageBarModeChange.bind(this)}
             onPreview = {this.onPreview}
-            dataStorage={DataStorage}
+            dataStorage={Collections}
             treeName = {this.props.treeName}
           />
         </div>

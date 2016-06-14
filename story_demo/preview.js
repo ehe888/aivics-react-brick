@@ -23,25 +23,35 @@ class Preview extends React.Component {
 
   constructor(props){
     super(props)
-
-    var pageId = Collections.BrickCollections.find()[0].getValue().id;
+    var pageId
+    var pages = Collections.BrickCollections.find();
+    if (pages && pages.length > 0) {
+      pageId  = pages[0].getValue().id;
+    }
     this.state = {
       pageId: pageId || ''
     }
+
   }
 
   componentDidMount() {
-    var page = Collections.BrickCollections.find()[0].getValue();
-    $(".preview-wrapper").css({
-      'width': page.offset.width,
-      'height': page.offset.height
-    })
-    this.pageViewUpdate();
+    var pages = Collections.BrickCollections.find();
+    if (pages && pages.length > 0 ) {
+      var page = pages[0].getValue();
+      $(".preview-wrapper").css({
+        'width': page.offset.width,
+        'height': page.offset.height
+      })
+      this.pageViewUpdate();
+    }
   }
 
   componentDidUpdate() {
-    var pageId = Collections.BrickCollections.find()[0].getValue().id;
-    this.pageViewUpdate(pageId);
+    var pages = Collections.BrickCollections.find()
+    if (pages && pages.length > 0) {
+      var pageId = pages[0].getValue().id;
+      this.pageViewUpdate(pageId);
+    }
   }
 
   //Begin /pageViewUpdate/

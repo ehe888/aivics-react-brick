@@ -36,7 +36,12 @@ var BaseCollection = Backbone.Collection.extend({
       // console.log("collection", collect[treeName]);
       return this.findByPath(p,collect.get(treeName), treeName);
     }
-  }
+  },
+
+  delete: function(filter) {
+    _.remove(this.collections, filter);
+  },
+
 
 })
 
