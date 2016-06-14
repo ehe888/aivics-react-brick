@@ -21,14 +21,14 @@ class EventSettings extends React.Component {
         try {
           if (event.targetId == self.props.activeBrickId) {
             var transitionId = event.transitionId;
-            var transition = self.props.dataStorage.model("Transitions")
-                          .find({id: transitionId}, self.props.treeName)
+            var transition = self.props.dataStorage.TransitionCollections
+                          .find({id: transitionId}, self.props.treeName).getValue()
             var toPageId = transition.toPageId,
                 fromPageId = transition.fromPageId;
-            var toPage = self.props.dataStorage.model("Bricks")
-                .find({id: toPageId}, self.props.treeName),
-                fromPage = self.props.dataStorage.model("Bricks")
-                  .find({id: fromPageId}, self.props.treeName);
+            var toPage = self.props.dataStorage.BrickCollections
+                .find({id: toPageId}, self.props.treeName).getValue(),
+                fromPage = self.props.dataStorage.BrickCollections
+                  .find({id: fromPageId}, self.props.treeName).getValue();
             var title = "Transition " + fromPage.title + " => " + toPage.title
             return (
               <li id={event.id} key={event.id} className="list-group-item">{title}</li>

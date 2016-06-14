@@ -140,10 +140,10 @@ class Preview extends React.Component {
     var transitionId, fromPageId, toPageId, fromPageTransition, toPageTransition;
 
     //check if brick has its own event
-    var events = DataStorage.model("Events").find();
+    var events = Collections.EventCollections.find();
     if (events) {
       for (var i = 0; i < events.length; i++) {
-        var event = events[i];
+        var event = events[i].getValue();
         if (event.targetId == id) {
           transitionId = event.transitionId
           break;
@@ -153,8 +153,9 @@ class Preview extends React.Component {
         return;
       }
       //if has event and transition, trigger it;
-      var transition = DataStorage.model("Transitions").find({id: transitionId}, this.props.treeName);
+      var transition = Collections.TransitionCollections.find({id: transitionId}, this.props.treeName);
       if (transition) {
+        transition = transition.getValue();
         fromPageId = transition.fromPageId
         toPageId = transition.toPageId;
         fromPageTransition = transition.fromPageTransition;

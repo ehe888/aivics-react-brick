@@ -2,7 +2,7 @@
 
 import Backbone from 'backbone'
 
-var EventModel = Backbone.Model.extend({
+var BaseModel = Backbone.Model.extend({
 
   defaults: {
 
@@ -14,4 +14,4 @@ var EventModel = Backbone.Model.extend({
 
 })
 
-module.exports = EventModel;
+module.exports = BaseModel;

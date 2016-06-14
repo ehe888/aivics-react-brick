@@ -3,7 +3,7 @@
 import PageModel from './Bricks/Page.js'
 import BaseBrickModel from './Bricks/BaseBrick.js'
 import TransitionModel from './Transitions/Transition.js'
-import EventModel from './Events'
+import EventModel from './Events/Event.js'
 
 var models = {};
 

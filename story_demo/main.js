@@ -621,21 +621,22 @@ class Story extends React.Component {
     var activeBrickId = this.state.activeBrickId
 
     //ignore the same event
-    var events = DataStorage.model("Events").find();
+    var events = Collections.EventCollections.find();
     if (events && events.length > 1) {
       for (var i = 0; i<events.length; i++) {
-        var event = events[i]
+        var event = events[i].getValue()
         if (event.targetId == activeBrickId && event.transitionId == transitionId) {
           return;
         }
       }
     }
     //insert the event
-    DataStorage.model("Events").upsert({
-        "transitionId": transitionId,
-        "targetId": activeBrickId
+    var eventModel = new Models.EventModel({
+      "transitionId": transitionId,
+      "targetId": activeBrickId
     })
-
+    Collections.EventCollections.add(eventModel)
+    
     this.setState(this.state)
 
   }
