@@ -34,7 +34,7 @@ class ImageBrick extends React.Component {
     }
     var $brick = $(this.refs[this.refName].getDOMElement())
     var currentUrl = $brick.find($("img"))[0].src;
-    var imageBrick = this.props.dataStorage.BrickCollections
+    var imageBrick = this.props.dataStorage
                       .find({id: this.props.id}, this.props.treeName).getValue();
 
     if (Math.abs(imageBrick.offset.width / imageBrick.offset.height - this.size.ratio) > 0.01) {
@@ -50,12 +50,12 @@ class ImageBrick extends React.Component {
     }
 
     var currentUrl = event.target.src;
-    var parent = this.props.dataStorage.BrickCollections
+    var parent = this.props.dataStorage
                   .find({id: this.props.parentId}, this.props.treeName).getValue();
     var $img = $(event.target);
 
     this.lastUrl = currentUrl;
-    var imageBrick = this.props.dataStorage.BrickCollections
+    var imageBrick = this.props.dataStorage
                   .find({id: this.props.id}, this.props.treeName).getValue();
 
     if ($img.width() > parent.offset.width) {
@@ -78,7 +78,7 @@ class ImageBrick extends React.Component {
 
   renderContent() {
 
-    var imageBrick = this.props.dataStorage.BrickCollections
+    var imageBrick = this.props.dataStorage
                   .find({id: this.props.id}, this.props.treeName).getValue()
     return(
       <div  ref={this.refName} className="aivics-brick-image-wrapper">

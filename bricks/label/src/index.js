@@ -28,7 +28,7 @@ class LabelBrick extends React.Component  {
     super(props);
     //this.refName = "aivicsBrick"; //Class constant used to referece this component
     this.dataStorage = this.props.dataStorage;
-    this.model = this.dataStorage.BrickCollections;
+    this.model = this.dataStorage;
     this.renderContent = this.renderContent.bind(this);
     this.updateContentView = this.updateContentView.bind(this);
   }

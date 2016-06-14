@@ -565,7 +565,7 @@ class Story extends React.Component {
       remark: remark
     });
     Collections.TransitionCollections.add(transitionModel)
-    console.log(Collections)
+    console.log(Collections.TransitionCollections)
     this.setState(this.state)
   }
   //End add new transition method /onNewTransitionSubmit/
@@ -600,9 +600,11 @@ class Story extends React.Component {
   //  * transitionId - the id of selected transitionId
   //  * remark - remark of transition
   onTransitionChanged(transitionId, remark) {
-    var transition = DataStorage.model("Transitions").find({id: transitionId});
-    transition.remark = remark;
-    this.setState(this.state)
+    var transition = Collections.TransitionCollections.find({id: transitionId});
+    if (transition) {
+      transition.set("remark", remark)
+      this.setState(this.state)
+    }
   }
   //End transition settings change method /onTransitionChanged/
 
@@ -730,15 +732,16 @@ class Story extends React.Component {
     });
 
     //create transitions
-    var transitionModels = DataStorage.model("Transitions").find();
+    var transitionModels = Collections.TransitionCollections.find();
     var transition = "";
     if (transitionModels) {
       transition = transitionModels.map(function(transition){
+        var transition = transition.getValue();
         return (
           <Transition
             id={transition.id}
             key={transition.id}
-            dataStorage={DataStorage}
+            dataStorage={Collections}
             fromPageId={transition.fromPageId}
             toPageId={transition.toPageId}
             remark={transition.remark}
@@ -808,6 +811,12 @@ class Story extends React.Component {
           onNewTransitionSubmit={this.onNewTransitionSubmit}
           onTransitionDeleteClick={this.onTransitionDeleteClick}
           onTransitionChanged={this.onTransitionChanged}
+        />
+        <GalleryMenu
+          dataStorage={Collections}
+          treeName = {this.props.treeName}
+          activeBrickId={this.state.activeBrickId}
+          onBrickSettingChange={this.onBrickSettingChange}
         />
 
 
