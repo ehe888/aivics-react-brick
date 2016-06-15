@@ -1,3 +1,8 @@
+/**
+ * settings/pageTools/src/index.js
+ */
+
+
 "use strict"
 
 require('./css/style.css')

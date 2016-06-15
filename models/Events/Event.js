@@ -11,7 +11,7 @@ class EventModel extends BaseModel{
     super(props)
 
     var defaults = {
-        "id": uuid.v4(),
+        "id": props.id || uuid.v4(),
         "transitionId": props.transitionId,
         "targetId": props.targetId
     }

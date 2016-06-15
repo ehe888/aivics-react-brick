@@ -49,8 +49,12 @@ class Preview extends React.Component {
   componentDidUpdate() {
     var pages = Collections.BrickCollections.find()
     if (pages && pages.length > 0) {
-      var pageId = pages[0].getValue().id;
-      this.pageViewUpdate(pageId);
+      var page = pages[0].getValue();
+      $(".preview-wrapper").css({
+        'width': page.offset.width,
+        'height': page.offset.height
+      })
+      this.pageViewUpdate(page.id);
     }
   }
 
