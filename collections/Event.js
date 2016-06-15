@@ -59,6 +59,12 @@ class EventCollections extends BaseCollection {
     })
   }
 
+  delete(filter) {
+    console.log(filter)
+    this.remove(filter);
+    console.log(this.models)
+  }
+
 }
 
 module.exports = EventCollections;
