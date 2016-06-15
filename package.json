@@ -39,5 +39,9 @@
     "react-addons-test-utils": "^15.0.1",
     "uuid": "^2.0.2",
     "webpack": "^1.12.15"
+  },
+  "dependencies": {
+    "css-loader": "^0.23.1",
+    "style-loader": "^0.13.1"
   }
 }
