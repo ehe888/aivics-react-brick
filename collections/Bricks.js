@@ -22,7 +22,7 @@ class BrickCollections extends BaseCollection {
         brickCollections: JSON.stringify(self.models)
       },
       success: function(response) {
-        console.log(response)
+        // console.log(response)
         if (response.success) {
           if (callback) {
             callback();
@@ -41,22 +41,16 @@ class BrickCollections extends BaseCollection {
       url: 'http://localhost:4000/loadBrick',
       type: 'get',
       success: function(response) {
-        console.log(response)
+        // console.log(response)
         if (response.success) {
           var datas = response.data;
           for (var i = 0; i < datas.length; i++) {
             var data = datas[i];
-            var treeDatas = data.engineeringTree;
-            data.engineeringTree = [];
             var pageModel = new Models.PageModel(data);
-            for (var j = 0; j < treeDatas.length; j++) {
-              var treeData = treeDatas[j]
-              var treeModel = new Models.BaseBrickModel(treeData);
-              pageModel.getValue().engineeringTree.push(treeModel)
-            }
+            pageModel.set("engineeringTree", self.recursionModel(data, "engineeringTree"))
             self.add(pageModel)
           }
-          console.log(self.models)
+          // console.log(self.models)
           callback()
         }
       },
@@ -64,6 +58,28 @@ class BrickCollections extends BaseCollection {
         console.log(error)
       }
     })
+  }
+
+  //Begin Recursion Model
+  //Purpose: convert treeDatas in data[treeName] to BrickModel
+  //Arguments:
+  //  * data - treeDatas' parent data
+  //  * treeName - engineeringTree or referenceTree
+  //Returns:
+  //  * models - array of treeDatas' Brick Model
+  recursionModel(data, treeName) {
+    var self = this;
+    var treeDatas = data[treeName];
+    var models = [];
+    if (treeDatas && treeDatas.length > 0) {
+      for (var i = 0; i < treeDatas.length; i++) {
+        var treeData = treeDatas[i];
+        var treeModel = new Models.BaseBrickModel(treeData);
+        treeModel.set(treeName, self.recursionModel(treeData, treeName));
+        models.push(treeModel);
+      }
+    }
+    return models;
   }
 
 }

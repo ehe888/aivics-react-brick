@@ -41,7 +41,7 @@ class TransitionCollections extends BaseCollection {
       url: 'http://localhost:4000/loadTransition',
       type: 'get',
       success: function(response) {
-        console.log(response)
+        // console.log(response)
         if (response.success) {
           var datas = response.data;
           for (var i = 0; i < datas.length; i++) {
@@ -49,7 +49,7 @@ class TransitionCollections extends BaseCollection {
             var transitionModel = new Models.TransitionModel(data);
             self.add(transitionModel)
           }
-          console.log(self.models)
+          // console.log(self.models)
           callback()
         }
       },

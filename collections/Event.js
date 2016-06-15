@@ -22,7 +22,7 @@ class EventCollections extends BaseCollection {
         eventCollections: JSON.stringify(self.models)
       },
       success: function(response) {
-        console.log(response)
+        // console.log(response)
         if (response.success) {
           if (callback) {
             callback();
@@ -41,7 +41,7 @@ class EventCollections extends BaseCollection {
       url: 'http://localhost:4000/loadEvent',
       type: 'get',
       success: function(response) {
-        console.log(response)
+        // console.log(response)
         if (response.success) {
           var datas = response.data;
           for (var i = 0; i < datas.length; i++) {
@@ -49,7 +49,7 @@ class EventCollections extends BaseCollection {
             var eventModel = new Models.EventModel(data);
             self.add(eventModel)
           }
-          console.log(self.models)
+          // console.log(self.models)
           callback()
         }
       },
