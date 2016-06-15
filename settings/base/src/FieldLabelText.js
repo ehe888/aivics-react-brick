@@ -31,7 +31,7 @@ class FieldLabelText extends React.Component {
       //then notify parent
       //Update birck Label
       var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
-      record.labelText = changeToValue;
+      record.set("labelText", changeToValue)
       //notify parent
       self.props.onBrickSettingChange(self.props.brickId, fieldName, changeToValue);
 

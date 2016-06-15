@@ -13,6 +13,9 @@ import PageTransitionSettings from '../settings/pageTransitionSettings/src'
 import PageContextMenu from '../settings/contextMenu/src'
 import TransitionSettings from '../settings/transitionSettings/src'
 import GalleryMenu from '../settings/gallery/src'
+import Models from '../models'
+
+import Collections from '../collections'
 
 $.Bricks = Bricks;
 
@@ -27,77 +30,12 @@ import DataStorage from './DataStorage'
 
 
 //--------------BEGIN CREATE TEST BRICKS---------------------
-var data = DataStorage.model("Bricks").upsert({
-    id: "1",
-    name: "a brick",
-    brickType: "Page",
-    offset: {
-      top: 80,
-      left: 500,
-      width: 375,
-      height: 667
-    },
-    "zIndex": 100,
-    "backgroundColor": "#d3f9dd",
-    "backgroundOpacity": 1,
-    classNames: [ 'aClass', 'bClass' ],
-    title: "new page 0",
-    settings: ["pageTitle", "imageUrl"],
-    engineeringTree: [{
-      id: "2",
-      name: "brick",
-      brickType: "Base",
-      offset: {
-        top: 0,
-        left: 0,
-        width: 375,
-        height: 375
-      },
-      "zIndex": 100,
-      "animation": {
-        name: "",
-        duration: "",
-        delay: ""
-      },
-      "backgroundColor": "#FFFF00",
-      "backgroundOpacity": 1,
-      "settings": []
-    }]
-});
 //
-// var data2 = DataStorage.model("Bricks").upsert({
-//     id: "2",
-//     name: "a brick",
-//     brickType: "Page",
-//     offset: {
-//       top: 100,
-//       left: 600,
-//       width: 375,
-//       height: 667
-//     },
-//     "zIndex": 100,
-//     "backgroundColor": "#66E243",
-//     "backgroundOpacity": 1,
-//     classNames: [ 'aClass', 'bClass' ],
-//     title: "new page 1",
-//     "barMode": 0,
-//     settings: ["pageTitle", "imageUrl"],
-//     engineeringTree: []
-// });
+// var demoPage = new Models.PageModel();
+// var data = demoPage.getValue()
+// Collections.BrickCollections.add(demoPage)
 
 
-// var newTransition = DataStorage.model('Transitions').upsert({
-//     id: 'transition1',
-//     name: "Transition",
-//     brickType: "Transition",
-//     "zIndex": 1,
-//     "fromPageId": "1",
-//     "toPageId": "2",
-//     "remark": "",
-//     "fromPageTransition": "fadeOut",
-//     "toPageTransition": "fadeIn",
-//     "background": "black"
-// })
 
 
 //--------------END CREATE TEST BRICKS---------------------
@@ -105,6 +43,9 @@ var data = DataStorage.model("Bricks").upsert({
 class Story extends React.Component {
   constructor(props) {
     super(props);
+
+    var self = this;
+
     this.onBrickSelect = this.onBrickSelect.bind(this);
     this.onBrickResize = this.onBrickResize.bind(this);
     this.onBrickSettingChange = this.onBrickSettingChange.bind(this);
@@ -127,15 +68,24 @@ class Story extends React.Component {
     this.inBricks = true;
 
     this.state = {
-        activeBrickId: data.id,
-        activeBrickPosition: data.offset,
-        activeBrickType: data.brickType,
+        activeBrickId: null,
+        activeBrickPosition: {left: 0, top: 0},
+        activeBrickType: null,
         settingChangeName: null,
         settingChangeValue: null,
         storyScale: 1.0,
         contextMenuPosition: {left: 0, top: 0},
         activeTransitionId: null
     }
+
+    Collections.BrickCollections.load(function() {
+      // self.setState(self.state)
+      Collections.TransitionCollections.load(function() {
+        Collections.EventCollections.load(function() {
+          self.setState(self.state)
+        })
+      })
+    });
   }
 
   //======================BEGIN STORY LIFE CYCLE METHOD=========================
@@ -166,14 +116,12 @@ class Story extends React.Component {
   onBrickAdd(id = this.state.activeBrickId, top = 50, left = 120
         , width = 200, height = 50, brickType = "Base", settings=[]) {
 
-      var page = DataStorage.model("Bricks").find({id: id}, this.props.treeName);
+      var page = Collections.BrickCollections.find({id: id}, this.props.treeName).getValue();
       if (!page.engineeringTree) {
         page.engineeringTree = [];
       }
 
-      var newBrick = {
-        id: uuid.v4(),
-        name: "brick",
+      var brickModel = new Models.BaseBrickModel({
         brickType: brickType,
         offset: {
           top: top,
@@ -181,18 +129,10 @@ class Story extends React.Component {
           width: width,
           height: height
         },
-        "zIndex": 100,
-        "animation": {
-          name: "",
-          duration: "",
-          delay: ""
-        },
-        "backgroundColor": "#FFFFFF",
-        "backgroundOpacity": 1,
         "settings": settings
-      };
-      newBrick[this.props.treeName] = [];
-      page.engineeringTree.push(newBrick)
+      });
+      var newBrick = brickModel.getValue();
+      page.engineeringTree.push(brickModel)
       this.setState({
         activeBrickId: id+"/"+newBrick.id,
         activeBrickPosition: newBrick.offset,
@@ -214,8 +154,7 @@ class Story extends React.Component {
   //  * position - offset of the brick
   onBrickSelect(e, brickId, position) {
 
-    var activeBrick = DataStorage.model("Bricks")
-                      .find({id: brickId}, this.props.treeName);
+    var activeBrick = Collections.BrickCollections.find({id: brickId}, this.props.treeName).getValue();
     this.setState({
       activeBrickId: brickId,
       activeBrickPosition: position,
@@ -235,7 +174,7 @@ class Story extends React.Component {
   //  * fieldName - name of setting
   //  * changeToValue - value of setting
   onBrickSettingChange(brickId, fieldName, changeToValue) {
-    var record = DataStorage.model("Bricks").find({ id: brickId }, this.props.treeName);
+    var record = Collections.BrickCollections.find({ id: brickId }, this.props.treeName).getValue();
 
     let position = this.state.activeBrickPosition,
         brickType = this.state.activeBrickType;
@@ -292,7 +231,7 @@ class Story extends React.Component {
       //position.height = 1;
     }
 
-    var record = DataStorage.model("Bricks").find({ id: activeBrickId }, this.props.treeName);
+    var record = Collections.BrickCollections.find({ id: activeBrickId }, this.props.treeName).getValue();
     if(!record){
       return;
     }
@@ -313,7 +252,7 @@ class Story extends React.Component {
         }
         var brickId = i==0?id: lastBrickId+"/"+id;
         lastBrickId = brickId;
-        var parent = DataStorage.model("Bricks").find({ id: lastBrickId }, self.props.treeName);
+        var parent = Collections.BrickCollections.find({ id: lastBrickId }, self.props.treeName).getValue();
         var offset = parent.offset;
         position.top -= offset.top;
         position.left -= offset.left;
@@ -344,7 +283,7 @@ class Story extends React.Component {
   //                "delay": animationDelay
   //               }
   onBrickAnimationChange(brickId, animation) {
-    var brick = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
+    var brick = Collections.BrickCollections.find({id: brickId}, this.props.treeName).getValue();
     brick.animation = animation;
   }
   //End brick animation method /onBrickAnimationChange/
@@ -366,9 +305,8 @@ class Story extends React.Component {
           parentId = parentId + "/" + id
         }
       }
-      console.info(parentId)
 
-      var parent = DataStorage.model("Bricks").find({id: parentId}, this.props.treeName);
+      var parent = Collections.BrickCollections.find({id: parentId}, this.props.treeName).getValue();
       var index = -1;
       if (parent) {
 
@@ -376,12 +314,12 @@ class Story extends React.Component {
           return brick.id == activeBrickId;
         })
 
-        var events = DataStorage.model("Events").find();
+        var events = Collections.EventCollections.find();
         if (events) {
           for (var i = 0; i < events.length; i++) {
             var event = events[i];
             if (event.targetId == activeBrickId) {
-              DataStorage.model("Events").delete({id: event.id})
+              Collections.EventCollections.delete({id: event.id})
             }
           }
         }
@@ -411,25 +349,16 @@ class Story extends React.Component {
   //  * top - the top value of new page , default value is 10
   //  * left - the left value of new page, default value is 400
   onPageAdd(top = 10, left = 400){
-    var currentPages = DataStorage.model("Bricks").find();
+    var currentPages = Collections.BrickCollections.find();
     var title = "new page " + currentPages.length;
-    var newPage = DataStorage.model("Bricks").upsert({
-        name: "a brick",
-        brickType: "Page",
-        offset: {
-          top: top,
-          left: left,
-          width: 375,
-          height: 667
-        },
-        "zIndex": 100,
-        "backgroundColor": "#d3f9dd",
-        "backgroundOpacity": 1,
-        "title": title,
-        "barMode": this.props.barMode,
-        classNames: [ 'aClass', 'bClass' ],
-        settings: ["pageTitle", "imageUrl"]
-    })
+    var newPageModel = new Models.PageModel({
+      offset: {top: top, left: left, width: 375, height: 667},
+      title: title,
+      barMode: this.props.barMode
+    });
+    Collections.BrickCollections.add(newPageModel)
+    var newPage = newPageModel.getValue();
+
     this.setState({
       activeBrickId: newPage.id,
       activeBrickPosition: newPage.offset,
@@ -437,7 +366,7 @@ class Story extends React.Component {
       settingChangeName: null,
       settingChangeValue: null,
       activeTransitionId: null
-    });
+    })
   }
   //End add new page method /onPageAdd/
 
@@ -449,33 +378,33 @@ class Story extends React.Component {
   onPageDelete(){
     var activeBrickId = this.state.activeBrickId
 
-    var model = DataStorage.model("Bricks"),
+    var model = Collections.BrickCollections,
         pages = model.find();
 
     if (pages.length > 1) {
       model.delete({id: activeBrickId});
 
       //also delete related transitions and events
-      var transitions = DataStorage.model('Transitions').find();
+      var transitions = Collections.TransitionCollections.find();
       if (transitions) {
         transitions.map(function(transition){
           if (transition.fromPageId == activeBrickId || transition.toPageId == activeBrickId) {
-            DataStorage.model('Transitions').delete({id: transition.id})
+            Collections.TransitionCollections.delete({id: transition.id})
           }
         })
       }
 
-      var events = DataStorage.model("Events").find();
+      var events = Collections.EventCollections.find();
       if (events) {
         events.map(function(event){
           if (event.targetId == activeBrickId) {
-            DataStorage.model("Events").delete({id: event.id})
+            Collections.EventCollections.delete({id: event.id})
           }
         })
       }
 
       pages = model.find();
-      var lastPage = _.last(pages)
+      var lastPage = _.last(pages).getValue()
       this.setState({
         activeBrickId: lastPage.id,
         activeBrickPosition: lastPage.offset,
@@ -496,7 +425,8 @@ class Story extends React.Component {
   //  * brickId - the id of selected brick
   //  * position - the position of selected brick
   onPageContextMenu(brickId, position) {
-    var record = DataStorage.model("Bricks").find({id: brickId}, this.props.treeName);
+    var record = Collections.BrickCollections.find({id: brickId}, this.props.treeName);
+    record = record?record.getValue():null
     $(".pageContextMenu").show();
 
     var scroll = {
@@ -565,7 +495,7 @@ class Story extends React.Component {
   onPageAddReference(id = this.state.activeBrickId, top = 50, left = 120, width = 200, height = 50) {
 
     if (this.state.activeBrickType == "Page") {
-      var page = DataStorage.model("Bricks").find({id: id});
+      var page = Collections.BrickCollections.find({id: id}).getValue();
       if (!page.referenceTree) {
         page.referenceTree = [];
       }
@@ -606,9 +536,9 @@ class Story extends React.Component {
   //Arguments:
   //  * barMode - 0:navigationBar only, 1: Both navigation bar and tab bar
   onPageBarModeChange(barMode) {
-    var pages = DataStorage.model("Bricks").find();
+    var pages = Collections.BrickCollections.find();
     pages.map(function(page){
-      page.barMode = barMode;
+      page.set("barMode", barMode);
     });
     this.props.onPageBarModeChange(barMode)
   }
@@ -625,11 +555,12 @@ class Story extends React.Component {
   //  * toPageId: the id of page as destination page
   //  * remark: the remark of transition
   onNewTransitionSubmit(fromPageId, toPageId ,remark) {
-    var transitions = DataStorage.model('Transitions').find();
+    var transitions = Collections.TransitionCollections.find();
     var hasTransition = false;
     if (transitions) {
       //ignore submit if transition exits
       transitions.map(function(transition){
+        var transition = transition.getValue();
         if (transition.fromPageId == fromPageId && transition.toPageId == toPageId) {
           hasTransition = true;
           return
@@ -639,17 +570,13 @@ class Story extends React.Component {
     if (hasTransition) {
       return;
     }
-    var newTransition = DataStorage.model('Transitions').upsert({
-        name: "Transition",
-        brickType: "Transition",
-        "zIndex": 1,
-        "fromPageId": fromPageId,
-        "toPageId": toPageId,
-        "remark": remark,
-        "fromPageTransition": "fadeOut",
-        "toPageTransition": "fadeIn",
-        "background": "black"
-    })
+    var transitionModel = new Models.TransitionModel({
+      fromPageId: fromPageId,
+      toPageId: toPageId,
+      remark: remark
+    });
+    Collections.TransitionCollections.add(transitionModel)
+    console.log(Collections.TransitionCollections)
     this.setState(this.state)
   }
   //End add new transition method /onNewTransitionSubmit/
@@ -684,9 +611,11 @@ class Story extends React.Component {
   //  * transitionId - the id of selected transitionId
   //  * remark - remark of transition
   onTransitionChanged(transitionId, remark) {
-    var transition = DataStorage.model("Transitions").find({id: transitionId});
-    transition.remark = remark;
-    this.setState(this.state)
+    var transition = Collections.TransitionCollections.find({id: transitionId});
+    if (transition) {
+      transition.set("remark", remark)
+      this.setState(this.state)
+    }
   }
   //End transition settings change method /onTransitionChanged/
 
@@ -703,20 +632,21 @@ class Story extends React.Component {
     var activeBrickId = this.state.activeBrickId
 
     //ignore the same event
-    var events = DataStorage.model("Events").find();
+    var events = Collections.EventCollections.find();
     if (events && events.length > 1) {
       for (var i = 0; i<events.length; i++) {
-        var event = events[i]
+        var event = events[i].getValue()
         if (event.targetId == activeBrickId && event.transitionId == transitionId) {
           return;
         }
       }
     }
     //insert the event
-    DataStorage.model("Events").upsert({
-        "transitionId": transitionId,
-        "targetId": activeBrickId
+    var eventModel = new Models.EventModel({
+      "transitionId": transitionId,
+      "targetId": activeBrickId
     })
+    Collections.EventCollections.add(eventModel)
 
     this.setState(this.state)
 
@@ -785,7 +715,7 @@ class Story extends React.Component {
           }
           var brickId = i==0?id: lastBrickId+"/"+id;
           lastBrickId = brickId;
-          var component = DataStorage.model("Bricks").find({id: lastBrickId}, self.props.treeName);
+          var component = Collections.BrickCollections.find({id: lastBrickId}, self.props.treeName).getValue();
 
           if (component) {
             var position = component.offset;
@@ -798,12 +728,14 @@ class Story extends React.Component {
     }
 
     //create page bricks
-    var components = DataStorage.model("Bricks").find();
+    // var components = DataStorage.model("Bricks").find();
+    var components = Collections.BrickCollections.find();
     var contents = components.map(function(comp){
-      var DynaBrick = Bricks[comp.brickType];
+      var data = comp.getValue();
+      var DynaBrick = Bricks[data.brickType];
       return (
-        <DynaBrick id={comp.id} key={comp.id}
-          dataStorage={DataStorage}
+        <DynaBrick id={data.id} key={data.id}
+          dataStorage={Collections.BrickCollections}
           onPageContextMenu = {self.onPageContextMenu}
           preview={false}
           treeName={self.props.treeName}
@@ -812,15 +744,16 @@ class Story extends React.Component {
     });
 
     //create transitions
-    var transitionModels = DataStorage.model("Transitions").find();
+    var transitionModels = Collections.TransitionCollections.find();
     var transition = "";
     if (transitionModels) {
       transition = transitionModels.map(function(transition){
+        var transition = transition.getValue();
         return (
           <Transition
             id={transition.id}
             key={transition.id}
-            dataStorage={DataStorage}
+            dataStorage={Collections}
             fromPageId={transition.fromPageId}
             toPageId={transition.toPageId}
             remark={transition.remark}
@@ -844,7 +777,7 @@ class Story extends React.Component {
             onPageScaleSmall = {this.onPageScaleSmall}
             onPageBarModeChange = {this.onPageBarModeChange.bind(this)}
             onPreview = {this.onPreview}
-            dataStorage={DataStorage}
+            dataStorage={Collections}
             treeName = {this.props.treeName}
           />
         </div>
@@ -861,11 +794,12 @@ class Story extends React.Component {
               onPageContextMenu = {self.onPageContextMenu}
               onBrickResize={this.onBrickResize} />
           {transition}
+
           <PageContextMenu
             activeBrickId={this.state.activeBrickId}
             position={this.state.contextMenuPosition}
             onPageAddReference={this.onPageAddReference}
-            dataStorage = {DataStorage}
+            dataStorage = {Collections}
             onNewTransitionSubmit = {this.onNewTransitionSubmit}
             onPageAdd = {this.onPageAdd}
             onBrickAdd = {this.onBrickAdd}
@@ -879,7 +813,7 @@ class Story extends React.Component {
         <SettingPanel
           activeBrickId={this.state.activeBrickId}
           activeTransitionId = {this.state.activeTransitionId}
-          dataStorage={DataStorage}
+          dataStorage={Collections}
           onPageAddReference={this.onPageAddReference}
           settingChangeName={this.state.settingChangeName}
           settingChangeValue={this.state.settingChangeValue}
@@ -890,13 +824,14 @@ class Story extends React.Component {
           onTransitionDeleteClick={this.onTransitionDeleteClick}
           onTransitionChanged={this.onTransitionChanged}
         />
-
         <GalleryMenu
-          dataStorage={DataStorage}
+          dataStorage={Collections}
           treeName = {this.props.treeName}
           activeBrickId={this.state.activeBrickId}
           onBrickSettingChange={this.onBrickSettingChange}
         />
+
+
       </div>
 
     )

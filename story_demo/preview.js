@@ -15,6 +15,7 @@ let PagePreview = Bricks.PagePreview;
 let Page = Bricks.Page;
 
 import DataStorage from './DataStorage'
+import Collections from '../collections'
 
 const PreviewTag = "preview_"
 
@@ -22,25 +23,39 @@ class Preview extends React.Component {
 
   constructor(props){
     super(props)
-
-    var pageId = DataStorage.model("Bricks").find()[0].id;
+    var pageId
+    var pages = Collections.BrickCollections.find();
+    if (pages && pages.length > 0) {
+      pageId  = pages[0].getValue().id;
+    }
     this.state = {
       pageId: pageId || ''
     }
+
   }
 
   componentDidMount() {
-    var page = DataStorage.model("Bricks").find()[0];
-    $(".preview-wrapper").css({
-      'width': page.offset.width,
-      'height': page.offset.height
-    })
-    this.pageViewUpdate();
+    var pages = Collections.BrickCollections.find();
+    if (pages && pages.length > 0 ) {
+      var page = pages[0].getValue();
+      $(".preview-wrapper").css({
+        'width': page.offset.width,
+        'height': page.offset.height
+      })
+      this.pageViewUpdate();
+    }
   }
 
   componentDidUpdate() {
-    var pageId = DataStorage.model("Bricks").find()[0].id;
-    this.pageViewUpdate(pageId);
+    var pages = Collections.BrickCollections.find()
+    if (pages && pages.length > 0) {
+      var page = pages[0].getValue();
+      $(".preview-wrapper").css({
+        'width': page.offset.width,
+        'height': page.offset.height
+      })
+      this.pageViewUpdate(page.id);
+    }
   }
 
   //Begin /pageViewUpdate/
@@ -58,7 +73,7 @@ class Preview extends React.Component {
     var pageId = id?pageId:this.state.pageId,
         $firstPage;
     if (!pageId || pageId.length <= 0) {
-      pageId = DataStorage.model("Bricks").find()[0].id;
+      pageId = Collections.BrickCollections.find()[0].getValue().id;
     }
     var pages = $(".preview").find($(".aivics-page-preview"));
     for (var i = 0; i < pages.length; i++) {
@@ -82,12 +97,12 @@ class Preview extends React.Component {
 
     //add animation to bricks
     var $bricks = $(".preview .aivics-brick");
-    var model = DataStorage.model("Bricks");
+    var model = Collections.BrickCollections;
     var treeName = this.props.treeName;
     for (var i = 0; i < $bricks.length; i++) {
       var $brick = $($bricks[i]);
       var id = $brick.attr('id');
-      var brick = model.find({id: id}, treeName);
+      var brick = model.find({id: id}, treeName).getValue();
       if (brick) {
         var animation = brick.animation;
         if (animation && animation.name && animation.name.length > 0) {
@@ -119,7 +134,7 @@ class Preview extends React.Component {
   //Begin refresh button event handler /refreshPreview/
   //Purpose: reset the preview; enter the home page
   refreshPreview() {
-    var pageId = DataStorage.model("Bricks").find()[0].id;
+    var pageId = Collections.BrickCollections.find()[0].getValue().id;
     this.setState({
       'pageId': pageId
     })
@@ -139,10 +154,10 @@ class Preview extends React.Component {
     var transitionId, fromPageId, toPageId, fromPageTransition, toPageTransition;
 
     //check if brick has its own event
-    var events = DataStorage.model("Events").find();
+    var events = Collections.EventCollections.find();
     if (events) {
       for (var i = 0; i < events.length; i++) {
-        var event = events[i];
+        var event = events[i].getValue();
         if (event.targetId == id) {
           transitionId = event.transitionId
           break;
@@ -152,8 +167,9 @@ class Preview extends React.Component {
         return;
       }
       //if has event and transition, trigger it;
-      var transition = DataStorage.model("Transitions").find({id: transitionId}, this.props.treeName);
+      var transition = Collections.TransitionCollections.find({id: transitionId}, this.props.treeName);
       if (transition) {
+        transition = transition.getValue();
         fromPageId = transition.fromPageId
         toPageId = transition.toPageId;
         fromPageTransition = transition.fromPageTransition;
@@ -245,13 +261,14 @@ class Preview extends React.Component {
   //Purpose: render pages saved in DataStorage
   renderPages() {
     var self = this;
-    var pages = DataStorage.model("Bricks").find();
+    var pages = Collections.BrickCollections.find();
     var content = pages.map(function(page, i){
         // console.info("render", page[self.props.tren])
+        var page = page.getValue();
         return (
           <PagePreview
             id={page.id} key={page.id}
-            dataStorage={DataStorage}
+            dataStorage={Collections.BrickCollections}
             preview= {true}
             treeName = {self.props.treeName}
             onBrickSelect={(e, id, position)=>self.onBrickClick(e, id)}

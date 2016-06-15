@@ -23,7 +23,7 @@ class FieldPageTitle extends React.Component {
     $this.data('timer', setTimeout(function(){
       $this.removeData('timer');
       var fieldName = $field.attr("name");
-      var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
+      var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName).getValue();
       record.title = changeToValue;
       self.props.onBrickSettingChange(self.props.brickId, fieldName, changeToValue);
 
@@ -39,7 +39,7 @@ class FieldPageTitle extends React.Component {
   }
 
   render() {
-    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName);
+    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName).getValue();
     var defaultValue = record.title;
     return (
       <div className="form-group">

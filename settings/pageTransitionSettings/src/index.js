@@ -13,7 +13,7 @@ class PageTransition extends React.Component {
 
     this.refName = "PageTransitionPanel";
     this.dataStorage = this.props.dataStorage;
-    this.model = this.dataStorage.model("Transitions");
+    this.model = this.dataStorage.TransitionCollections;
 
     this.getDOMElement = function(){
       return this.refs[this.refName];
@@ -23,8 +23,9 @@ class PageTransition extends React.Component {
 
   render() {
 
-    var model = this.props.dataStorage.model("Bricks")
-    var activeBrick = model.find({id: this.props.activeBrickId})
+    var model = this.props.dataStorage.BrickCollections
+    var activeBrick = model.find({id: this.props.activeBrickId});
+    activeBrick = activeBrick?activeBrick.getValue():null;
 
     return (
       <div ref="PageTransitionPanel" className="aivics-page-transition-panel">

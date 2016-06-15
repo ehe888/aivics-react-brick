@@ -9,7 +9,7 @@ class Page extends React.Component  {
     super(props);
 
     this.refName = "aivicsPage";
-    this.model = this.props.dataStorage.model("Bricks");
+    this.model = this.props.dataStorage;
     this.handleOverlayClick = this.handleOverlayClick.bind(this);
     this.reload = this.reload.bind(this);
     this.getDOMElement = this.getDOMElement.bind(this);
@@ -20,7 +20,6 @@ class Page extends React.Component  {
   }
 
   reload(data){
-
     var offset = data.offset;
     $(this.refs[this.refName])
               .css(offset)
@@ -37,9 +36,6 @@ class Page extends React.Component  {
     var height = $brick.outerHeight();
     var para = $brick.find("h3.aivcis-page-title-paragraph");
     var pHeight = para.outerHeight();
-
-    // console.log(height, pHeight);
-    // console.log((100 * ((height - pHeight)/height) / 2.0) + "%");
 
     para.css({
       "top": (100 * ((height - pHeight)/height) / 2.0) + "%"
@@ -60,7 +56,7 @@ class Page extends React.Component  {
       $TabBar: $(this.refs.brickContentTarBar)
     }
 
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     this.reload(record);
     this.updateContentView(record);
 
@@ -70,7 +66,7 @@ class Page extends React.Component  {
 
 
   componentDidUpdate(){
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     this.reload(record);
     this.updateContentView(record);
   }
@@ -103,10 +99,24 @@ class Page extends React.Component  {
     event.preventDefault();
     event.stopPropagation();
     if (!this.props.preview) {
+      var $this = $(this.getDOMElement());
+
+      var left = _.replace($this[0].style.left, 'px', '');
+      var top  = _.replace($this[0].style.top, 'px', '');
+      var width = $this.width();
+      var height = $this.height();
+
       var position = {
-        left: event.pageX,
-        top: event.pageY
-      }
+        left: left,
+        top: top,
+        width: width,
+        height: height
+      };
+      //
+      // var position = {
+      //   left: event.pageX,
+      //   top: event.pageY
+      // }
       this.props.onPageContextMenu(this.props.id, position);
 
       return false;
@@ -116,9 +126,10 @@ class Page extends React.Component  {
   renderNest(){
     var self = this;
     var parentId = this.props.id;
-    var record = this.model.find({ id: this.props.id }, this.props.treeName);
+    var record = this.model.find({ id: this.props.id }, this.props.treeName).getValue();
     if(!_.isEmpty(record[this.props.treeName])){
       return record[this.props.treeName].map(function(b){
+        var b = b.getValue()
         var bid = parentId + "/" + b.id;
 
         var TagName = $.Bricks[b.brickType];
@@ -146,7 +157,7 @@ class Page extends React.Component  {
   }
 
   render() {
-    var record = this.model.find({ id: this.props.id });
+    var record = this.model.find({ id: this.props.id }).getValue();
     var subContent = this.renderContent(record);
 
     var previewId = this.props.preview?this.props.id:"";

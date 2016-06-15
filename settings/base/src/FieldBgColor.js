@@ -22,32 +22,16 @@ class FieldBgColor extends React.Component {
     var fieldName = $this.attr("name");
     console.log(fieldName + " changed to ==> " + changeToValue);
 
-    var record = this.props.model.find({ id: this.props.brickId }, self.props.treeName);
-    record.backgroundColor = changeToValue;
+    var record = self.props.model.find({ id: self.props.brickId }, self.props.treeName);
+    record.set("backgroundColor", changeToValue);
     this.props.onBrickSettingChange(self.props.brickId,  fieldName, changeToValue);
 
     this.setState({ currentColor: changeToValue });
 
-    // clearTimeout($this.data('timer'));
-    // $this.data('timer', setTimeout(function(){
-    //   $this.removeData('timer');
-    //   var fieldName = $field.attr("name");
-    //   console.log({ fieldName: fieldName });
-    //
-    //   //change BgColor of brick
-    //   //then notify parent
-    //   if(!_.isNaN(changeToValue)){
-    //     var record = self.props.model.find({ id: self.props.brickId });
-    //     record.bgColor = changeToValue;
-    //     //notify parent
-    //     self.props.onBrickSettingChange(record.id, fieldName, changeToValue);
-    //   }
-    //
-    // }, delay ));
   }
 
   render() {
-    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName);
+    var record = this.props.model.find({ id: this.props.brickId }, this.props.treeName).getValue();
     var defaultValue = record.backgroundColor || "#000000";
     return (
       <div className="form-group">

@@ -30,13 +30,15 @@ class PageTransitionList extends React.Component {
 
   render() {
     var self = this;
-    var transitions = this.props.dataStorage.model("Transitions").find();
-    var pageModels = this.props.dataStorage.model("Bricks");
+    var transitions = this.props.dataStorage.TransitionCollections.find();
+    var pageModels = this.props.dataStorage.BrickCollections;
     var activeBrickId = this.props.activeBrickId;
     var activePage = pageModels.find({id: activeBrickId});
+    activePage = activePage?activePage.getValue():null;
     var lists = "";
     if (transitions) {
       lists = transitions.map(function(transition){
+        var transition = transition.getValue();
         if (transition.fromPageId == activeBrickId) {
           var toPageId = transition.toPageId,
               toPage = pageModels.find({id: toPageId});
@@ -49,7 +51,7 @@ class PageTransitionList extends React.Component {
           )
         }else if (transition.toPageId == activeBrickId) {
           var fromPageId = transition.fromPageId,
-              fromPage = pageModels.find({id: fromPageId});
+              fromPage = pageModels.find({id: fromPageId}).getValue();
           return (
             <li className="list-group-item" id={transition.id} key={transition.id}
                 onClick={(event)=>self.openCloseList(event)}

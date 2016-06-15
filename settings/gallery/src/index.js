@@ -31,10 +31,10 @@ class GalleryMenu extends React.Component {
 
   handleGalleryItemClick(imageUrl) {
     // console.info("handleGalleryItemClick")
-    var imageBrick = this.props.dataStorage.model("Bricks")
+    var imageBrick = this.props.dataStorage.BrickCollections
                       .find({id: this.props.activeBrickId}, this.props.treeName)
     if (imageBrick) {
-      imageBrick.imageUrl = imageUrl;
+      imageBrick.set("imageUrl", imageUrl);
     }
 
     this.props.onBrickSettingChange(this.props.activeBrickId, "image", imageUrl);

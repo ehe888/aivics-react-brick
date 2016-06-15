@@ -21,9 +21,10 @@ class PageTransitionTo extends React.Component {
   render() {
 
     var self = this;
-    var model = this.props.dataStorage.model("Bricks");
+    var model = this.props.dataStorage.BrickCollections;
     var activeBrickId = this.props.activeBrickId;
     var contents = model.find().map(function(brick, i){
+      var brick = brick.getValue();
       if (brick.id == activeBrickId) {
         return;
       }
@@ -74,8 +75,9 @@ class PageTransitionNew extends React.Component {
   }
 
   render() {
-    var model = this.props.dataStorage.model("Bricks")
+    var model = this.props.dataStorage.BrickCollections;
     var activeBrick = model.find({id: this.props.activeBrickId})
+    activeBrick = activeBrick?activeBrick.getValue():null;
     var title = activeBrick?activeBrick.title: "";
 
     return (
