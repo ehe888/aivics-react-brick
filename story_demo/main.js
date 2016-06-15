@@ -583,11 +583,18 @@ class Story extends React.Component {
 
 
   //Begin delete transition method /onTransitionDeleteClick/
-  //Purpose: delete the selected transition
+  //Purpose: delete the selected transition and relatived events
   //Arguments:
   //  * transitionId: the id of transition which need to delete
   onTransitionDeleteClick(transitionId) {
-    DataStorage.model('Transitions').delete({id: transitionId});
+    var events = Collections.EventCollections.find();
+    for (var i = 0; i < events.length; i++) {
+      var event = events[i].getValue();
+      if (event.transitionId == transitionId) {
+        Collections.EventCollections.delete({id: event.id})
+      }
+    }
+    Collections.TransitionCollections.delete({id: transitionId});
     this.setState(this.state)
   }
   //End delete transition method /onTransitionDeleteClick/

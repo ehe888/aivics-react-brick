@@ -38,10 +38,7 @@ var BaseCollection = Backbone.Collection.extend({
     }
   },
 
-  delete: function(filter) {
-    console.log(filter)
-    _.remove(this.collections, filter);
-  },
+  
 
 
 })

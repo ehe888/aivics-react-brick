@@ -8,7 +8,7 @@ class BrickCollections extends BaseCollection {
 
   constructor(props) {
     super(props)
-
+    
     this.model = BrickModel
   }
 
